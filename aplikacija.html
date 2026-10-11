@@ -420,7 +420,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
           <li><span><b>Uplata:</b> zadano je 25 % registriranih. Kod eToroa je 9–10 %<sup><a href="#s49">49</a></sup>, ali Electrocoin već ima korisnike i poznat je u Hrvatskoj.</span></li>
           <li><span><b>Promet po korisniku:</b> kod Robinhooda ~$2.500 kripto prometa godišnje po klijentu<sup><a href="#s51">51</a></sup>. Zadano je €2.500.</span></li>
           <li><span><b>Naknada:</b> zadano je 1,5 %, kao kod Bitpande i Revoluta<sup><a href="#s38">38</a></sup><sup><a href="#s40">40</a></sup>.</span></li>
-          <li><span><b>Marketing po korisniku s uplatom:</b> zadano je €75, između Revoluta i Robinhooda<sup><a href="#s32">32</a></sup><sup><a href="#s1">1</a></sup>.</span></li>
+          <li><span><b>Trošak marketinga po novom korisniku:</b> koliko marketinga treba da jedan korisnik otvori račun i prvi put uplati novac. Zadano je €75, između Revoluta i Robinhooda<sup><a href="#s32">32</a></sup><sup><a href="#s1">1</a></sup>.</span></li>
         </ul>
         <div class="calc">
           <label class="sl"><span>Udio odraslih koji se registriraju</span><b id="vR">3 %</b><input type="range" id="rR" min="0" max="20" step="0.5" value="3"></label>
@@ -429,7 +429,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
           <label class="sl"><span>Naknada</span><b id="vN">1,5 %</b><input type="range" id="rN" min="0" max="3" step="0.05" value="1.5"></label>
           <label class="sl"><span>Trošak izrade aplikacije</span><b id="vB">€350.000</b><input type="range" id="rB" min="0" max="1600000" step="25000" value="350000"></label>
           <label class="sl"><span>Godišnji troškovi nakon izrade</span><b id="vM">€330.000</b><input type="range" id="rM" min="0" max="1300000" step="10000" value="330000"></label>
-          <label class="sl"><span>Marketing po korisniku s uplatom</span><b id="vC">€75</b><input type="range" id="rC" min="0" max="300" step="5" value="75"></label>
+          <label class="sl"><span>Trošak marketinga da 1 korisnik otvori račun i uplati novac</span><b id="vC">€75</b><input type="range" id="rC" min="0" max="300" step="5" value="75"></label>
           <div class="res">
             <div><small>Registrirani korisnici</small><b id="o1"></b></div>
             <div><small>Korisnici s uplatom</small><b id="o2"></b></div>
@@ -445,7 +445,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
           <p class="why" id="oTxt" style="margin-top:12px"></p>
           <button type="button" class="rst" id="rst">Vrati zadane vrijednosti</button>
         </div>
-        <p class="note" style="margin-top:10px">Registrirani = 3,21 mil. odraslih<sup><a href="#s44">44</a></sup> × udio. Korisnici s uplatom = registrirani × udio uplate. Promet = korisnici s uplatom × promet po korisniku. Prihod = promet × naknada; to je Electrocoinov neto prihod jer nema partnera. Početno ulaganje = izrada + korisnici s uplatom × marketing. Povrat = početno ulaganje / (prihod − godišnji troškovi). Dio prometa mogu biti postojeći korisnici web aplikacije koji prelaze na mobilnu. Usporedba: Electrocoinov neto prihod 2025. bio je €1,18 mil.<sup><a href="#s42">42</a></sup>, a promet ~€59 mil.<sup><a href="#s43">43</a></sup></p>
+        <p class="note" style="margin-top:10px">Registrirani = 3,21 mil. odraslih<sup><a href="#s44">44</a></sup> × udio. Korisnici s uplatom = registrirani × udio uplate. Promet = korisnici s uplatom × promet po korisniku. Prihod = promet × naknada; to je Electrocoinov neto prihod jer nema partnera. Početno ulaganje = izrada + korisnici s uplatom × trošak marketinga po novom korisniku. Povrat = početno ulaganje / (prihod − godišnji troškovi). Dio prometa mogu biti postojeći korisnici web aplikacije koji prelaze na mobilnu. Usporedba: Electrocoinov neto prihod 2025. bio je €1,18 mil.<sup><a href="#s42">42</a></sup>, a promet ~€59 mil.<sup><a href="#s43">43</a></sup></p>
         <script>
         (() => {
           const AD = 3211673, ECP = 59e6, ECR = 1.18e6;
