@@ -423,22 +423,22 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
 
       <section class="card s12">
         <p class="ttl">3. Troškovi izgradnje, uvođenja i održavanja</p>
-        <div class="cap">Za Electrocoin. Sve brojke u ovom dijelu su procjena</div>
+        <div class="cap">Za Electrocoin, u dvije varijante osoblja. Sve brojke u ovom dijelu su procjena</div>
         <ul class="ul">
           <li><span><b>Polazište:</b> Electrocoin već ima kupnju, prodaju i čuvanje kripta, pa ne gradi od nule. Banci koja sve gradi sama to stoji $0,5–2 mil. i 12–24 mjeseca<sup><a href="#s45">45</a></sup>.</span></li>
-          <li><span><b>Trošak po zaposleniku:</b> Electrocoin je 2025. imao €1,18 mil. prihoda, €161.107 gubitka i 29 zaposlenih<sup><a href="#s47">47</a></sup>. Ukupni troškovi su dakle ~€1,34 mil., ili ~€46.000 po zaposleniku godišnje.</span></li>
+          <li><span><b>Plaća za varijantu 2:</b> prosječna plaća u IT sektoru 2025. bila je €1.789, a IT arhitekata €2.823 mjesečno<sup><a href="#s47">47</a></sup>. Na bruto plaću poslodavac plaća još 16,5 % za zdravstveno osiguranje<sup><a href="#s48">48</a></sup>. Ukupni trošak poslodavca je tada ~€3.100–5.100 mjesečno po radniku (procjena).</span></li>
         </ul>
         <div class="tw" style="margin-top:14px">
           <table class="cmp">
-            <thead><tr><th>Stavka</th><th>Procjena</th><th>Izračun</th></tr></thead>
+            <thead><tr><th>Stavka</th><th>Varijanta 1: rade postojeći radnici</th><th>Varijanta 2: 2 nova radnika samo za ovaj projekt</th></tr></thead>
             <tbody>
-              <tr><td>Izgradnja modula za banke (SDK i API)</td><td>~€90–210 tis. jednokratno</td><td>4–6 ljudi kroz 6–9 mjeseci × ~€46.000 godišnje</td></tr>
-              <tr><td>Uvođenje u pojedinu banku</td><td>~€25–50 tis. po banci</td><td>2–3 čovjeka kroz 3–4 mjeseca</td></tr>
-              <tr><td>Održavanje, podrška i usklađenost</td><td>~€90–140 tis. godišnje</td><td>2–3 čovjeka stalno</td></tr>
-              <tr><td>Proširenje licence na prijenos kripta</td><td>Nije javno</td><td>Pravni savjet i zahtjev Hanfi</td></tr>
+              <tr><td>Izgradnja modula, uvođenje u banke, održavanje i podrška</td><td>Nema dodatnog troška osoblja. Posao rade postojeći djelatnici u sklopu plaće koju već primaju.</td><td>2 × ~€37.500–61.000 = <b>~€75–122 tis. godišnje</b></td></tr>
+              <tr><td>Izračun za varijantu 2</td><td>–</td><td>Neto €1.789 ≈ bruto €2.680 ≈ €3.120 trošak poslodavca mjesečno. Neto €2.823 ≈ bruto €4.360 ≈ €5.080 trošak poslodavca mjesečno.</td></tr>
+              <tr><td>Proširenje licence na prijenos kripta</td><td colspan="2">Iznos nije javan: pravni savjet i zahtjev Hanfi.</td></tr>
             </tbody>
           </table>
         </div>
+        <p class="note" style="margin-top:10px">Bruto je izračunat uz doprinose od 20 %, osobni odbitak od €600 i porez od 23 % za Zagreb<sup><a href="#s48">48</a></sup>.</p>
       </section>
 
       <section class="card s12">
@@ -446,7 +446,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
         <div class="cap">Sve brojke u ovom dijelu su procjena, ne podatak</div>
         <ul class="ul">
           <li><span><b>Udio klijenata koji koriste modul:</b> kod PostFinancea, poštanske banke, kripto koristi ~1,4 % klijenata nakon dvije godine<sup><a href="#s24">24</a></sup><sup><a href="#s25">25</a></sup>. Zadano je 2 %, jer 16 % Hrvata ima ili je imalo kripto, gotovo tri puta više od prosjeka EU<sup><a href="#s44">44</a></sup>.</span></li>
-          <li><span><b>Promet po korisniku:</b> javnih podataka za banke nema. Bitpanda je 2025. imala €371 mil. prihoda na 7,4 mil. korisnika<sup><a href="#s48">48</a></sup>, tj. ~€50 po korisniku. Uz naknadu ~1,5 % to je ~€3.300 prometa godišnje. Zadano je €3.000.</span></li>
+          <li><span><b>Promet po korisniku:</b> javnih podataka za banke nema. Bitpanda je 2025. imala €371 mil. prihoda na 7,4 mil. korisnika<sup><a href="#s49">49</a></sup>, tj. ~€50 po korisniku. Uz naknadu ~1,5 % to je ~€3.300 prometa godišnje. Zadano je €3.000.</span></li>
           <li><span><b>Naknada klijentu:</b> banke naplaćuju 0,95–2,5 %<sup><a href="#s23">23</a></sup><sup><a href="#s35">35</a></sup><sup><a href="#s36">36</a></sup>. Zadano je 1,5 %.</span></li>
           <li><span><b>Electrocoinov udio naknade:</b> podjela između banke i partnera nije javna<sup><a href="#s18">18</a></sup>. Zadano je 50 %.</span></li>
         </ul>
@@ -455,7 +455,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
           <label class="sl"><span>Promet po korisniku godišnje</span><b id="vV">€3.000</b><input type="range" id="rV" min="0" max="20000" step="250" value="3000"></label>
           <label class="sl"><span>Naknada klijentu</span><b id="vF">1,5 %</b><input type="range" id="rF" min="0" max="3" step="0.05" value="1.5"></label>
           <label class="sl"><span>Electrocoinov udio naknade</span><b id="vS">50 %</b><input type="range" id="rS" min="0" max="100" step="5" value="50"></label>
-          <label class="sl"><span>Održavanje modula godišnje</span><b id="vM">€115.000</b><input type="range" id="rM" min="0" max="300000" step="5000" value="115000"></label>
+          <label class="sl"><span>Trošak 2 nova radnika godišnje (varijanta 2)</span><b id="vM">€75.000</b><input type="range" id="rM" min="0" max="200000" step="5000" value="75000"></label>
           <div class="tw" style="margin-top:14px">
             <table class="cmp">
               <thead><tr><th></th><th>HPB</th><th>Zagrebačka banka</th><th>Ukupno</th></tr></thead>
@@ -465,14 +465,15 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
                 <tr><td>Promet godišnje</td><td id="pg1"></td><td id="pg2"></td><td id="pg3"></td></tr>
                 <tr><td>Electrocoinov prihod mjesečno</td><td id="rm1"></td><td id="rm2"></td><td id="rm3"></td></tr>
                 <tr><td>Electrocoinov prihod godišnje</td><td id="rg1"></td><td id="rg2"></td><td id="rg3"></td></tr>
-                <tr><td><b>Prihod − održavanje godišnje</b></td><td colspan="2"></td><td id="net"></td></tr>
+                <tr><td><b>Varijanta 1: prihod uz postojeće radnike</b></td><td colspan="2"></td><td id="net1"></td></tr>
+                <tr><td><b>Varijanta 2: prihod − trošak 2 nova radnika</b></td><td colspan="2"></td><td id="net"></td></tr>
               </tbody>
             </table>
           </div>
           <p class="why" id="oTxt" style="margin-top:12px"></p>
           <button type="button" class="rst" id="rst">Vrati zadane vrijednosti</button>
         </div>
-        <p class="note" style="margin-top:10px">Korisnici = klijenti banke × udio. Promet = korisnici × promet po korisniku. Electrocoinov prihod = promet × naknada × Electrocoinov udio, dakle neto prihod nakon dijela koji ide banci. Klijenti: HPB ~545.000<sup><a href="#s4">4</a></sup>, Zagrebačka banka ~1,1 mil. građana<sup><a href="#s38">38</a></sup>. Usporedba s Electrocoinom: neto prihod 2025. bio je €1,18 mil.<sup><a href="#s47">47</a></sup>, a promet procjenjujemo na oko €59 mil. godišnje<sup><a href="#s49">49</a></sup>.</p>
+        <p class="note" style="margin-top:10px">Korisnici = klijenti banke × udio. Promet = korisnici × promet po korisniku. Electrocoinov prihod = promet × naknada × Electrocoinov udio, dakle neto prihod nakon dijela koji ide banci. Klijenti: HPB ~545.000<sup><a href="#s4">4</a></sup>, Zagrebačka banka ~1,1 mil. građana<sup><a href="#s38">38</a></sup>. Usporedba s Electrocoinom: neto prihod 2025. bio je €1,18 mil.<sup><a href="#s50">50</a></sup>, a promet procjenjujemo na oko €59 mil. godišnje<sup><a href="#s51">51</a></sup>.</p>
         <script>
         (() => {
           const C = [545000, 1100000], ECP = 59e6, ECR = 1.18e6;
@@ -490,12 +491,12 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
               $("pm" + i).textContent = "~" + eur(pg[i - 1] / 12); $("pg" + i).textContent = "~" + eur(pg[i - 1]);
               $("rm" + i).textContent = "~" + eur(rg[i - 1] / 12); $("rg" + i).textContent = "~" + eur(rg[i - 1]);
             });
-            const net = rg[2] - m;
+            const net = rg[2] - m; $("net1").textContent = "~" + eur(rg[2]);
             $("net").textContent = "~" + eur(net); $("net").style.color = net < 0 ? "#c0392b" : "";
-            $("oTxt").innerHTML = "<b>Što to znači za Electrocoin:</b> promet kroz obje banke bio bi oko " + n(pg[2] / ECP * 100) + " % Electrocoinova godišnjeg prometa, a prihod oko " + n(rg[2] / ECR * 100) + " % njegova neto prihoda iz 2025. Nakon održavanja ostaje " + eur(net) + " godišnje, bez jednokratne izgradnje.";
+            $("oTxt").innerHTML = "<b>Što to znači za Electrocoin:</b> promet kroz obje banke bio bi oko " + n(pg[2] / ECP * 100) + " % Electrocoinova godišnjeg prometa, a prihod oko " + n(rg[2] / ECR * 100) + " % njegova neto prihoda iz 2025. Ako posao rade postojeći radnici, cijeli prihod ostaje Electrocoinu. Uz 2 nova radnika ostaje " + eur(net) + " godišnje.";
           }
           ["rU","rV","rF","rS","rM"].forEach(i => $(i).addEventListener("input", up));
-          $("rst").addEventListener("click", () => { $("rU").value = 2; $("rV").value = 3000; $("rF").value = 1.5; $("rS").value = 50; $("rM").value = 115000; up(); });
+          $("rst").addEventListener("click", () => { $("rU").value = 2; $("rV").value = 3000; $("rF").value = 1.5; $("rS").value = 50; $("rM").value = 75000; up(); });
           up();
         })();
         </script>
@@ -507,7 +508,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
           <li><span>Banka će prije ugovora detaljno provjeriti Electrocoin kao partnera: sigurnost, kontinuitet poslovanja i izlaznu strategiju<sup><a href="#s17">17</a></sup>. Za to treba pripremiti dokumentaciju unaprijed.</span></li>
           <li><span>Granicu između toga da banka samo daje pristup i toga da prima naloge treba pisano potvrditi s Hanfom<sup><a href="#s13">13</a></sup>.</span></li>
           <li><span>Zagrebačka banka ponudila je bitcoin certifikat samo u poslovnicama, uz razgovor o primjerenosti<sup><a href="#s37">37</a></sup>. To znači da je oprezna, ali da je kripto zanima.</span></li>
-          <li><span>Electrocoin je 2025. poslovao s gubitkom<sup><a href="#s47">47</a></sup>, pa će banke pažljivo gledati njegovu financijsku stabilnost.</span></li>
+          <li><span>Electrocoin je 2025. poslovao s gubitkom<sup><a href="#s50">50</a></sup>, pa će banke pažljivo gledati njegovu financijsku stabilnost.</span></li>
         </ul>
       </section>
 
@@ -563,9 +564,11 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
         <li id="s44"><a href="https://edufiacademics.edufinet.com/wp-content/uploads/2023/11/Monitoring_the_level_of_financial_literacy.pdf" target="_blank" rel="noopener">Flash Eurobarometar 525: 16 % Hrvata ima ili je imalo kripto, prosjek EU 6 % (2023.)</a></li>
         <li id="s45"><a href="https://www.liminalcustody.com/blog/digital-asset-custody-for-banks-in-house-vs-outsourced-vs-white-label/" target="_blank" rel="noopener">Liminal: gotovo rješenje za banke 2–6 mjeseci, vlastiti razvoj 12–24 mjeseca (21. 7. 2026.)</a></li>
         <li id="s46"><a href="https://bitpanda.com/en/tech/n26-success-story" target="_blank" rel="noopener">Bitpanda Technology: pokretanje kod partnera za manje od 6 mjeseci</a></li>
-        <li id="s47"><a href="https://infobiz.fina.hr/public/OIB-45841695639/electrocoin-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: Electrocoin d.o.o. – prihod €1,18 mil., gubitak €161.107, 29 zaposlenih (2025.)</a></li>
-        <li id="s48"><a href="https://www.bitbase.com/news/raiffeisens-crypto-deal-could-reach-18-million-customers-how-many-can-actually-trade" target="_blank" rel="noopener">Bitbase: Bitpanda 2025. – €371 mil. prihoda i 7,4 mil. korisnika</a></li>
-        <li id="s49"><a href="https://electrocoin-case-study.mojaradnadomena.com/#onama" target="_blank" rel="noopener">Electrocoin case study: procjena prometa 2025. (~€59 mil.)</a></li>
+        <li id="s47"><a href="https://www.tportal.hr/biznis/clanak/pet-zanimanja-u-hrvatskoj-donosi-vise-od-2700-eura-mjesecno-daleko-su-iznad-prosjeka-20260121" target="_blank" rel="noopener">Tportal/MojaPlaća: plaće u IT sektoru i IT arhitekata 2025. (21. 1. 2026.)</a></li>
+        <li id="s48"><a href="https://www.fiskai.hr/izracun/kalkulator-place-2026/" target="_blank" rel="noopener">FiskAI: obračun plaće 2026., poslodavac plaća 16,5 % na bruto</a></li>
+        <li id="s49"><a href="https://www.bitbase.com/news/raiffeisens-crypto-deal-could-reach-18-million-customers-how-many-can-actually-trade" target="_blank" rel="noopener">Bitbase: Bitpanda 2025. – €371 mil. prihoda i 7,4 mil. korisnika</a></li>
+        <li id="s50"><a href="https://infobiz.fina.hr/public/OIB-45841695639/electrocoin-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: Electrocoin d.o.o. – prihod €1,18 mil., gubitak €161.107, 29 zaposlenih (2025.)</a></li>
+        <li id="s51"><a href="https://electrocoin-case-study.mojaradnadomena.com/#onama" target="_blank" rel="noopener">Electrocoin case study: procjena prometa 2025. (~€59 mil.)</a></li>
       </ol>
     </section>
   </main>
