@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Expansion proposals · Electrocoin</title>
+<meta name="description" content="Electrocoin, advice on business expansion: five growth proposals following the MiCA licence, each with sources.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta name="theme-color" content="#8cc63f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: app shell from the design: sidebar + top bar + card grid */
+:root{
+  --bg:#ececea; --shell:#f6f6f4; --card:#ffffff; --line:#e8e8e4; --soft:#f1f1ee;
+  --fg:#16170f; --muted:#6f7068; --faint:#b7b8ae;
+  --green:#8cc63f; --green-d:#4f8a12; --yellow:#f2e63a; --orange:#f6a94a;
+  --bar:#e9e9e5; --ink-btn:#16170f; --ink-btn-fg:#fff;
+  --shadow:0 1px 2px rgba(20,22,10,.04),0 8px 24px rgba(20,22,10,.04);
+  --f-ui:"Plus Jakarta Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d0e0b; --shell:#141511; --card:#1b1c17; --line:#2a2b24; --soft:#23241e;
+  --fg:#f1f2ea; --muted:#a2a397; --faint:#5c5d54;
+  --green:#9bd54c; --green-d:#a9dd62; --yellow:#efe34a; --orange:#f5ae55;
+  --bar:#2a2b25; --ink-btn:#f1f2ea; --ink-btn-fg:#16170f; --shadow:none; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d0e0b; --shell:#141511; --card:#1b1c17; --line:#2a2b24; --soft:#23241e;
+  --fg:#f1f2ea; --muted:#a2a397; --faint:#5c5d54;
+  --green:#9bd54c; --green-d:#a9dd62; --yellow:#efe34a; --orange:#f5ae55;
+  --bar:#2a2b25; --ink-btn:#f1f2ea; --ink-btn-fg:#16170f; --shadow:none; color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-ui);font-size:14px;line-height:1.5;padding-block:24px;padding-inline:16px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+a{color:inherit}
+.num{font-variant-numeric:tabular-nums}
+[hidden]{display:none!important}
+
+.app{max-width:1440px;margin:0 auto;background:var(--shell);border-radius:24px;display:grid;grid-template-columns:232px minmax(0,1fr);box-shadow:var(--shadow)}
+
+/* Sidebar */
+.side{padding:24px 16px;display:flex;flex-direction:column;gap:22px;border-right:1px solid var(--line);position:sticky;top:0;align-self:start;min-height:calc(100vh - 48px)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.01em;padding:0 8px;text-decoration:none}
+.logo .mark{width:28px;height:28px;border-radius:8px;background:var(--green);display:grid;place-items:center;color:#16170f}
+.logo small{font-weight:500;color:var(--muted)}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;font-weight:500;text-decoration:none}
+.nav a:hover{background:var(--soft)}
+.nav a.on{background:var(--card);box-shadow:var(--shadow);position:relative}
+.nav a.on::before{content:"";position:absolute;left:-16px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--fg)}
+.nav svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav .sub{display:flex;flex-direction:column;margin:2px 0 6px 21px;padding-left:18px;border-left:1px solid var(--line)}
+.nav .sub a{padding:5px 10px;font-size:13px;color:var(--muted)}
+.hr{height:1px;background:var(--line);margin:0 8px}
+.pro{margin-top:auto;background:var(--card);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+.pro .bolt{width:32px;height:32px;border-radius:50%;background:var(--fg);color:var(--card);display:grid;place-items:center}
+.pro h4{margin:4px 0 0;font-size:15px}
+.pro p{margin:0;color:var(--muted);font-size:12.5px}
+.btn-ink{background:var(--ink-btn);color:var(--ink-btn-fg);border:0;border-radius:10px;padding:10px 14px;font-weight:600;text-decoration:none;text-align:center;display:inline-block}
+
+/* Main area */
+.main{padding:20px 24px 28px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.crumb{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px}
+.crumb b{color:var(--fg);font-weight:600}
+.top .sp{flex:1}
+.tabs{display:none;gap:6px}
+.tabs a{background:var(--card);border-radius:10px;padding:8px 12px;font-weight:600;font-size:13px;text-decoration:none}
+.tabs a.on{background:var(--ink-btn);color:var(--ink-btn-fg)}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-weight:600;font-size:13px;text-decoration:none}
+
+.grid{display:grid;gap:16px;grid-template-columns:repeat(12,minmax(0,1fr));align-content:start}
+.card{background:var(--card);border-radius:var(--r);padding:20px 22px;min-width:0;box-shadow:var(--shadow)}
+.s12{grid-column:span 12}.s8{grid-column:span 8}.s7{grid-column:span 7}.s6{grid-column:span 6}.s5{grid-column:span 5}.s4{grid-column:span 4}.s3{grid-column:span 3}
+.hd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ttl{font-weight:600;font-size:16px;margin:0;text-wrap:balance}
+.cap{color:var(--muted);font-size:12.5px}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-size:clamp(28px,3.4vw,42px);line-height:1.08;letter-spacing:-.025em;margin:8px 0 12px;font-weight:700;text-wrap:balance;max-width:20ch}
+.lead{font-size:15.5px;color:var(--muted);max-width:62ch;margin:0}
+p{max-width:68ch}
+sup a{font-size:10px;color:var(--green-d);text-decoration:none;font-weight:700;margin-left:1px}
+sup a:hover{text-decoration:underline}
+sup+sup::before{content:",";font-size:10px;color:var(--muted)}
+
+.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;align-items:end}
+.hero .art{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;align-self:stretch;align-content:end;max-width:260px;justify-self:end;width:100%}
+.hero .art i{aspect-ratio:1;border-radius:5px;background:var(--green);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.22) 0 2px,transparent 2px 6px)}
+.hero .art i.y{background-color:var(--yellow)}.hero .art i.o{background-color:var(--orange)}.hero .art i.l{opacity:.35}.hero .art i.e{background:transparent}
+
+.kpi .big{font-size:30px;font-weight:600;letter-spacing:-.02em;margin:6px 0 2px;line-height:1.1}
+.kpi .up{color:var(--green-d);font-size:12px;font-weight:600}
+
+/* Charts */
+.chart{width:100%;height:auto;display:block}
+.chart text{font-size:11px;fill:var(--muted);font-family:var(--f-ui)}
+.chart text.v{fill:var(--fg);font-weight:600;font-size:12px}
+.chart .gl{stroke:var(--line);stroke-dasharray:3 4}
+.mix{display:grid;gap:12px;margin-top:12px}
+.mix .row b{display:block;font-size:12.5px;margin-bottom:5px}
+.mix .row b small{font-weight:500;color:var(--muted)}
+.stack{display:flex;height:30px;border-radius:8px;overflow:hidden;gap:2px}
+.mix .est .stack{outline:1.5px dashed var(--muted);outline-offset:2px}
+.stack i{display:flex;min-width:0;align-items:center;justify-content:center;font-style:normal;font-size:11.5px;font-weight:700;color:#16170f;white-space:nowrap;overflow:hidden}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:10px;height:10px;border-radius:3px;display:inline-block;flex:none}
+.note{font-size:12px;color:var(--muted);margin:10px 0 0}
+.sw.est{background:var(--bar);outline:1.5px dashed var(--muted);outline-offset:-1.5px}
+.chart .est{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4}
+table.revt td:first-child{white-space:normal;font-weight:600}
+table.revt td small{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px}
+table.revt td small.pos{color:var(--green-d)}
+table.revt td{vertical-align:top}
+.chart.lg text{font-size:14px}
+.chart.lg text.v{font-size:17px;font-weight:700}
+.chart.lg.many text{font-size:12.5px}
+.chart.lg.many text.v{font-size:14px;letter-spacing:-.02em}
+
+/* Timeline */
+.tl{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:0}
+.tl li{display:grid;grid-template-columns:64px 18px minmax(0,1fr);gap:12px;padding-bottom:18px;position:relative}
+.tl .yr{font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+.tl .dot{width:12px;height:12px;border-radius:4px;background:var(--bar);margin-top:5px;position:relative;z-index:1}
+.tl li.k .dot{background:var(--green)}
+.tl li.m .dot{background:var(--yellow)}
+.tl li::after{content:"";position:absolute;left:calc(64px + 12px + 5px);top:20px;bottom:0;width:2px;background:var(--line)}
+.tl li:last-child::after{display:none}
+.tl h3{font-size:14px;margin:0 0 2px;font-weight:600}
+.tl p{margin:0;color:var(--muted);font-size:13px}
+
+/* People */
+.people{display:grid;gap:12px}
+.person{display:flex;gap:12px;align-items:flex-start}
+.av{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-weight:700;font-size:13px;color:#16170f;flex:none}
+.person b{display:block;font-size:14px}
+.person span{color:var(--muted);font-size:12.5px}
+
+/* Video */
+.videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:14px}
+.video{display:flex;flex-direction:column;gap:8px;text-decoration:none;border-radius:12px}
+.video .th{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:12px;overflow:hidden;background:var(--soft)}
+.video .th img{width:100%;height:100%;object-fit:cover;display:block}
+.video .th::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(22,23,15,.75) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7v10l8-5z' fill='%23fff'/%3E%3C/svg%3E") center/22px no-repeat}
+.video:hover .th::after{background-color:var(--green)}
+.video b{font-size:13.5px;font-weight:600;line-height:1.35}
+.video span{font-size:12px;color:var(--muted)}
+blockquote{margin:14px 0 0;padding:14px 16px;border-radius:12px;background:var(--soft);font-size:14px;max-width:none}
+blockquote cite{display:block;font-style:normal;color:var(--muted);font-size:12px;margin-top:6px}
+
+/* Table */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:9px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:600;color:var(--muted);font-size:12px}
+.neg{color:var(--orange)}.pos{color:var(--green-d)}
+
+dl.facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;margin:14px 0 0;font-size:13px}
+dl.facts dt{color:var(--muted)}
+dl.facts dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+
+/* Services */
+.svc-ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none}
+.svc-ico svg{width:20px;height:20px;stroke:#16170f;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.svc-h{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+ol.mica{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+ol.mica li{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;border:1px solid var(--line);border-radius:10px;font-size:13px}
+ol.mica .k{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+ol.mica b{font-size:12px;font-weight:700}
+ol.mica li.y{background:color-mix(in srgb,var(--green) 16%,transparent);border-color:color-mix(in srgb,var(--green) 45%,transparent)}
+ol.mica li.y b{color:var(--green-d)}
+ol.mica li.n{color:var(--muted)}
+ol.mica li.n b{color:var(--faint);font-weight:600}
+.ul{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:7px;font-size:13.5px}
+.ul li{display:grid;grid-template-columns:14px minmax(0,1fr);gap:8px}
+.ul li::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--green);margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:12px;font-weight:600;font-family:var(--f-mono);background:var(--soft)}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.step{background:var(--soft);border-radius:12px;padding:12px}
+.step b{font-family:var(--f-mono);font-size:11px;color:var(--muted);display:block}
+.step span{font-size:13px;font-weight:500}
+.partners{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:14px}
+.partner{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.partner b{font-size:14px}
+.partner .yr{font-family:var(--f-mono);font-size:11px;color:var(--green-d)}
+.partner span{font-size:12.5px;color:var(--muted)}
+.meter{height:12px;border-radius:4px;background:var(--soft);overflow:hidden;margin-top:6px}
+.meter i{display:block;height:100%;background:var(--green);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.25) 0 2px,transparent 2px 6px)}
+.eea{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.eea span{font-family:var(--f-mono);font-size:11px;padding:3px 6px;border-radius:5px;background:var(--green);color:#16170f}
+
+/* Sources */
+.src{columns:2 320px;column-gap:28px;margin:12px 0 0;padding-left:22px;font-size:12.5px;color:var(--muted)}
+.src li{break-inside:avoid;margin-bottom:6px}
+.src a{color:var(--fg);text-decoration-color:var(--faint)}
+.src li.hl{background:var(--soft);border-radius:4px}
+
+/* Growth */
+table.vasp td:nth-child(3){font-family:var(--f-mono);font-size:12px}
+.st{display:inline-block;font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;white-space:nowrap}
+.st.ok{background:var(--green);color:#16170f}.st.no{background:var(--bar);color:var(--muted)}
+table.vasp td:last-child{white-space:normal;min-width:220px;color:var(--muted)}
+.deals{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:14px}
+.deal{border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.deal h3{margin:0;font-size:15px}
+.deal p{margin:0;font-size:13px}
+.deal .why{background:var(--soft);border-radius:10px;padding:8px 10px}
+.deal-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.fit{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;white-space:nowrap;flex:none}
+.deal.hi .fit{background:var(--green);color:#16170f}.deal.mid .fit{background:var(--yellow);color:#16170f}.deal.lo .fit{background:var(--orange);color:#16170f}
+table.matrix td,table.matrix th{text-align:left;white-space:normal;min-width:96px}
+table.matrix th small{color:var(--faint);font-weight:500}
+table.matrix td:first-child{min-width:180px;font-weight:500}
+table.matrix td.y{color:var(--green-d);font-weight:600}
+table.matrix td.n{color:var(--faint)}
+table.matrix td.q{color:var(--orange);font-weight:700}
+table.matrix td.p{color:var(--muted);font-style:italic}
+table.matrix td:nth-child(2){background:var(--soft)}
+.ideas{margin:14px 0 0;padding-left:20px;display:grid;gap:10px;font-size:13.5px}
+.ideas li::marker{font-weight:700;color:var(--green-d)}
+
+@media (max-width:1100px){
+  .s8,.s7,.s6,.s5,.s4{grid-column:span 12}
+  .s3{grid-column:span 6}
+}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{display:none}
+  .tabs{display:flex;overflow-x:auto;max-width:100%;scrollbar-width:none}.tabs a{white-space:nowrap;flex:none}
+  .main{padding:16px}
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .hero .art{display:none}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  body{padding-inline:8px;padding-block:8px}
+  .s3{grid-column:span 12}
+  .crumb{display:none}
+  .card{padding:16px}
+  .tl li{grid-template-columns:48px 14px minmax(0,1fr);gap:10px}
+  .tl li::after{left:calc(48px + 10px + 5px)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+<style>
+/* Proposals: one card per proposal with number, fields and analysis status */
+.prop{display:flex;flex-direction:column;gap:10px}
+.prop-h{display:flex;gap:12px;align-items:flex-start}
+.prop-n{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;font-weight:700;font-size:17px;color:#16170f}
+.prop p{margin:0;font-size:13.5px}
+.prop .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:4px}
+.prop .ul{margin-top:2px}
+.prop .why{background:var(--soft);border-radius:10px;padding:10px 12px}
+.prop .warn{background:color-mix(in srgb,var(--orange) 16%,transparent);border:1px solid color-mix(in srgb,var(--orange) 45%,transparent);border-radius:10px;padding:10px 12px}
+.prop-f{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding-top:6px;border-top:1px solid var(--line)}
+.soon{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;background:var(--bar);color:var(--muted)}
+.more{font-size:12px;font-weight:700;border-radius:99px;padding:3px 11px;background:var(--green);color:#fff;text-decoration:none;white-space:nowrap}
+table.cmp td,table.cmp th{text-align:left;white-space:normal;min-width:120px;vertical-align:top}
+table.cmp td:first-child{min-width:170px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a class="logo" href="https://electrocoin-case-study.mojaradnadomena.com/en.html"><span class="mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>Electrocoin<small>.eu</small></a>
+    <nav class="nav" aria-label="Pages">
+      <a href="#prijedlozi" class="on"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Expansion proposals</a>
+      <a href="preuzimanje-klijenata"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21 20c0-2.6-1.6-4.8-4-5.6"/></svg>1. Client acquisition</a>
+      <a href="paycek-trgovci"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>2. PayCek merchants</a>
+      <a href="bankomati"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M9 17h6"/></svg>3. Crypto ATMs</a>
+      <a href="banke"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/></svg>4. Bank module</a>
+      <a href="aplikacija"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M9 14l2-2 2 2 3-4"/></svg>5. Robinhood-style app</a>
+    </nav>
+    <div class="hr"></div>
+    <nav class="nav" aria-label="Other">
+      <a href="#izvori"><svg viewBox="0 0 24 24"><path d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/></svg>Sources</a>
+      <a href="https://electrocoin-case-study.mojaradnadomena.com/en.html"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Case study</a>
+    </nav>
+    <div class="pro">
+      <span class="bolt"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
+      <h4>Advice on business expansion</h4>
+      <p>Five proposals. Each gets its own detailed analysis.</p>
+      <a class="btn-ink" href="https://electrocoin-case-study.mojaradnadomena.com/en.html#rast">Growth analysis</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="top">
+      <div class="crumb">Electrocoin.eu <span>/</span> Advice <span>/</span> <b>Expansion proposals</b></div>
+      <nav class="tabs" aria-label="Pages"><a href="https://electrocoin-case-study.mojaradnadomena.com/en.html">Case study</a><a href="#prijedlozi" class="on">Proposals</a><a href="preuzimanje-klijenata">1. Clients</a><a href="paycek-trgovci">2. PayCek</a><a href="bankomati">3. ATMs</a><a href="banke">4. Banks</a><a href="aplikacija">5. App</a></nav>
+      <span class="sp"></span>
+      <a class="pill" id="lang" href="../" hreflang="hr" lang="hr" title="Hrvatska verzija">HR</a>
+    </header>
+
+    <div class="grid" id="prijedlozi">
+      <section class="card s12">
+        <div class="hero">
+          <div>
+            <div class="eyebrow">Advice · business expansion proposals</div>
+            <h1>5 growth directions for Electrocoin</h1>
+            <p class="lead">On 9 April 2026 Electrocoin received the first MiCA operating licence in Croatia, covering crypto custody, exchange of crypto for money and exchange of crypto for crypto<sup><a href="#s1">1</a></sup><sup><a href="#s2">2</a></sup>. Since 1 July 2026 only licensed firms may provide crypto services, and of 17 Croatian providers, five have received a licence<sup><a href="#s3">3</a></sup><sup><a href="#s4">4</a></sup>. Here, in brief, are five proposals for making the most of this. Each will be analysed in detail on a separate page.</p>
+          </div>
+          <div class="art" aria-hidden="true" id="art"></div>
+        </div>
+      </section>
+
+
+      <!-- 1 -->
+      <section class="card s6 prop" id="p1">
+        <div class="prop-h"><span class="prop-n" style="background:var(--green)">1</span><div><p class="ttl">Taking over clients from crypto firms without a MiCA licence</p><div class="cap">Users left without a service provider</div></div></div>
+        <p class="lbl">Opportunity</p>
+        <ul class="ul">
+          <li><span>12 of the 17 firms in Hanfa's VASP register did not receive a licence and, since 1 July 2026, may not provide crypto services<sup><a href="#s4">4</a></sup><sup><a href="#s3">3</a></sup>.</span></li>
+          <li><span>Without a licence: Adria Digital Exchange, HODL Store, Blok Be, Fintrax, Moneysail, Marinix275, BD Innovation Hub, DUPLICO, Cana Pay, FiatBit Technologies, CREDOS and M obrada<sup><a href="#s5">5</a></sup><sup><a href="#s2">2</a></sup>.</span></li>
+          <li><span>HODL Store, Blok Be and Fintrax offered the widest range of services, all including crypto custody for clients<sup><a href="#s5">5</a></sup>. Adria Digital Exchange was founded in 2023 by the Zagreb Stock Exchange (24%) together with Digital Assembly<sup><a href="#s6">6</a></sup>.</span></li>
+          <li><span>On 29 July 2026 Hanfa ordered Fima Plus of Varaždin to cease its crypto services and return assets to clients<sup><a href="#s7">7</a></sup>.</span></li>
+        </ul>
+        <p class="why"><b>Proposal:</b> agreements with these firms for an orderly transfer of their clients to Electrocoin, with each client's consent, plus a "switch to the first Croatian licensed platform" campaign. The existing licence already covers buying, selling and custody of crypto<sup><a href="#s2">2</a></sup>, so no extension is needed for this.</p>
+        <p class="note" style="margin:0">A licence does not transfer when a company is bought, so the value lies in the clients, contracts and people, not in the company itself. This is our estimate based on MiCA's licensing rules<sup><a href="#s8">8</a></sup>. How many clients these firms have has not been made public.</p>
+        <div class="prop-f"><span class="cap">Analysis: which firms, how many clients, how to take them over</span><a class="more" href="preuzimanje-klijenata">Detailed analysis →</a></div>
+      </section>
+
+      <!-- 2 -->
+      <section class="card s6 prop" id="p2">
+        <div class="prop-h"><span class="prop-n" style="background:var(--yellow)">2</span><div><p class="ttl">Growing the number of PayCek clients</p><div class="cap">More merchants accepting crypto through PayCek</div></div></div>
+        <p class="lbl">Current position</p>
+        <ul class="ul">
+          <li><span>The customer pays in crypto and the merchant receives euros. The merchant pays no fee: around 2–2.5% is borne by the customer or shared<sup><a href="#s9">9</a></sup><sup><a href="#s10">10</a></sup>.</span></li>
+          <li><span>In 2022 PayCek had more than 400 merchants on more than 2,000 POS devices<sup><a href="#s11">11</a></sup>. The best known are Hrvatska pošta, Tifon at all 46 of its stations, Konzum's online shop and LAQO insurance<sup><a href="#s12">12</a></sup><sup><a href="#s13">13</a></sup><sup><a href="#s14">14</a></sup><sup><a href="#s15">15</a></sup>.</span></li>
+          <li><span>PayCek also accepts stablecoins (USDT, USDC, EURC and others), but pays merchants out in euros only<sup><a href="#s9">9</a></sup>. Lithuania's CoinGate already offers merchants payouts in crypto and stablecoins<sup><a href="#s16">16</a></sup>.</span></li>
+        </ul>
+        <p class="why"><b>Proposal:</b> bring new merchants onto PayCek.</p>
+        <p class="note" style="margin:0">We found no public merchant count more recent than the 2022 figure.</p>
+        <div class="prop-f"><span class="cap">Analysis: candidates in Varaždin County and Međimurje County</span><a class="more" href="paycek-trgovci">Detailed analysis →</a></div>
+      </section>
+
+      <section class="card s6 prop" id="p3">
+        <div class="prop-h"><span class="prop-n" style="background:var(--orange)">3</span><div><p class="ttl">Taking over crypto ATMs</p><div class="cap">Bitomat ATMs out of service because of MiCA</div></div></div>
+        <p class="lbl">What we checked</p>
+        <ul class="ul">
+          <li><span><b>Bitomat ATMs are currently out of service.</b> Bitomat.com lists 17 ATMs in Croatia<sup><a href="#s17">17</a></sup>. The Croatian page states that they are temporarily unavailable: the machines remain at their locations but cannot be used while the authorisation process under the MiCA regulation is under way<sup><a href="#s18">18</a></sup>. The same locations, e.g. Pula (Max City), are run by the Polish network Shitcoins.club<sup><a href="#s19">19</a></sup>.</span></li>
+          <li><span>Neither Bitomat nor Shitcoins.club is in Hanfa's register of licensed firms<sup><a href="#s2">2</a></sup>, and since 1 July 2026 only firms with a MiCA licence may provide crypto services<sup><a href="#s3">3</a></sup>.</span></li>
+        </ul>
+        <p class="why"><b>Proposal:</b> 17 Bitomat ATMs are sitting at their locations, out of service. Electrocoin holds a licence for exchanging crypto for money, which also covers ATMs<sup><a href="#s2">2</a></sup>, so it can offer the operator to buy the machines, take over the locations or run those ATMs under its own licence. Together with more than 50 post offices offering crypto for cash<sup><a href="#s12">12</a></sup>, it would gain a network available 24/7.</p>
+        <div class="prop-f"><span class="cap">Analysis: operator, purchase or lease, turnover and revenue</span><a class="more" href="bankomati">Detailed analysis →</a></div>
+      </section>
+
+      <!-- 3 -->
+      <section class="card s6 prop" id="p4">
+        <div class="prop-h"><span class="prop-n" style="background:var(--green)">4</span><div><p class="ttl">Crypto module for banks</p><div class="cap">Buying, selling and holding crypto inside a bank's app</div></div></div>
+        <p class="lbl">Current position</p>
+        <ul class="ul">
+          <li><span>Electrocoin is developing a module that banks embed in their apps, with partners in Slovenia, Bosnia and Herzegovina and Hungary<sup><a href="#s20">20</a></sup>.</span></li>
+          <li><span>No bank publicly uses the module. The company says it is "already in the development phase" with Croatian banks, but does not name them<sup><a href="#s21">21</a></sup>. Its only known B2B partners are not banks: Hrvatska pošta, Exclusive Change and merchants via PayCek<sup><a href="#s22">22</a></sup>.</span></li>
+          <li><span>Competition is already here: Aircash has offered crypto via Bitpanda since 2025<sup><a href="#s23">23</a></sup>, and in September 2026 the Raiffeisen group is rolling out Bitpanda in 11 markets, for 18M clients<sup><a href="#s24">24</a></sup><sup><a href="#s25">25</a></sup>. In Germany, Boerse Stuttgart Digital does this for DekaBank and the savings banks<sup><a href="#s26">26</a></sup>.</span></li>
+        </ul>
+        <p class="why"><b>Proposal:</b> target domestic banks that have no foreign parent partner for crypto. Electrocoin's advantages are the local regulator, the language and a licence valid in 30 EEA countries<sup><a href="#s1">1</a></sup><sup><a href="#s27">27</a></sup>. The window is closing as Bitpanda moves into banks in the region.</p>
+        <div class="prop-f"><span class="cap">Analysis: licence, examples, timelines, costs and revenue</span><a class="more" href="banke">Detailed analysis →</a></div>
+      </section>
+
+      <!-- 4 -->
+      <section class="card s12 prop" id="p5">
+        <div class="prop-h"><span class="prop-n" style="background:var(--yellow)">5</span><div><p class="ttl">Robinhood-style app</p><div class="cap">One app for crypto, and later for shares too</div></div></div>
+        <p class="lbl">Model</p>
+        <ul class="ul">
+          <li><span>In Q2 2026 Robinhood had 28.4M funded clients, $369bn in platform assets and $1.31bn in revenue, of which $100M came from crypto<sup><a href="#s28">28</a></sup>.</span></li>
+          <li><span>In the EU it operates through a Lithuanian company with a MiCA licence for custody, transfer, execution, and reception and transmission of orders, plus a separate brokerage licence (MiFID) for shares<sup><a href="#s29">29</a></sup>.</span></li>
+          <li><span>Since July 2025 it has offered EU users tokens for more than 200 US shares and ETFs, commission-free<sup><a href="#s30">30</a></sup>.</span></li>
+        </ul>
+        <p class="lbl">Electrocoin today</p>
+        <p>An app and website with 60+ cryptocurrencies, fixed pricing, bill payment in crypto and payouts to an IBAN<sup><a href="#s31">31</a></sup>. Alongside crypto, Bitpanda and Revolut already offer shares, savings plans and staking<sup><a href="#s32">32</a></sup><sup><a href="#s33">33</a></sup>.</p>
+        <p class="why"><b>Proposal:</b> develop the existing app in this direction, step by step: first a savings plan and crypto transfers, then shares. For this Robinhood has services that Electrocoin lacks (transfer, execution, and reception and transmission of orders: KI5, KI7 and KI10), and shares require a separate investment firm licence<sup><a href="#s2">2</a></sup><sup><a href="#s29">29</a></sup>.</p>
+        <div class="prop-f"><span class="cap">Analysis: features, licences, costs and revenue</span><a class="more" href="aplikacija">Detailed analysis →</a></div>
+      </section>
+
+      <section class="card s12" id="usporedba">
+        <div class="hd"><div><p class="ttl">Comparison of the five proposals</p><div class="cap">Ratings in the last two rows are our estimate, not data</div></div></div>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th></th><th>1. Client acquisition</th><th>2. PayCek clients</th><th>3. Crypto ATMs</th><th>4. Bank module</th><th>5. Robinhood-style app</th></tr></thead>
+            <tbody>
+              <tr><td>Licence extension needed?</td><td>No, covered by the existing one<sup><a href="#s2">2</a></sup></td><td>No, covered by the existing one<sup><a href="#s2">2</a></sup></td><td>No, exchange of crypto for money (KI3)<sup><a href="#s2">2</a></sup></td><td>To be analysed on a separate page</td><td>Yes: KI5, KI7, KI10, and MiFID for shares<sup><a href="#s29">29</a></sup></td></tr>
+              <tr><td>Main competitor</td><td>Bitcoin Store and WhiteBIT, licensed domestically<sup><a href="#s2">2</a></sup></td><td>CoinGate<sup><a href="#s16">16</a></sup></td><td>Bitomat's operator (Shitcoins.club), if it obtains a licence<sup><a href="#s19">19</a></sup></td><td>Bitpanda<sup><a href="#s24">24</a></sup></td><td>Revolut, Bitpanda, Robinhood<sup><a href="#s32">32</a></sup><sup><a href="#s33">33</a></sup><sup><a href="#s30">30</a></sup></td></tr>
+              <tr><td>Urgency (estimate)</td><td>High: users are choosing a new platform now</td><td>Medium</td><td>High: Bitomat ATMs are idle and out of service</td><td>High: Bitpanda is moving into the region's banks</td><td>Low to medium</td></tr>
+              <tr><td>Effort and cost (estimate)</td><td>Low</td><td>Low to medium: selling to merchants</td><td>Medium: buying or leasing machines and locations</td><td>Medium to high: selling to banks takes time</td><td>High: development and new licences</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" id="izvori">
+      <p class="ttl">Sources</p>
+      <div class="cap">Figures in the text are marked with the source number. Compiled 10 October 2026.</div>
+      <ol class="src">
+        <li id="s1"><a href="https://www.hanfa.hr/news/hanfa-board-meeting-electrocoin-doo-becomes-the-first-company-to-obtain-hanfa-s-authorisation-to-operate-in-accordance-with-mica/" target="_blank" rel="noopener">HANFA: Electrocoin first to receive authorisation under MiCA (9 Apr 2026)</a></li>
+        <li id="s2"><a href="https://www.hanfa.hr/registers/crypto-asset-market/register-of-entities-authorized-to-provide-crypto-asset-services/" target="_blank" rel="noopener">HANFA: register of crypto-asset service providers (CASP)</a></li>
+        <li id="s3"><a href="https://www.hanfa.hr/news/provision-of-crypto-asset-services-from-1-july-2026-crypto-licence-and-registration-in-hanfa-registers-mandatory-for-providers-consumers-urged-to-exercise-caution/" target="_blank" rel="noopener">HANFA: crypto services from 1 Jul 2026 only with a licence or a notification from another EU country (3 Jul 2026)</a></li>
+        <li id="s4"><a href="https://financije.hr/kripto-platforme-bez-licence-vise-ne-smiju-raditi-u-hrvatskoj-hanfa-poziva-gradane-na-oprez/" target="_blank" rel="noopener">Financije.hr: Unlicensed crypto platforms may no longer operate (3 Jul 2026)</a></li>
+        <li id="s5"><a href="https://www.hanfa.hr/registers/virtual-currencies/legal-entities-providing-virtual-asset-services/" target="_blank" rel="noopener">HANFA: register of virtual asset service providers (VASP)</a></li>
+        <li id="s6"><a href="https://en.lider.media/?p=42816" target="_blank" rel="noopener">Lider: Zagreb Stock Exchange founds Adria Digital Exchange (12 May 2023)</a></li>
+        <li id="s7"><a href="https://hanfa.hr/news/hanfa-board-meeting-fima-plus-doo-ordered-to-cease-the-unauthorised-provision-of-crypto-asset-services/" target="_blank" rel="noopener">HANFA: Fima Plus must cease crypto services (29 Jul 2026)</a></li>
+        <li id="s8"><a href="https://www.springlex.eu/en/packages/mica/mica-regulation/article-59/" target="_blank" rel="noopener">MiCA Regulation, Art. 59: authorisation of crypto-asset service providers</a></li>
+        <li id="s9"><a href="https://paycek.io/" target="_blank" rel="noopener">PayCek.io: official service website</a></li>
+        <li id="s10"><a href="https://www.nacional.hr/peraci-novca-ne-bi-se-slozili-s-tezom-da-je-trgovanje-kriptovalutama-idealno-za-tu-rabotu/" target="_blank" rel="noopener">Nacional: interview with Nikola Škorić, PayCek's fee (29 May 2021)</a></li>
+        <li id="s11"><a href="https://jatrgovac.com/nikola-skoric-electrocoin/" target="_blank" rel="noopener">JaTrgovac: interview with Nikola Škorić (24 Oct 2022)</a></li>
+        <li id="s12"><a href="https://hrvatska.posta.hr/en/press/news/kriptovalute-od-sada-mozete-i-kupiti-u-postanskim-uredima-9221-9225" target="_blank" rel="noopener">Hrvatska pošta: cryptocurrencies can now also be bought at post offices (November 2021)</a></li>
+        <li id="s13"><a href="https://lidermedia.hr/poslovna-scena/hrvatska/na-46-benzinskih-postaja-u-hrvatskoj-omoguceno-je-placanje-kriptovalutama-135200/" target="_blank" rel="noopener">Lider: Crypto payments enabled at 46 petrol stations (2 Feb 2021)</a></li>
+        <li id="s14"><a href="https://www.netokracija.com/konzum-kriptovalute-186452" target="_blank" rel="noopener">Netokracija: Konzum first retail chain to accept crypto payments (1 Dec 2021)</a></li>
+        <li id="s15"><a href="https://www.xprimm.com/Croatian-LAQO-introduces-cryptocurrency-payments-on-its-webshop-articol-16-19419.htm" target="_blank" rel="noopener">XPRIMM: LAQO introduces cryptocurrency payments (1 Sep 2022)</a></li>
+        <li id="s16"><a href="https://www.investegate.co.uk/crypto-news/474" target="_blank" rel="noopener">Investegate: CoinGate receives MiCA licence (17 Dec 2025)</a></li>
+        <li id="s17"><a href="https://www.bitomat.com/en/mapa/bitcoin-atms-croatia" target="_blank" rel="noopener">Bitomat.com: map of ATMs in Croatia (checked 10 Oct 2026)</a></li>
+        <li id="s18"><a href="https://www.bitomat.com/hr" target="_blank" rel="noopener">Bitomat.com (HR): "Bitcoin ATMs temporarily unavailable", MiCA authorisation process (checked 10 Oct 2026)</a></li>
+        <li id="s19"><a href="https://shitcoins.club/lokalizacija-bankomata/bitcoin-atm-pula-maxcity" target="_blank" rel="noopener">Shitcoins.club: ATM Pula, Max City</a></li>
+        <li id="s20"><a href="https://fintech.hu/from-nuclear-engineer-to-crypto-pioneer-how-nikola-skoric-is-revolutionizing-european-finance/" target="_blank" rel="noopener">Fintech.hu: bank module and partners in the region (31 Mar 2025)</a></li>
+        <li id="s21"><a href="https://si.bloombergadria.com/posel/podjetnistvo/98595/banke-vstopajo-v-kripto-vprasanje-ni-vec-ali-bodo-temvec-kdo-bo-prvi-prevzel-kliente-nove-generacije/news" target="_blank" rel="noopener">Bloomberg Adria SI: opinion piece by Nikola Škorić on banks and crypto (9 Mar 2026)</a></li>
+        <li id="s22"><a href="https://en.lider.media/?p=44495" target="_blank" rel="noopener">Lider: partnership with Exclusive Change bureaux de change</a></li>
+        <li id="s23"><a href="https://www.ictbusiness.biz/business/aircash-enters-partnership-with-bitpanda" target="_blank" rel="noopener">ICTbusiness: Aircash introduces crypto via Bitpanda (29 May 2025)</a></li>
+        <li id="s24"><a href="https://cointelegraph.com/news/raiffeisen-crypto-11-european-markets-bitpanda" target="_blank" rel="noopener">Cointelegraph: Raiffeisen introduces crypto via Bitpanda in 11 markets (23 Sep 2026)</a></li>
+        <li id="s25"><a href="https://www.blockhead.co/2026/09/24/raiffeisen-bank-international-to-offer-crypto-to-18-million-cee-customers-through-bitpanda/" target="_blank" rel="noopener">Blockhead: RBI offers crypto to 18M clients via Bitpanda (24 Sep 2026)</a></li>
+        <li id="s26"><a href="https://mondovisione.com/media-and-resources/news/boerse-stuttgart-digital-and-dekabank-expand-their-partnership-in-crypto-trading-20251013/" target="_blank" rel="noopener">Mondo Visione: Boerse Stuttgart Digital and DekaBank (13 Oct 2025)</a></li>
+        <li id="s27"><a href="https://thebanks.eu/vasps/electrocoin-466514" target="_blank" rel="noopener">TheBanks.eu: Electrocoin and the list of countries where the licence is valid</a></li>
+        <li id="s28"><a href="https://investors.robinhood.com/news-releases/news-release-details/robinhood-reports-second-quarter-2026-results" target="_blank" rel="noopener">Robinhood: Q2 2026 results (29 Jul 2026)</a></li>
+        <li id="s29"><a href="https://www.ecovis.com/lithuania/blog/2025/06/15/us-broker-robinhood-obtains-lithuanian-a-category-mifid-brokerage-and-mica-license-for-crypto-services-in-the-european-union/" target="_blank" rel="noopener">Ecovis: Robinhood Europe obtains MiCA and MiFID licences in Lithuania (15 Jun 2025)</a></li>
+        <li id="s30"><a href="https://www.bankingexchange.com/news-feed/item/10349-robinhood-launches-tokenized-us-stock-trading-for-eu-users" target="_blank" rel="noopener">Banking Exchange: Robinhood launches share tokens in the EU (1 Jul 2025)</a></li>
+        <li id="s31"><a href="https://projekthrvatska.com/electrocoin-iskustvo-hrvatska-kripto-platforma/" target="_blank" rel="noopener">Projekt Hrvatska: Electrocoin experience 2026 (review at the company's invitation)</a></li>
+        <li id="s32"><a href="https://www.datawallet.com/crypto/bitpanda-review" target="_blank" rel="noopener">Datawallet: Bitpanda Review 2026</a></li>
+        <li id="s33"><a href="https://www.trendingtopics.eu/revolut-mica-lizenz/" target="_blank" rel="noopener">Trending Topics: Revolut obtains MiCA licence</a></li>
+      </ol>
+    </section>
+  </main>
+</div>
+
+<script>
+(() => {
+  // Click on a source number: scroll to the source and highlight it
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a[href^='#s'],a[href='#izvori']");
+    if (!a) return;
+    const t = document.getElementById(a.getAttribute("href").slice(1));
+    if (!t) return;
+    e.preventDefault();
+    t.scrollIntoView({ behavior: "smooth", block: "center" });
+    document.querySelectorAll(".src li.hl").forEach(x => x.classList.remove("hl"));
+    if (t.tagName === "LI") t.classList.add("hl");
+  });
+  // Decorative blocks as on the main page
+  const B = "e e e e y e e e e l y y e e l g g l e l g g g o l g g g g g".split(" ");
+  document.getElementById("art").innerHTML = B.map(c => `<i class="${c === "g" ? "" : c}"></i>`).join("");
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Robinhood-style app · Electrocoin</title>
+<meta name="description" content="Electrocoin, business expansion advice: five growth proposals following the MiCA licence, each with sources.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta name="theme-color" content="#8cc63f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: app shell from the design: side menu + top bar + card grid */
+:root{
+  --bg:#ececea; --shell:#f6f6f4; --card:#ffffff; --line:#e8e8e4; --soft:#f1f1ee;
+  --fg:#16170f; --muted:#6f7068; --faint:#b7b8ae;
+  --green:#8cc63f; --green-d:#4f8a12; --yellow:#f2e63a; --orange:#f6a94a;
+  --bar:#e9e9e5; --ink-btn:#16170f; --ink-btn-fg:#fff;
+  --shadow:0 1px 2px rgba(20,22,10,.04),0 8px 24px rgba(20,22,10,.04);
+  --f-ui:"Plus Jakarta Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d0e0b; --shell:#141511; --card:#1b1c17; --line:#2a2b24; --soft:#23241e;
+  --fg:#f1f2ea; --muted:#a2a397; --faint:#5c5d54;
+  --green:#9bd54c; --green-d:#a9dd62; --yellow:#efe34a; --orange:#f5ae55;
+  --bar:#2a2b25; --ink-btn:#f1f2ea; --ink-btn-fg:#16170f; --shadow:none; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d0e0b; --shell:#141511; --card:#1b1c17; --line:#2a2b24; --soft:#23241e;
+  --fg:#f1f2ea; --muted:#a2a397; --faint:#5c5d54;
+  --green:#9bd54c; --green-d:#a9dd62; --yellow:#efe34a; --orange:#f5ae55;
+  --bar:#2a2b25; --ink-btn:#f1f2ea; --ink-btn-fg:#16170f; --shadow:none; color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-ui);font-size:14px;line-height:1.5;padding-block:24px;padding-inline:16px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+a{color:inherit}
+.num{font-variant-numeric:tabular-nums}
+[hidden]{display:none!important}
+
+.app{max-width:1440px;margin:0 auto;background:var(--shell);border-radius:24px;display:grid;grid-template-columns:232px minmax(0,1fr);box-shadow:var(--shadow)}
+
+/* Side menu */
+.side{padding:24px 16px;display:flex;flex-direction:column;gap:22px;border-right:1px solid var(--line);position:sticky;top:0;align-self:start;min-height:calc(100vh - 48px)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.01em;padding:0 8px;text-decoration:none}
+.logo .mark{width:28px;height:28px;border-radius:8px;background:var(--green);display:grid;place-items:center;color:#16170f}
+.logo small{font-weight:500;color:var(--muted)}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;font-weight:500;text-decoration:none}
+.nav a:hover{background:var(--soft)}
+.nav a.on{background:var(--card);box-shadow:var(--shadow);position:relative}
+.nav a.on::before{content:"";position:absolute;left:-16px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--fg)}
+.nav svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav .sub{display:flex;flex-direction:column;margin:2px 0 6px 21px;padding-left:18px;border-left:1px solid var(--line)}
+.nav .sub a{padding:5px 10px;font-size:13px;color:var(--muted)}
+.hr{height:1px;background:var(--line);margin:0 8px}
+.pro{margin-top:auto;background:var(--card);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+.pro .bolt{width:32px;height:32px;border-radius:50%;background:var(--fg);color:var(--card);display:grid;place-items:center}
+.pro h4{margin:4px 0 0;font-size:15px}
+.pro p{margin:0;color:var(--muted);font-size:12.5px}
+.btn-ink{background:var(--ink-btn);color:var(--ink-btn-fg);border:0;border-radius:10px;padding:10px 14px;font-weight:600;text-decoration:none;text-align:center;display:inline-block}
+
+/* Main area */
+.main{padding:20px 24px 28px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.crumb{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px}
+.crumb b{color:var(--fg);font-weight:600}
+.top .sp{flex:1}
+.tabs{display:none;gap:6px}
+.tabs a{background:var(--card);border-radius:10px;padding:8px 12px;font-weight:600;font-size:13px;text-decoration:none}
+.tabs a.on{background:var(--ink-btn);color:var(--ink-btn-fg)}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-weight:600;font-size:13px;text-decoration:none}
+
+.grid{display:grid;gap:16px;grid-template-columns:repeat(12,minmax(0,1fr));align-content:start}
+.card{background:var(--card);border-radius:var(--r);padding:20px 22px;min-width:0;box-shadow:var(--shadow)}
+.s12{grid-column:span 12}.s8{grid-column:span 8}.s7{grid-column:span 7}.s6{grid-column:span 6}.s5{grid-column:span 5}.s4{grid-column:span 4}.s3{grid-column:span 3}
+.hd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ttl{font-weight:600;font-size:16px;margin:0;text-wrap:balance}
+.cap{color:var(--muted);font-size:12.5px}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-size:clamp(28px,3.4vw,42px);line-height:1.08;letter-spacing:-.025em;margin:8px 0 12px;font-weight:700;text-wrap:balance;max-width:20ch}
+.lead{font-size:15.5px;color:var(--muted);max-width:62ch;margin:0}
+p{max-width:68ch}
+sup a{font-size:10px;color:var(--green-d);text-decoration:none;font-weight:700;margin-left:1px}
+sup a:hover{text-decoration:underline}
+sup+sup::before{content:",";font-size:10px;color:var(--muted)}
+
+.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;align-items:end}
+.hero .art{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;align-self:stretch;align-content:end;max-width:260px;justify-self:end;width:100%}
+.hero .art i{aspect-ratio:1;border-radius:5px;background:var(--green);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.22) 0 2px,transparent 2px 6px)}
+.hero .art i.y{background-color:var(--yellow)}.hero .art i.o{background-color:var(--orange)}.hero .art i.l{opacity:.35}.hero .art i.e{background:transparent}
+
+.kpi .big{font-size:30px;font-weight:600;letter-spacing:-.02em;margin:6px 0 2px;line-height:1.1}
+.kpi .up{color:var(--green-d);font-size:12px;font-weight:600}
+
+/* Charts */
+.chart{width:100%;height:auto;display:block}
+.chart text{font-size:11px;fill:var(--muted);font-family:var(--f-ui)}
+.chart text.v{fill:var(--fg);font-weight:600;font-size:12px}
+.chart .gl{stroke:var(--line);stroke-dasharray:3 4}
+.mix{display:grid;gap:12px;margin-top:12px}
+.mix .row b{display:block;font-size:12.5px;margin-bottom:5px}
+.mix .row b small{font-weight:500;color:var(--muted)}
+.stack{display:flex;height:30px;border-radius:8px;overflow:hidden;gap:2px}
+.mix .est .stack{outline:1.5px dashed var(--muted);outline-offset:2px}
+.stack i{display:flex;min-width:0;align-items:center;justify-content:center;font-style:normal;font-size:11.5px;font-weight:700;color:#16170f;white-space:nowrap;overflow:hidden}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:10px;height:10px;border-radius:3px;display:inline-block;flex:none}
+.note{font-size:12px;color:var(--muted);margin:10px 0 0}
+.sw.est{background:var(--bar);outline:1.5px dashed var(--muted);outline-offset:-1.5px}
+.chart .est{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4}
+table.revt td:first-child{white-space:normal;font-weight:600}
+table.revt td small{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px}
+table.revt td small.pos{color:var(--green-d)}
+table.revt td{vertical-align:top}
+.chart.lg text{font-size:14px}
+.chart.lg text.v{font-size:17px;font-weight:700}
+.chart.lg.many text{font-size:12.5px}
+.chart.lg.many text.v{font-size:14px;letter-spacing:-.02em}
+
+/* Timeline */
+.tl{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:0}
+.tl li{display:grid;grid-template-columns:64px 18px minmax(0,1fr);gap:12px;padding-bottom:18px;position:relative}
+.tl .yr{font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+.tl .dot{width:12px;height:12px;border-radius:4px;background:var(--bar);margin-top:5px;position:relative;z-index:1}
+.tl li.k .dot{background:var(--green)}
+.tl li.m .dot{background:var(--yellow)}
+.tl li::after{content:"";position:absolute;left:calc(64px + 12px + 5px);top:20px;bottom:0;width:2px;background:var(--line)}
+.tl li:last-child::after{display:none}
+.tl h3{font-size:14px;margin:0 0 2px;font-weight:600}
+.tl p{margin:0;color:var(--muted);font-size:13px}
+
+/* People */
+.people{display:grid;gap:12px}
+.person{display:flex;gap:12px;align-items:flex-start}
+.av{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-weight:700;font-size:13px;color:#16170f;flex:none}
+.person b{display:block;font-size:14px}
+.person span{color:var(--muted);font-size:12.5px}
+
+/* Video */
+.videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:14px}
+.video{display:flex;flex-direction:column;gap:8px;text-decoration:none;border-radius:12px}
+.video .th{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:12px;overflow:hidden;background:var(--soft)}
+.video .th img{width:100%;height:100%;object-fit:cover;display:block}
+.video .th::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(22,23,15,.75) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7v10l8-5z' fill='%23fff'/%3E%3C/svg%3E") center/22px no-repeat}
+.video:hover .th::after{background-color:var(--green)}
+.video b{font-size:13.5px;font-weight:600;line-height:1.35}
+.video span{font-size:12px;color:var(--muted)}
+blockquote{margin:14px 0 0;padding:14px 16px;border-radius:12px;background:var(--soft);font-size:14px;max-width:none}
+blockquote cite{display:block;font-style:normal;color:var(--muted);font-size:12px;margin-top:6px}
+
+/* Table */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:9px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:600;color:var(--muted);font-size:12px}
+.neg{color:var(--orange)}.pos{color:var(--green-d)}
+
+dl.facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;margin:14px 0 0;font-size:13px}
+dl.facts dt{color:var(--muted)}
+dl.facts dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+
+/* Services */
+.svc-ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none}
+.svc-ico svg{width:20px;height:20px;stroke:#16170f;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.svc-h{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+ol.mica{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+ol.mica li{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;border:1px solid var(--line);border-radius:10px;font-size:13px}
+ol.mica .k{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+ol.mica b{font-size:12px;font-weight:700}
+ol.mica li.y{background:color-mix(in srgb,var(--green) 16%,transparent);border-color:color-mix(in srgb,var(--green) 45%,transparent)}
+ol.mica li.y b{color:var(--green-d)}
+ol.mica li.n{color:var(--muted)}
+ol.mica li.n b{color:var(--faint);font-weight:600}
+.ul{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:7px;font-size:13.5px}
+.ul li{display:grid;grid-template-columns:14px minmax(0,1fr);gap:8px}
+.ul li::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--green);margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:12px;font-weight:600;font-family:var(--f-mono);background:var(--soft)}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.step{background:var(--soft);border-radius:12px;padding:12px}
+.step b{font-family:var(--f-mono);font-size:11px;color:var(--muted);display:block}
+.step span{font-size:13px;font-weight:500}
+.partners{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:14px}
+.partner{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.partner b{font-size:14px}
+.partner .yr{font-family:var(--f-mono);font-size:11px;color:var(--green-d)}
+.partner span{font-size:12.5px;color:var(--muted)}
+.meter{height:12px;border-radius:4px;background:var(--soft);overflow:hidden;margin-top:6px}
+.meter i{display:block;height:100%;background:var(--green);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.25) 0 2px,transparent 2px 6px)}
+.eea{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.eea span{font-family:var(--f-mono);font-size:11px;padding:3px 6px;border-radius:5px;background:var(--green);color:#16170f}
+
+/* Sources */
+.src{columns:2 320px;column-gap:28px;margin:12px 0 0;padding-left:22px;font-size:12.5px;color:var(--muted)}
+.src li{break-inside:avoid;margin-bottom:6px}
+.src a{color:var(--fg);text-decoration-color:var(--faint)}
+.src li.hl{background:var(--soft);border-radius:4px}
+
+/* Growth */
+table.vasp td:nth-child(3){font-family:var(--f-mono);font-size:12px}
+.st{display:inline-block;font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;white-space:nowrap}
+.st.ok{background:var(--green);color:#16170f}.st.no{background:var(--bar);color:var(--muted)}
+table.vasp td:last-child{white-space:normal;min-width:220px;color:var(--muted)}
+.deals{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:14px}
+.deal{border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.deal h3{margin:0;font-size:15px}
+.deal p{margin:0;font-size:13px}
+.deal .why{background:var(--soft);border-radius:10px;padding:8px 10px}
+.deal-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.fit{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;white-space:nowrap;flex:none}
+.deal.hi .fit{background:var(--green);color:#16170f}.deal.mid .fit{background:var(--yellow);color:#16170f}.deal.lo .fit{background:var(--orange);color:#16170f}
+table.matrix td,table.matrix th{text-align:left;white-space:normal;min-width:96px}
+table.matrix th small{color:var(--faint);font-weight:500}
+table.matrix td:first-child{min-width:180px;font-weight:500}
+table.matrix td.y{color:var(--green-d);font-weight:600}
+table.matrix td.n{color:var(--faint)}
+table.matrix td.q{color:var(--orange);font-weight:700}
+table.matrix td.p{color:var(--muted);font-style:italic}
+table.matrix td:nth-child(2){background:var(--soft)}
+.ideas{margin:14px 0 0;padding-left:20px;display:grid;gap:10px;font-size:13.5px}
+.ideas li::marker{font-weight:700;color:var(--green-d)}
+
+@media (max-width:1100px){
+  .s8,.s7,.s6,.s5,.s4{grid-column:span 12}
+  .s3{grid-column:span 6}
+}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{display:none}
+  .tabs{display:flex;overflow-x:auto;max-width:100%;scrollbar-width:none}.tabs a{white-space:nowrap;flex:none}
+  .main{padding:16px}
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .hero .art{display:none}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  body{padding-inline:8px;padding-block:8px}
+  .s3{grid-column:span 12}
+  .crumb{display:none}
+  .card{padding:16px}
+  .tl li{grid-template-columns:48px 14px minmax(0,1fr);gap:10px}
+  .tl li::after{left:calc(48px + 10px + 5px)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+.calc{margin-top:16px;border:1px solid var(--line);border-radius:14px;padding:16px}
+.sl{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;margin-bottom:14px;font-size:14px}
+.sl b{font-size:16px;color:var(--green-d);min-width:56px;text-align:right}
+.sl input{grid-column:1/-1;width:100%;accent-color:var(--green)}
+.res{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.res div{background:var(--soft);border-radius:10px;padding:10px 12px}
+.res small{display:block;font-size:12px;color:var(--muted)}
+.res b{font-size:17px}
+.rst{margin-top:10px;font:inherit;font-size:12px;border:1px solid var(--line);background:none;border-radius:99px;padding:4px 12px;cursor:pointer;color:var(--muted)}
+@media(max-width:700px){.res{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<style>
+/* Proposals: one card per proposal with number, fields and analysis status */
+.prop{display:flex;flex-direction:column;gap:10px}
+.prop-h{display:flex;gap:12px;align-items:flex-start}
+.prop-n{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;font-weight:700;font-size:17px;color:#16170f}
+.prop p{margin:0;font-size:13.5px}
+.prop .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:4px}
+.prop .ul{margin-top:2px}
+.prop .why{background:var(--soft);border-radius:10px;padding:10px 12px}
+.prop .warn{background:color-mix(in srgb,var(--orange) 16%,transparent);border:1px solid color-mix(in srgb,var(--orange) 45%,transparent);border-radius:10px;padding:10px 12px}
+.prop-f{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding-top:6px;border-top:1px solid var(--line)}
+.soon{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;background:var(--bar);color:var(--muted)}
+table.cmp td,table.cmp th{text-align:left;white-space:normal;min-width:120px;vertical-align:top}
+table.cmp td:first-child{min-width:170px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a class="logo" href="./"><span class="mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>Electrocoin<small>.eu</small></a>
+    <nav class="nav" aria-label="Pages">
+      <a href="./"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Expansion proposals</a>
+      <a href="preuzimanje-klijenata"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21 20c0-2.6-1.6-4.8-4-5.6"/></svg>1. Client acquisition</a>
+      <a href="paycek-trgovci"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>2. PayCek merchants</a>
+      <a href="bankomati"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M9 17h6"/></svg>3. Crypto ATMs</a>
+      <a href="banke"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/></svg>4. Bank module</a>
+      <a href="#vrh" class="on"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M9 14l2-2 2 2 3-4"/></svg>5. Robinhood-style app</a>
+    </nav>
+    <div class="hr"></div>
+    <nav class="nav" aria-label="Other">
+      <a href="#izvori"><svg viewBox="0 0 24 24"><path d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/></svg>Sources</a>
+      <a href="https://electrocoin-case-study.mojaradnadomena.com/en.html"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Case study</a>
+    </nav>
+  </aside>
+
+  <main class="main" id="vrh">
+    <header class="top">
+      <div class="crumb">Electrocoin.eu <span>/</span> <a href="./" style="text-decoration:none">Proposals</a> <span>/</span> <b>5. Robinhood-style app</b></div>
+      <nav class="tabs" aria-label="Pages"><a href="./">Proposals</a><a href="preuzimanje-klijenata">1. Clients</a><a href="paycek-trgovci">2. PayCek</a><a href="bankomati">3. ATMs</a><a href="banke">4. Banks</a><a href="#vrh" class="on">5. App</a></nav>
+      <span class="sp"></span>
+      <a class="pill" id="lang" href="../aplikacija" hreflang="hr" lang="hr" title="Hrvatska verzija">HR</a>
+    </header>
+
+    <div class="grid">
+      <section class="card s12">
+        <div class="hero">
+          <div>
+            <div class="eyebrow">Proposal 5 · detailed analysis</div>
+            <h1>A Robinhood-style mobile app</h1>
+            <p class="lead">In 2025 Robinhood had 27M funded customers and $4.47bn in revenue<sup><a href="#s1">1</a></sup>. Electrocoin already has a web app, so it is not starting from scratch. The proposal is to build a mobile app for crypto first, and add shares and other products later.</p>
+          </div>
+          <div class="art" aria-hidden="true" id="art"></div>
+        </div>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">1. What Robinhood offers and which licence it requires</p>
+        <div class="cap">Electrocoin holds three of the ten MiCA services: (a), (c) and (d)<sup><a href="#s2">2</a></sup></div>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th>Feature</th><th>What is required</th><th>Does Electrocoin have it?</th><th>Note</th></tr></thead>
+            <tbody><tr><td>Buying and selling crypto</td><td>MiCA (c) and (d)</td><td><b>Yes</b><sup><a href="#s2">2</a></sup></td><td>Electrocoin sells crypto to the client itself, from its own inventory and at its own price, and buys it back from them itself. Robinhood does not sell crypto itself; it sends the client's order to other exchanges, where the purchase is executed. That requires a different type of licence<sup><a href="#s3">3</a></sup>.</td></tr><tr><td>In-app wallet (crypto custody)</td><td>MiCA (a)</td><td><b>Yes</b><sup><a href="#s2">2</a></sup></td><td></td></tr><tr><td>Recurring purchases (savings plan)</td><td>MiCA (c) and (d)</td><td><b>Yes</b></td><td>The same as buying, only automatic.</td></tr><tr><td>Sending and receiving crypto to and from external wallets</td><td>MiCA (j) transfer</td><td><b>No</b></td><td>Robinhood has offered this in the EU since 2024<sup><a href="#s4">4</a></sup><sup><a href="#s3">3</a></sup></td></tr><tr><td>Staking (rewards for locked crypto)</td><td>No dedicated service under MiCA</td><td>Partly</td><td>Grey area: offered alongside crypto custody and with clear warnings<sup><a href="#s5">5</a></sup>. Robinhood offers it in the EU<sup><a href="#s6">6</a></sup>.</td></tr><tr><td>Shares, ETFs and fractional shares</td><td>MiFID investment firm licence, capital €150,000<sup><a href="#s7">7</a></sup></td><td><b>No</b></td><td>Robinhood holds a separate MiFID licence in the EU<sup><a href="#s8">8</a></sup>. The alternative is a licensed partner.</td></tr><tr><td>Share derivatives (Robinhood calls them stock tokens)</td><td>MiFID, as derivatives, capital €750,000<sup><a href="#s7">7</a></sup></td><td><b>No</b></td><td>Robinhood classifies them as derivatives under MiFID<sup><a href="#s9">9</a></sup>. Grey area, see below.</td></tr><tr><td>Options and futures (including on crypto)</td><td>MiFID, capital €750,000<sup><a href="#s7">7</a></sup></td><td><b>No</b></td><td>In the EU Robinhood offers crypto futures with leverage of up to 3×<sup><a href="#s10">10</a></sup>.</td></tr><tr><td>Card, IBAN and interest on cash</td><td>E-money licence or partner bank</td><td><b>No</b></td><td>Easiest through a partner.</td></tr><tr><td>Copying other users</td><td>Depending on the set-up: investment advice or portfolio management<sup><a href="#s11">11</a></sup></td><td><b>No</b></td><td>Robinhood offers only manual copying, and only in the US<sup><a href="#s12">12</a></sup>.</td></tr><tr><td>Betting on events (prediction markets)</td><td>Gambling licence</td><td><b>Not feasible</b></td><td>The Czech Republic blocked Polymarket as unlicensed gambling<sup><a href="#s13">13</a></sup>.</td></tr><tr><td>Earning from routing client orders to other firms (Robinhood's US model)</td><td>–</td><td><b>Prohibited</b></td><td>Robinhood does not charge clients commission; instead it sends orders to large trading firms, which execute them and pay Robinhood a small fee for each order. In the EU this has been fully prohibited since 1 Jul 2026<sup><a href="#s14">14</a></sup></td></tr></tbody>
+          </table>
+        </div>
+        <ul class="ul" style="margin-top:12px">
+          <li><span><b>The crypto part for which Electrocoin already holds the relevant MiCA licences:</b> buying, selling, the wallet and the savings plan<sup><a href="#s2">2</a></sup>.</span></li>
+          <li><span><b>The only extension needed for crypto:</b> service (j), crypto transfer. With it, Electrocoin stays in the same capital class of €125,000<sup><a href="#s15">15</a></sup>. HANFA decides within 40 working days of a complete application<sup><a href="#s16">16</a></sup>, and Electrocoin's first application took ~5.5 months<sup><a href="#s2">2</a></sup>.</span></li>
+          <li><span><b>Shares and derivatives</b> require a separate MiFID licence with capital of €150,000 to €750,000<sup><a href="#s7">7</a></sup>, or a partner that already holds one. That is the second step.</span></li>
+        </ul>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Grey areas and what is not feasible</p>
+        <ul class="ul">
+          <li><span><b>Share derivatives:</b> Robinhood calls them stock tokens, but they are not shares; they are digital tokens on a blockchain whose price tracks the share price. The token holder is not a shareholder and has no voting rights. Robinhood classifies them as derivatives, i.e. a contract between the client and itself<sup><a href="#s9">9</a></sup>. Robinhood handed out OpenAI and SpaceX tokens in the EU, and OpenAI said these were not its shares<sup><a href="#s17">17</a></sup>. ESMA warns that tokens without shareholder rights can mislead investors<sup><a href="#s18">18</a></sup>.</span></li>
+          <li><span><b>Staking and crypto lending:</b> MiCA does not regulate them. They are permitted only with the client's explicit consent and risk warnings<sup><a href="#s5">5</a></sup>.</span></li>
+          <li><span><b>Betting on events:</b> treated as gambling in Europe<sup><a href="#s13">13</a></sup>. Not feasible.</span></li>
+          <li><span><b>Earning from routing orders to other firms:</b> this Robinhood revenue source in the US is prohibited in the EU<sup><a href="#s14">14</a></sup>. Electrocoin earns from fees, so this is not a problem.</span></li>
+          <li><span><b>Gamification:</b> ESMA considers that techniques encouraging excessive trading are never in investors' interest<sup><a href="#s19">19</a></sup>. The app should not have confetti, streak rewards or leaderboards.</span></li>
+          <li><span><b>Copy trading:</b> automatic copying is portfolio management, which requires a licence and a suitability assessment<sup><a href="#s11">11</a></sup>.</span></li>
+        </ul>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">2. How much it would cost to build</p>
+        <div class="cap">All figures in this section are estimates based on the sources cited</div>
+        <ul class="ul">
+          <li><span><b>Robinhood:</b> development took about two years and $16M of investment before the first iPhone version<sup><a href="#s20">20</a></sup>, and Android followed 8 months later<sup><a href="#s21">21</a></sup>. It was building a broker from scratch. Electrocoin already has the licence and the trading and custody systems, so it needs far less.</span></li>
+          <li><span><b>Labour cost:</b> most Croatian development agencies charge $50–99 per hour<sup><a href="#s22">22</a></sup>.</span></li>
+        </ul>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th></th><th>A. Basic crypto app</th><th>B. Complete crypto app</th><th>C. Full Robinhood</th></tr></thead>
+            <tbody>
+              <tr><td>What it includes</td><td>iPhone and Android, buying, selling, portfolio, in-app user verification, notifications</td><td>Everything in A, plus a savings plan, price alerts, crypto sending, support tools and a security test</td><td>Everything in B, plus shares and ETFs through a partner, fractional shares and tax reports</td></tr>
+              <tr><td>Build cost</td><td><b>~€150–300k</b></td><td><b>~€350–650k</b></td><td><b>~€0.9–1.6M</b></td></tr>
+              <tr><td>Duration</td><td>~5–7 months</td><td>~8–12 months</td><td>~12–18 months</td></tr>
+              <tr><td>Comparison</td><td>Crypto platform, basic version: $150–200k<sup><a href="#s23">23</a></sup></td><td>Ready-made crypto platform: $400–600k<sup><a href="#s23">23</a></sup>. Mobile app $100–250k, security $50–150k, user verification $30–100k<sup><a href="#s24">24</a></sup></td><td>Crypto exchange: up to $1.24M<sup><a href="#s24">24</a></sup></td></tr>
+              <tr><td>Licences</td><td>Existing</td><td>Existing + (j) transfer</td><td>Plus a MiFID licence or partner</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="why" style="margin-top:12px"><b>Proposal:</b> start with option A or B, crypto only. Apple also approves such an app, because Electrocoin is a licensed company<sup><a href="#s25">25</a></sup>. Apple and Google take no commission on crypto purchases.</p>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">3. Annual costs after the build</p>
+        <div class="cap">Excluding marketing. All figures in this section are estimates</div>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th>Item</th><th>A. Basic</th><th>B. Complete</th><th>Basis</th></tr></thead>
+            <tbody>
+              <tr><td>Maintenance and new features</td><td>€50–80k</td><td>€120–250k</td><td>15–20% of the build cost per year<sup><a href="#s26">26</a></sup></td></tr>
+              <tr><td>Cloud servers</td><td>€25–40k</td><td>€45–75k</td><td>From $2,000 a month at the start to $8,000–18,000 for 10–50k users<sup><a href="#s27">27</a></sup></td></tr>
+              <tr><td>User verification</td><td>€8–12k</td><td>€30–45k</td><td>$1.35–1.85 per verification<sup><a href="#s28">28</a></sup></td></tr>
+              <tr><td>Security tests</td><td>€15–25k</td><td>€25–50k</td><td>Mobile app $10–25k per test<sup><a href="#s29">29</a></sup></td></tr>
+              <tr><td>Customer support</td><td>€40–60k</td><td>€80–120k</td><td>2 to 4 people<sup><a href="#s30">30</a></sup></td></tr>
+              <tr><td>Regulatory compliance</td><td>€0–40k</td><td>€30–90k</td><td>0 to 2 new people</td></tr>
+              <tr><td>HANFA supervision</td><td colspan="2">0.7‰ of revenue from crypto services</td><td><sup><a href="#s31">31</a></sup></td></tr>
+              <tr><td><b>Total per year</b></td><td><b>~€140–260k</b></td><td><b>~€330–630k</b></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="ul" style="margin-top:12px">
+          <li><span><b>Marketing:</b> the largest cost. Robinhood spent $399M on marketing in 2025<sup><a href="#s1">1</a></sup>, Revolut $591M in 2024<sup><a href="#s32">32</a></sup>, and Bitpanda ~€107M in 2025<sup><a href="#s33">33</a></sup></span></li>
+          <li><span>Existing users of Electrocoin's web app can move to the mobile app at almost no marketing cost.</span></li>
+        </ul>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">4. Number of users: comparison</p>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th>Company</th><th>Users</th><th>Who is counted</th><th>Crypto fee</th></tr></thead>
+            <tbody>
+              <tr><td>Robinhood</td><td>27M<sup><a href="#s1">1</a></sup></td><td>Only those who have deposited money</td><td>0.95% in the EU<sup><a href="#s34">34</a></sup>; in practice ~0.5% in the US<sup><a href="#s35">35</a></sup></td></tr>
+              <tr><td>eToro</td><td>3.81M<sup><a href="#s36">36</a></sup></td><td>Only those who have deposited money</td><td>–</td></tr>
+              <tr><td>Bitpanda</td><td>7.4M<sup><a href="#s37">37</a></sup></td><td>All registered users, including those without a deposit</td><td>~1.49%<sup><a href="#s38">38</a></sup></td></tr>
+              <tr><td>Revolut</td><td>68.3M<sup><a href="#s39">39</a></sup></td><td>All customers, including those who have never invested</td><td>0.49–1.49% + price spread<sup><a href="#s40">40</a></sup></td></tr>
+              <tr><td>Coinbase</td><td>–</td><td>–</td><td>~1.55% for retail customers<sup><a href="#s41">41</a></sup></td></tr>
+              <tr><td>Electrocoin today</td><td>Not public</td><td>–</td><td>~2% (revenue €1.18M<sup><a href="#s42">42</a></sup> / turnover ~€59M<sup><a href="#s43">43</a></sup>)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="ul" style="margin-top:12px">
+          <li><span><b>Market:</b> Croatia has 3.21M adults<sup><a href="#s44">44</a></sup>, and 16% own or have owned crypto<sup><a href="#s45">45</a></sup>. That is ~514,000 people.</span></li>
+          <li><span><b>Growth rate:</b> in Croatia, Revolut grew from 50,000 users in 2019<sup><a href="#s46">46</a></sup> to ~700,000 in 2026.<sup><a href="#s47">47</a></sup> Bitpanda took ~5 years to reach one million users<sup><a href="#s48">48</a></sup>.</span></li>
+          <li><span><b>From registration to deposit:</b> at eToro, 9–10% of registered users deposit money<sup><a href="#s49">49</a></sup>.</span></li>
+          <li><span><b>Competition:</b> Revolut is already strong in Croatia<sup><a href="#s47">47</a></sup>, and Aircash is adding crypto and shares to its app with Bitpanda<sup><a href="#s50">50</a></sup>.</span></li>
+        </ul>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Estimate: investment, revenue and payback</p>
+        <div class="cap">All figures in this section are estimates, not data. First three years, Croatia only</div>
+        <ul class="ul">
+          <li><span><b>Registrations:</b> the default is 3% of adults in three years. Revolut today has ~22% of adults after seven years<sup><a href="#s47">47</a></sup><sup><a href="#s44">44</a></sup>.</span></li>
+          <li><span><b>Deposit:</b> the default is 25% of registered users. At eToro it is 9–10%<sup><a href="#s49">49</a></sup>, but Electrocoin already has users and is well known in Croatia.</span></li>
+          <li><span><b>Turnover per user:</b> at Robinhood ~$2,500 of crypto turnover per customer per year<sup><a href="#s51">51</a></sup>. The default is €2,500.</span></li>
+          <li><span><b>Fee:</b> the default is 1.5%, as at Bitpanda and Revolut<sup><a href="#s38">38</a></sup><sup><a href="#s40">40</a></sup>.</span></li>
+          <li><span><b>Marketing cost per new user:</b> how much marketing it takes for one user to open an account and deposit money for the first time. The default is €75, between Revolut and Robinhood<sup><a href="#s32">32</a></sup><sup><a href="#s1">1</a></sup>.</span></li>
+        </ul>
+        <div class="calc">
+          <label class="sl"><span>Share of adults who register</span><b id="vR">3%</b><input type="range" id="rR" min="0" max="20" step="0.5" value="3"></label>
+          <label class="sl"><span>Share of registered users who deposit money</span><b id="vF">25%</b><input type="range" id="rF" min="0" max="100" step="5" value="25"></label>
+          <label class="sl"><span>Turnover per user per year</span><b id="vV">€2,500</b><input type="range" id="rV" min="0" max="20000" step="250" value="2500"></label>
+          <label class="sl"><span>Fee</span><b id="vN">1.5%</b><input type="range" id="rN" min="0" max="3" step="0.05" value="1.5"></label>
+          <label class="sl"><span>App build cost</span><b id="vB">€350,000</b><input type="range" id="rB" min="0" max="1600000" step="25000" value="350000"></label>
+          <label class="sl"><span>Annual costs after the build</span><b id="vM">€330,000</b><input type="range" id="rM" min="0" max="1300000" step="10000" value="330000"></label>
+          <label class="sl"><span>Marketing cost for 1 user to open an account and deposit money</span><b id="vC">€75</b><input type="range" id="rC" min="0" max="300" step="5" value="75"></label>
+          <div class="res">
+            <div><small>Registered users</small><b id="o1"></b></div>
+            <div><small>Users with a deposit</small><b id="o2"></b></div>
+            <div><small>Turnover per month / year</small><b id="o3"></b></div>
+            <div><small>Revenue per month / year</small><b id="o4"></b></div>
+          </div>
+          <div class="res" style="margin-top:10px">
+            <div><small>Initial investment (build + marketing)</small><b id="o5"></b></div>
+            <div><small>Annual costs</small><b id="o6"></b></div>
+            <div><small>Revenue − costs per year</small><b id="o7"></b></div>
+            <div><small>Payback period</small><b id="o8"></b></div>
+          </div>
+          <p class="why" id="oTxt" style="margin-top:12px"></p>
+          <button type="button" class="rst" id="rst">Reset to defaults</button>
+        </div>
+        <p class="note" style="margin-top:10px">Registered = 3.21M adults<sup><a href="#s44">44</a></sup> × share. Users with a deposit = registered × deposit share. Turnover = users with a deposit × turnover per user. Revenue = turnover × fee; this is Electrocoin's net revenue as there is no partner. Initial investment = build + users with a deposit × marketing cost per new user. Payback = initial investment / (revenue − annual costs). Part of the turnover may come from existing web app users moving to mobile. For comparison: Electrocoin's net revenue in 2025 was €1.18M<sup><a href="#s42">42</a></sup>, and turnover ~€59M<sup><a href="#s43">43</a></sup></p>
+        <script>
+        (() => {
+          const AD = 3211673, ECP = 59e6, ECR = 1.18e6;
+          const $ = id => document.getElementById(id);
+          const n = (x, d = 0) => x.toLocaleString("en-GB", { minimumFractionDigits: d, maximumFractionDigits: d });
+          const eur = x => (x < 0 ? "−" : "") + (Math.abs(x) >= 1e6 ? "€" + n(Math.abs(x) / 1e6, 2) + "M" : "€" + n(Math.round(Math.abs(x) / 100) * 100));
+          const pc = x => n(x, x % 1 ? (Math.round(x * 100) % 10 ? 2 : 1) : 0) + "%";
+          function up() {
+            const r = +$("rR").value / 100, f = +$("rF").value / 100, v = +$("rV").value, fee = +$("rN").value / 100, b = +$("rB").value, m = +$("rM").value, c = +$("rC").value;
+            $("vR").textContent = pc(r * 100); $("vF").textContent = n(f * 100) + "%"; $("vV").textContent = eur(v); $("vN").textContent = pc(fee * 100);
+            $("vB").textContent = eur(b); $("vM").textContent = eur(m); $("vC").textContent = "€" + n(c);
+            const reg = AD * r, fu = reg * f, pr = fu * v, rev = pr * fee, inv = b + fu * c, net = rev - m;
+            $("o1").textContent = "~" + n(Math.round(reg / 100) * 100); $("o2").textContent = "~" + n(Math.round(fu / 10) * 10);
+            $("o3").textContent = "~" + eur(pr / 12) + " / " + eur(pr); $("o4").textContent = "~" + eur(rev / 12) + " / " + eur(rev);
+            $("o5").textContent = "~" + eur(inv); $("o6").textContent = "~" + eur(m); $("o7").textContent = "~" + eur(net);
+            $("o7").style.color = net < 0 ? "#c0392b" : "";
+            $("o8").textContent = net > 0 ? "~" + n(inv / net, 1) + " yrs" : "no payback";
+            $("oTxt").innerHTML = "<b>What this means for Electrocoin:</b> the app's turnover would be about " + n(pr / ECP * 100) + "% of Electrocoin's current annual turnover, and its revenue about " + n(rev / ECR * 100) + "% of Electrocoin's 2025 net revenue. " + (net > 0 ? "The initial investment of " + eur(inv) + " would pay back in about " + n(inv / net, 1) + " years." : "On these assumptions, revenue does not cover the annual costs.");
+          }
+          ["rR","rF","rV","rN","rB","rM","rC"].forEach(i => $(i).addEventListener("input", up));
+          $("rst").addEventListener("click", () => { $("rR").value = 3; $("rF").value = 25; $("rV").value = 2500; $("rN").value = 1.5; $("rB").value = 350000; $("rM").value = 330000; $("rC").value = 75; up(); });
+          up();
+        })();
+        </script>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Points to watch</p>
+        <ul class="ul">
+          <li><span>Robinhood earns most from options and interest, while crypto brings it only 7–13% of revenue<sup><a href="#s51">51</a></sup><sup><a href="#s1">1</a></sup>. A crypto app cannot replicate its revenue per user.</span></li>
+          <li><span>Competitors with large budgets are already in the market<sup><a href="#s47">47</a></sup><sup><a href="#s50">50</a></sup>, so the app must offer something local: bill payments, payouts to an IBAN and support in Croatian.</span></li>
+          <li><span>Build cost figures come mainly from agencies and vary widely<sup><a href="#s52">52</a></sup><sup><a href="#s23">23</a></sup><sup><a href="#s24">24</a></sup>. Before deciding, quotes should be requested from 2–3 Croatian agencies.</span></li>
+        </ul>
+      </section>
+
+    </div>
+
+    <section class="card" id="izvori">
+      <p class="ttl">Sources</p>
+      <div class="cap">Figures in the text are marked with the source number. Collected on 11 October 2026.</div>
+      <ol class="src">
+        <li id="s1"><a href="https://investors.robinhood.com/news-releases/news-release-details/robinhood-reports-fourth-quarter-and-full-year-2025-results" target="_blank" rel="noopener">Robinhood: 2025 results (10 Feb 2026)</a></li>
+        <li id="s2"><a href="https://www.hanfa.hr/media/4ewnkzhp/04-electrocoin-casp.pdf" target="_blank" rel="noopener">HANFA: authorisation decision for Electrocoin d.o.o., MiCA (9 Apr 2026)</a></li>
+        <li id="s3"><a href="https://www.amf-france.org/sites/institutionnel/files/pdf/76239/en/Robinhood_Europe_UAB.pdf" target="_blank" rel="noopener">AMF: Robinhood Europe UAB, MiCA services (a), (e), (g), (j) (19 Jun 2025)</a></li>
+        <li id="s4"><a href="https://robinhood.com/newsroom/launching-crypto-transfers-in-europe" target="_blank" rel="noopener">Robinhood: sending and receiving crypto in Europe (1 Oct 2024)</a></li>
+        <li id="s5"><a href="https://www.fintechanddigitalassets.com/2026/08/cryptoasset-lending-in-the-gaps-mica-esma-qa-2883-and-the-regulatory-future-of-cryptoasset-lending/" target="_blank" rel="noopener">ESMA Q&A 2883: MiCA regulates neither crypto lending nor staking (August 2026)</a></li>
+        <li id="s6"><a href="https://robinhood.com/us/en/newsroom/robinhood-launches-stock-tokens-reveals-layer-2-blockchain-and-expands-crypto-suite-in-eu-and-us-with-perpetual-futures-and-staking" target="_blank" rel="noopener">Robinhood: stock tokens, staking and futures in the EU (30 Jun 2025)</a></li>
+        <li id="s7"><a href="https://lawplayer.com/eu/article/32019L2034/art_9" target="_blank" rel="noopener">Directive (EU) 2019/2034, Art. 9: initial capital of investment firms €75,000 / €150,000 / €750,000</a></li>
+        <li id="s8"><a href="https://www.ecovis.com/lithuania/blog/2025/06/15/us-broker-robinhood-obtains-lithuanian-a-category-mifid-brokerage-and-mica-license-for-crypto-services-in-the-european-union/" target="_blank" rel="noopener">Ecovis: Robinhood obtains MiFID brokerage and MiCA licences in Lithuania (15 Jun 2025)</a></li>
+        <li id="s9"><a href="https://www.robinhood.com/eu/en/support/articles/about-stock-tokens" target="_blank" rel="noopener">Robinhood EU: stock tokens are derivatives under MiFID II</a></li>
+        <li id="s10"><a href="https://cryptobriefing.com/robinhood-perpetual-futures-europe/" target="_blank" rel="noopener">Crypto Briefing: Robinhood futures in Europe (1 Jul 2026)</a></li>
+        <li id="s11"><a href="https://www.esma.europa.eu/sites/default/files/2023-03/ESMA35-42-1428_Supervisory_Briefing_on_Copy_Trading.pdf" target="_blank" rel="noopener">ESMA: supervisory briefing on copy trading (30 Mar 2023)</a></li>
+        <li id="s12"><a href="https://www.fortune.com/2026/03/18/robinhood-rolls-out-long-awaited-social-feature-to-let-users-track-and-copy-other-traders" target="_blank" rel="noopener">Fortune: Robinhood Social, manual copying only and US only (18 Mar 2026)</a></li>
+        <li id="s13"><a href="https://cointelegraph.com/news/czech-republic-adds-polymarket-to-unauthorized-gambling-blacklist" target="_blank" rel="noopener">Cointelegraph: Czech Republic blocks Polymarket as unlicensed gambling (July 2026)</a></li>
+        <li id="s14"><a href="https://legal.pwc.de/content/services/regcore-client-alert/pwc-legal-client-alert-germanys-pfof-ban-is-now-fully-in-force-july-2026.pdf" target="_blank" rel="noopener">PwC Legal: EU ban on payment for order flow fully in force from 1 Jul 2026</a></li>
+        <li id="s15"><a href="https://www.springlex.eu/en/packages/mica/mica-regulation/annex-4/" target="_blank" rel="noopener">MiCA, Annex IV: minimum capital €50,000 / €125,000 / €150,000</a></li>
+        <li id="s16"><a href="https://www.springlex.eu/en/packages/mica/mica-regulation/article-63/" target="_blank" rel="noopener">MiCA Art. 63: authorisation deadlines</a></li>
+        <li id="s17"><a href="https://cointelegraph.com/news/robinhood-openai-spacex-tokens-eu-investigation" target="_blank" rel="noopener">Cointelegraph: OpenAI distances itself from Robinhood's tokens, Lithuania seeks clarification (7 Jul 2025)</a></li>
+        <li id="s18"><a href="https://cryptoslate.com/eu-regulator-warns-tokenized-stocks-may-mislead-retail-investors/" target="_blank" rel="noopener">CryptoSlate: ESMA warns about tokenised stocks (1 Sep 2025)</a></li>
+        <li id="s19"><a href="https://www.investmentexecutive.com/news/regulation/european-regulators-seek-to-rein-in-firms-nudges/" target="_blank" rel="noopener">ESMA on gamification and nudging to trade (29 Apr 2022)</a></li>
+        <li id="s20"><a href="https://techcrunch.com/2014/12/11/robinhood-free-stock-trading/amp/" target="_blank" rel="noopener">TechCrunch: Robinhood after two years of development and $16M of investment (11 Dec 2014)</a></li>
+        <li id="s21"><a href="https://techcrunch.com/2015/08/13/no-fee-stock-trading-app-robinhood-is-now-on-android" target="_blank" rel="noopener">TechCrunch: Robinhood on Android (13 Aug 2015)</a></li>
+        <li id="s22"><a href="https://clutch.co/croatia/developers.md" target="_blank" rel="noopener">Clutch: rates of Croatian development agencies, mostly $50–99 per hour (October 2026)</a></li>
+        <li id="s23"><a href="https://topflightapps.com/ideas/cost-to-start-a-crypto-exchange/" target="_blank" rel="noopener">Topflight: cost of a crypto platform, MVP $150–200k, ready-made solution $400–600k (January 2026)</a></li>
+        <li id="s24"><a href="https://innowise.com/blog/crypto-exchange-software-development-cost/" target="_blank" rel="noopener">Innowise: crypto platform costs by component (13 Jan 2026)</a></li>
+        <li id="s25"><a href="https://developer.apple.com/app-store/review/guidelines/" target="_blank" rel="noopener">Apple: rules for crypto apps (3.1.5)</a></li>
+        <li id="s26"><a href="https://www.netguru.com/blog/fintech-app-development-cost" target="_blank" rel="noopener">Netguru: fintech app cost, maintenance 15–20% per year (September 2026)</a></li>
+        <li id="s27"><a href="https://spendark.com/blog/cloud-cost-fintech-startups/" target="_blank" rel="noopener">Spendark: cloud costs for fintech (24 Apr 2026)</a></li>
+        <li id="s28"><a href="https://sumsub.com/pricing/" target="_blank" rel="noopener">Sumsub: user verification price $1.35–1.85</a></li>
+        <li id="s29"><a href="https://www.blazeinfosec.com/post/how-much-does-penetration-testing-cost/" target="_blank" rel="noopener">Blaze: price of a mobile app security test $10–25k (11 May 2026)</a></li>
+        <li id="s30"><a href="https://www.mojaplaca.hr/en/salaryinfo/customer-support/customer-support-specialist" target="_blank" rel="noopener">MojaPlaća: customer support salary</a></li>
+        <li id="s31"><a href="https://hanfa.hr/media/hrgjlm4n/07-pravilnik-o-naknadama-za-nadzor-za-2026.pdf" target="_blank" rel="noopener">HANFA: Ordinance on supervision fees for 2026 (0.7‰ of revenue)</a></li>
+        <li id="s32"><a href="https://www.revolut.com/en-BE/news/record_growth_and_diverse_product_offering_drive_revolut_to_1_4bn_profit_in_2024/" target="_blank" rel="noopener">Revolut: 2024 – $591M on marketing, ~15M new users (24 Apr 2025)</a></li>
+        <li id="s33"><a href="https://cryptoticker.io/en/bitpanda-annual-loss-2025-customer-funds/" target="_blank" rel="noopener">Cryptoticker: Bitpanda 2025 – ~€107M on marketing (5 Oct 2026)</a></li>
+        <li id="s34"><a href="https://cdn.robinhood.com/assets/robinhood/legal/fee_schedule_EU.pdf" target="_blank" rel="noopener">Robinhood EU: fee schedule, crypto 0.95%</a></li>
+        <li id="s35"><a href="https://investors.robinhood.com/news-releases/news-release-details/robinhood-reports-fourth-quarter-and-full-year-2024-results/" target="_blank" rel="noopener">Robinhood: 2024 results (12 Feb 2025)</a></li>
+        <li id="s36"><a href="https://www.etoro.com/news-and-analysis/press-releases/etoro-reports-fourth-quarter-and-full-year-2025-results/" target="_blank" rel="noopener">eToro: 2025 results (17 Feb 2026)</a></li>
+        <li id="s37"><a href="https://www.theblock.co/post/393233/bitpanda-reports-430-million-adjusted-revenue-in-2025-as-user-base-grows-25" target="_blank" rel="noopener">The Block: Bitpanda 2025 – €371M revenue, 7.4M users (11 Mar 2026)</a></li>
+        <li id="s38"><a href="https://www.financer.com/review/bitpanda" target="_blank" rel="noopener">Financer: Bitpanda fee ~1.49% (10 Oct 2026)</a></li>
+        <li id="s39"><a href="https://www.revolut.com/en-AT/news/revolut_reports_record_profit_of_2_3bn_for_2025_as_revenue_surges_to_6bn/" target="_blank" rel="noopener">Revolut: 2025 – $6.0bn revenue, $876M from investing and crypto (24 Mar 2026)</a></li>
+        <li id="s40"><a href="https://www.revolut.com/en-DE/legal/exchangingcryptocurrenciespersonalfees/" target="_blank" rel="noopener">Revolut: crypto fees 0.49–1.49% + price spread</a></li>
+        <li id="s41"><a href="https://www.sec.gov/Archives/edgar/data/1679788/000167978825000021/q424shareholderletter.htm" target="_blank" rel="noopener">Coinbase: shareholder letter, Q4 2024</a></li>
+        <li id="s42"><a href="https://infobiz.fina.hr/public/OIB-45841695639/electrocoin-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: Electrocoin d.o.o. – revenue €1.18M (2025)</a></li>
+        <li id="s43"><a href="https://electrocoin-case-study.mojaradnadomena.com/en.html#onama" target="_blank" rel="noopener">Electrocoin case study: 2025 turnover estimate (~€59M)</a></li>
+        <li id="s44"><a href="https://podaci.dzs.hr/media/1zwitu5b/stan-2025-3-1-procjena-stanovništva-republike-hrvatske-u-2024.pdf" target="_blank" rel="noopener">DZS: 2024 population estimate, 3,211,673 adults</a></li>
+        <li id="s45"><a href="https://edufiacademics.edufinet.com/wp-content/uploads/2023/11/Monitoring_the_level_of_financial_literacy.pdf" target="_blank" rel="noopener">Flash Eurobarometer 525: 16% of Croatians own or have owned crypto (2023)</a></li>
+        <li id="s46"><a href="https://dnevnik.hr/vijesti/zanimljivosti/pedeset-tisuca-korisnika-u-hrvatskoj-odabralo-revolut---576868.html" target="_blank" rel="noopener">Dnevnik.hr: 50,000 Revolut users in Croatia (27 Sep 2019)</a></li>
+        <li id="s47"><a href="https://en.lider.media/?p=218185" target="_blank" rel="noopener">Lider: Revolut has ~700,000 users in Croatia (23 Apr 2026)</a></li>
+        <li id="s48"><a href="https://www.crowdfundinsider.com/2019/07/150017-austria-fintech-bitpanda-hits-new-milestone-by-surpassing-1-million-users/" target="_blank" rel="noopener">Crowdfund Insider: Bitpanda reaches 1M users (29 Jul 2019)</a></li>
+        <li id="s49"><a href="https://lex.substack.com/p/analysis-our-etoro-ipo-primer-a-global" target="_blank" rel="noopener">Lex: eToro, 9–10% of registered users deposit money (17 Apr 2025)</a></li>
+        <li id="s50"><a href="https://www.tportal.hr/biznis/clanak/aircash-sklopio-partnerstvo-s-bitpandom-20250528" target="_blank" rel="noopener">Tportal: Aircash and Bitpanda, crypto and shares in the app (28 May 2025)</a></li>
+        <li id="s51"><a href="https://investors.robinhood.com/news-releases/news-release-details/robinhood-reports-second-quarter-2026-results" target="_blank" rel="noopener">Robinhood: Q2 2026 results (29 Jul 2026)</a></li>
+        <li id="s52"><a href="https://www.raftlabs.com/blog/cost-to-build-app-like-robinhood" target="_blank" rel="noopener">RaftLabs: cost of an app like Robinhood (July 2026)</a></li>
+      </ol>
+    </section>
+  </main>
+</div>
+<script>
+(() => {
+  // Clicking a source number: scroll to the source and highlight it
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a[href^='#s'],a[href='#izvori']");
+    if (!a) return;
+    const t = document.getElementById(a.getAttribute("href").slice(1));
+    if (!t) return;
+    e.preventDefault();
+    t.scrollIntoView({ behavior: "smooth", block: "center" });
+    document.querySelectorAll(".src li.hl").forEach(x => x.classList.remove("hl"));
+    if (t.tagName === "LI") t.classList.add("hl");
+  });
+  // Decorative blocks as on the main page
+  const B = "e e e e y e e e e l y y e e l g g l e l g g g o l g g g g g".split(" ");
+  document.getElementById("art").innerHTML = B.map(c => `<i class="${c === "g" ? "" : c}"></i>`).join("");
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Client acquisition · Electrocoin</title>
+<meta name="description" content="Electrocoin, advice on business expansion: five growth proposals following the MiCA licence, each with sources.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta name="theme-color" content="#8cc63f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: app shell from the design: sidebar + top bar + card grid */
+:root{
+  --bg:#ececea; --shell:#f6f6f4; --card:#ffffff; --line:#e8e8e4; --soft:#f1f1ee;
+  --fg:#16170f; --muted:#6f7068; --faint:#b7b8ae;
+  --green:#8cc63f; --green-d:#4f8a12; --yellow:#f2e63a; --orange:#f6a94a;
+  --bar:#e9e9e5; --ink-btn:#16170f; --ink-btn-fg:#fff;
+  --shadow:0 1px 2px rgba(20,22,10,.04),0 8px 24px rgba(20,22,10,.04);
+  --f-ui:"Plus Jakarta Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d0e0b; --shell:#141511; --card:#1b1c17; --line:#2a2b24; --soft:#23241e;
+  --fg:#f1f2ea; --muted:#a2a397; --faint:#5c5d54;
+  --green:#9bd54c; --green-d:#a9dd62; --yellow:#efe34a; --orange:#f5ae55;
+  --bar:#2a2b25; --ink-btn:#f1f2ea; --ink-btn-fg:#16170f; --shadow:none; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d0e0b; --shell:#141511; --card:#1b1c17; --line:#2a2b24; --soft:#23241e;
+  --fg:#f1f2ea; --muted:#a2a397; --faint:#5c5d54;
+  --green:#9bd54c; --green-d:#a9dd62; --yellow:#efe34a; --orange:#f5ae55;
+  --bar:#2a2b25; --ink-btn:#f1f2ea; --ink-btn-fg:#16170f; --shadow:none; color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-ui);font-size:14px;line-height:1.5;padding-block:24px;padding-inline:16px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+a{color:inherit}
+.num{font-variant-numeric:tabular-nums}
+[hidden]{display:none!important}
+
+.app{max-width:1440px;margin:0 auto;background:var(--shell);border-radius:24px;display:grid;grid-template-columns:232px minmax(0,1fr);box-shadow:var(--shadow)}
+
+/* Sidebar */
+.side{padding:24px 16px;display:flex;flex-direction:column;gap:22px;border-right:1px solid var(--line);position:sticky;top:0;align-self:start;min-height:calc(100vh - 48px)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.01em;padding:0 8px;text-decoration:none}
+.logo .mark{width:28px;height:28px;border-radius:8px;background:var(--green);display:grid;place-items:center;color:#16170f}
+.logo small{font-weight:500;color:var(--muted)}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;font-weight:500;text-decoration:none}
+.nav a:hover{background:var(--soft)}
+.nav a.on{background:var(--card);box-shadow:var(--shadow);position:relative}
+.nav a.on::before{content:"";position:absolute;left:-16px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--fg)}
+.nav svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav .sub{display:flex;flex-direction:column;margin:2px 0 6px 21px;padding-left:18px;border-left:1px solid var(--line)}
+.nav .sub a{padding:5px 10px;font-size:13px;color:var(--muted)}
+.hr{height:1px;background:var(--line);margin:0 8px}
+.pro{margin-top:auto;background:var(--card);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+.pro .bolt{width:32px;height:32px;border-radius:50%;background:var(--fg);color:var(--card);display:grid;place-items:center}
+.pro h4{margin:4px 0 0;font-size:15px}
+.pro p{margin:0;color:var(--muted);font-size:12.5px}
+.btn-ink{background:var(--ink-btn);color:var(--ink-btn-fg);border:0;border-radius:10px;padding:10px 14px;font-weight:600;text-decoration:none;text-align:center;display:inline-block}
+
+/* Main area */
+.main{padding:20px 24px 28px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.crumb{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px}
+.crumb b{color:var(--fg);font-weight:600}
+.top .sp{flex:1}
+.tabs{display:none;gap:6px}
+.tabs a{background:var(--card);border-radius:10px;padding:8px 12px;font-weight:600;font-size:13px;text-decoration:none}
+.tabs a.on{background:var(--ink-btn);color:var(--ink-btn-fg)}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-weight:600;font-size:13px;text-decoration:none}
+
+.grid{display:grid;gap:16px;grid-template-columns:repeat(12,minmax(0,1fr));align-content:start}
+.card{background:var(--card);border-radius:var(--r);padding:20px 22px;min-width:0;box-shadow:var(--shadow)}
+.s12{grid-column:span 12}.s8{grid-column:span 8}.s7{grid-column:span 7}.s6{grid-column:span 6}.s5{grid-column:span 5}.s4{grid-column:span 4}.s3{grid-column:span 3}
+.hd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ttl{font-weight:600;font-size:16px;margin:0;text-wrap:balance}
+.cap{color:var(--muted);font-size:12.5px}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-size:clamp(28px,3.4vw,42px);line-height:1.08;letter-spacing:-.025em;margin:8px 0 12px;font-weight:700;text-wrap:balance;max-width:20ch}
+.lead{font-size:15.5px;color:var(--muted);max-width:62ch;margin:0}
+p{max-width:68ch}
+sup a{font-size:10px;color:var(--green-d);text-decoration:none;font-weight:700;margin-left:1px}
+sup a:hover{text-decoration:underline}
+sup+sup::before{content:",";font-size:10px;color:var(--muted)}
+
+.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;align-items:end}
+.hero .art{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;align-self:stretch;align-content:end;max-width:260px;justify-self:end;width:100%}
+.hero .art i{aspect-ratio:1;border-radius:5px;background:var(--green);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.22) 0 2px,transparent 2px 6px)}
+.hero .art i.y{background-color:var(--yellow)}.hero .art i.o{background-color:var(--orange)}.hero .art i.l{opacity:.35}.hero .art i.e{background:transparent}
+
+.kpi .big{font-size:30px;font-weight:600;letter-spacing:-.02em;margin:6px 0 2px;line-height:1.1}
+.kpi .up{color:var(--green-d);font-size:12px;font-weight:600}
+
+/* Charts */
+.chart{width:100%;height:auto;display:block}
+.chart text{font-size:11px;fill:var(--muted);font-family:var(--f-ui)}
+.chart text.v{fill:var(--fg);font-weight:600;font-size:12px}
+.chart .gl{stroke:var(--line);stroke-dasharray:3 4}
+.mix{display:grid;gap:12px;margin-top:12px}
+.mix .row b{display:block;font-size:12.5px;margin-bottom:5px}
+.mix .row b small{font-weight:500;color:var(--muted)}
+.stack{display:flex;height:30px;border-radius:8px;overflow:hidden;gap:2px}
+.mix .est .stack{outline:1.5px dashed var(--muted);outline-offset:2px}
+.stack i{display:flex;min-width:0;align-items:center;justify-content:center;font-style:normal;font-size:11.5px;font-weight:700;color:#16170f;white-space:nowrap;overflow:hidden}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:10px;height:10px;border-radius:3px;display:inline-block;flex:none}
+.note{font-size:12px;color:var(--muted);margin:10px 0 0}
+.sw.est{background:var(--bar);outline:1.5px dashed var(--muted);outline-offset:-1.5px}
+.chart .est{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4}
+table.revt td:first-child{white-space:normal;font-weight:600}
+table.revt td small{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px}
+table.revt td small.pos{color:var(--green-d)}
+table.revt td{vertical-align:top}
+.chart.lg text{font-size:14px}
+.chart.lg text.v{font-size:17px;font-weight:700}
+.chart.lg.many text{font-size:12.5px}
+.chart.lg.many text.v{font-size:14px;letter-spacing:-.02em}
+
+/* Timeline */
+.tl{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:0}
+.tl li{display:grid;grid-template-columns:64px 18px minmax(0,1fr);gap:12px;padding-bottom:18px;position:relative}
+.tl .yr{font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+.tl .dot{width:12px;height:12px;border-radius:4px;background:var(--bar);margin-top:5px;position:relative;z-index:1}
+.tl li.k .dot{background:var(--green)}
+.tl li.m .dot{background:var(--yellow)}
+.tl li::after{content:"";position:absolute;left:calc(64px + 12px + 5px);top:20px;bottom:0;width:2px;background:var(--line)}
+.tl li:last-child::after{display:none}
+.tl h3{font-size:14px;margin:0 0 2px;font-weight:600}
+.tl p{margin:0;color:var(--muted);font-size:13px}
+
+/* People */
+.people{display:grid;gap:12px}
+.person{display:flex;gap:12px;align-items:flex-start}
+.av{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-weight:700;font-size:13px;color:#16170f;flex:none}
+.person b{display:block;font-size:14px}
+.person span{color:var(--muted);font-size:12.5px}
+
+/* Video */
+.videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:14px}
+.video{display:flex;flex-direction:column;gap:8px;text-decoration:none;border-radius:12px}
+.video .th{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:12px;overflow:hidden;background:var(--soft)}
+.video .th img{width:100%;height:100%;object-fit:cover;display:block}
+.video .th::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(22,23,15,.75) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7v10l8-5z' fill='%23fff'/%3E%3C/svg%3E") center/22px no-repeat}
+.video:hover .th::after{background-color:var(--green)}
+.video b{font-size:13.5px;font-weight:600;line-height:1.35}
+.video span{font-size:12px;color:var(--muted)}
+blockquote{margin:14px 0 0;padding:14px 16px;border-radius:12px;background:var(--soft);font-size:14px;max-width:none}
+blockquote cite{display:block;font-style:normal;color:var(--muted);font-size:12px;margin-top:6px}
+
+/* Table */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:9px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:600;color:var(--muted);font-size:12px}
+.neg{color:var(--orange)}.pos{color:var(--green-d)}
+
+dl.facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;margin:14px 0 0;font-size:13px}
+dl.facts dt{color:var(--muted)}
+dl.facts dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+
+/* Services */
+.svc-ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none}
+.svc-ico svg{width:20px;height:20px;stroke:#16170f;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.svc-h{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+ol.mica{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+ol.mica li{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;border:1px solid var(--line);border-radius:10px;font-size:13px}
+ol.mica .k{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+ol.mica b{font-size:12px;font-weight:700}
+ol.mica li.y{background:color-mix(in srgb,var(--green) 16%,transparent);border-color:color-mix(in srgb,var(--green) 45%,transparent)}
+ol.mica li.y b{color:var(--green-d)}
+ol.mica li.n{color:var(--muted)}
+ol.mica li.n b{color:var(--faint);font-weight:600}
+.ul{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:7px;font-size:13.5px}
+.ul li{display:grid;grid-template-columns:14px minmax(0,1fr);gap:8px}
+.ul li::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--green);margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:12px;font-weight:600;font-family:var(--f-mono);background:var(--soft)}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.step{background:var(--soft);border-radius:12px;padding:12px}
+.step b{font-family:var(--f-mono);font-size:11px;color:var(--muted);display:block}
+.step span{font-size:13px;font-weight:500}
+.partners{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:14px}
+.partner{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.partner b{font-size:14px}
+.partner .yr{font-family:var(--f-mono);font-size:11px;color:var(--green-d)}
+.partner span{font-size:12.5px;color:var(--muted)}
+.meter{height:12px;border-radius:4px;background:var(--soft);overflow:hidden;margin-top:6px}
+.meter i{display:block;height:100%;background:var(--green);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.25) 0 2px,transparent 2px 6px)}
+.eea{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.eea span{font-family:var(--f-mono);font-size:11px;padding:3px 6px;border-radius:5px;background:var(--green);color:#16170f}
+
+/* Sources */
+.src{columns:2 320px;column-gap:28px;margin:12px 0 0;padding-left:22px;font-size:12.5px;color:var(--muted)}
+.src li{break-inside:avoid;margin-bottom:6px}
+.src a{color:var(--fg);text-decoration-color:var(--faint)}
+.src li.hl{background:var(--soft);border-radius:4px}
+
+/* Growth */
+table.vasp td:nth-child(3){font-family:var(--f-mono);font-size:12px}
+.st{display:inline-block;font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;white-space:nowrap}
+.st.ok{background:var(--green);color:#16170f}.st.no{background:var(--bar);color:var(--muted)}
+table.vasp td:last-child{white-space:normal;min-width:220px;color:var(--muted)}
+.deals{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:14px}
+.deal{border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.deal h3{margin:0;font-size:15px}
+.deal p{margin:0;font-size:13px}
+.deal .why{background:var(--soft);border-radius:10px;padding:8px 10px}
+.deal-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.fit{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;white-space:nowrap;flex:none}
+.deal.hi .fit{background:var(--green);color:#16170f}.deal.mid .fit{background:var(--yellow);color:#16170f}.deal.lo .fit{background:var(--orange);color:#16170f}
+table.matrix td,table.matrix th{text-align:left;white-space:normal;min-width:96px}
+table.matrix th small{color:var(--faint);font-weight:500}
+table.matrix td:first-child{min-width:180px;font-weight:500}
+table.matrix td.y{color:var(--green-d);font-weight:600}
+table.matrix td.n{color:var(--faint)}
+table.matrix td.q{color:var(--orange);font-weight:700}
+table.matrix td.p{color:var(--muted);font-style:italic}
+table.matrix td:nth-child(2){background:var(--soft)}
+.ideas{margin:14px 0 0;padding-left:20px;display:grid;gap:10px;font-size:13.5px}
+.ideas li::marker{font-weight:700;color:var(--green-d)}
+
+@media (max-width:1100px){
+  .s8,.s7,.s6,.s5,.s4{grid-column:span 12}
+  .s3{grid-column:span 6}
+}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{display:none}
+  .tabs{display:flex;overflow-x:auto;max-width:100%;scrollbar-width:none}.tabs a{white-space:nowrap;flex:none}
+  .main{padding:16px}
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .hero .art{display:none}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  body{padding-inline:8px;padding-block:8px}
+  .s3{grid-column:span 12}
+  .crumb{display:none}
+  .card{padding:16px}
+  .tl li{grid-template-columns:48px 14px minmax(0,1fr);gap:10px}
+  .tl li::after{left:calc(48px + 10px + 5px)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+<style>
+/* Proposals: one card per proposal with number, fields and analysis status */
+.prop{display:flex;flex-direction:column;gap:10px}
+.prop-h{display:flex;gap:12px;align-items:flex-start}
+.prop-n{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;font-weight:700;font-size:17px;color:#16170f}
+.prop p{margin:0;font-size:13.5px}
+.prop .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:4px}
+.prop .ul{margin-top:2px}
+.prop .why{background:var(--soft);border-radius:10px;padding:10px 12px}
+.prop .warn{background:color-mix(in srgb,var(--orange) 16%,transparent);border:1px solid color-mix(in srgb,var(--orange) 45%,transparent);border-radius:10px;padding:10px 12px}
+.prop-f{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding-top:6px;border-top:1px solid var(--line)}
+.soon{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;background:var(--bar);color:var(--muted)}
+table.cmp td,table.cmp th{text-align:left;white-space:normal;min-width:120px;vertical-align:top}
+table.cmp td:first-child{min-width:170px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a class="logo" href="./"><span class="mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>Electrocoin<small>.eu</small></a>
+    <nav class="nav" aria-label="Pages">
+      <a href="./"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Expansion proposals</a>
+      <a href="#vrh" class="on"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21 20c0-2.6-1.6-4.8-4-5.6"/></svg>1. Client acquisition</a>
+      <a href="paycek-trgovci"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>2. PayCek merchants</a>
+      <a href="bankomati"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M9 17h6"/></svg>3. Crypto ATMs</a>
+      <a href="banke"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/></svg>4. Bank module</a>
+      <a href="aplikacija"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M9 14l2-2 2 2 3-4"/></svg>5. Robinhood-style app</a>
+    </nav>
+    <div class="hr"></div>
+    <nav class="nav" aria-label="Other">
+      <a href="#izvori"><svg viewBox="0 0 24 24"><path d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/></svg>Sources</a>
+      <a href="https://electrocoin-case-study.mojaradnadomena.com/en.html"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Case study</a>
+    </nav>
+  </aside>
+
+  <main class="main" id="vrh">
+    <header class="top">
+      <div class="crumb">Electrocoin.eu <span>/</span> <a href="./" style="text-decoration:none">Proposals</a> <span>/</span> <b>1. Client acquisition</b></div>
+      <nav class="tabs" aria-label="Pages"><a href="./">Proposals</a><a href="#vrh" class="on">1. Clients</a><a href="paycek-trgovci">2. PayCek</a><a href="bankomati">3. ATMs</a><a href="banke">4. Banks</a><a href="aplikacija">5. App</a></nav>
+      <span class="sp"></span>
+      <a class="pill" id="lang" href="../preuzimanje-klijenata" hreflang="hr" lang="hr" title="Hrvatska verzija">HR</a>
+    </header>
+
+    <div class="grid">
+      <section class="card s12">
+        <div class="hero">
+          <div>
+            <div class="eyebrow">Proposal 1 · detailed analysis</div>
+            <h1>Taking over clients of crypto firms without a MiCA licence</h1>
+            <p class="lead">Since 1 July 2026 only firms with a MiCA licence may provide crypto services in Croatia, and 12 of the 17 firms in Hanfa's register did not receive one<sup><a href="#s3">3</a></sup><sup><a href="#s4">4</a></sup>. Their clients have to go somewhere. Electrocoin holds a licence and can take them on without any extension<sup><a href="#s2">2</a></sup>.</p>
+          </div>
+          <div class="art" aria-hidden="true" id="art"></div>
+        </div>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Taking over clients, not buying the company</p>
+        <div class="cap">Key point for the whole proposal</div>
+        <p style="margin-top:10px">Electrocoin does not need to buy any of the firms left without a licence. It is enough for their clients to open an account with Electrocoin and transfer their assets. Buying a firm would bring no regulatory benefit: Hanfa grants authorisation to an individual company, so the licence does not transfer with a purchase<sup><a href="#s5">5</a></sup>, and Electrocoin already holds one anyway<sup><a href="#s2">2</a></sup>. Buying the firm would also mean taking on its liabilities and risks.</p>
+        <ul class="ul">
+          <li><span><b>What is taken over:</b> clients and their assets, with each client's consent. Client data may only be transferred on a legal basis under the GDPR, and the safest one is the client's consent<sup><a href="#s6">6</a></sup>.</span></li>
+          <li><span><b>Why the firms would cooperate:</b> ESMA requires firms leaving the market to have an orderly wind-down plan, to notify clients in advance and to transfer their assets to a licensed provider or to the client's own wallet<sup><a href="#s7">7</a></sup>. Electrocoin can be that licensed provider.</span></li>
+          <li><span><b>A real-world example:</b> Hanfa ordered Fima Plus to notify its clients within 8 days that its services were ending and to ask for instructions on returning their assets. This involved 123 clients with assets of around $484,000<sup><a href="#s8">8</a></sup>. That is the moment when a client chooses a new platform.</span></li>
+        </ul>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Firms without a licence: how big they are</p>
+        <div class="cap">2025 revenue from Fina, and current status. The twelfth firm, CREDOS, is an investment firm for which Fina shows no revenue.</div>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th>Firm</th><th>Services in the register</th><th>Revenue 2025</th><th>Employees</th><th>Note</th></tr></thead>
+            <tbody>
+              <tr><td>Moneysail</td><td>custody, crypto for money</td><td>€7.84M<sup><a href="#s15">15</a></sup></td><td>6</td><td>Website mercuryo.io; in 2024 Hanfa ordered anti-money-laundering measures<sup><a href="#s27">27</a></sup></td></tr>
+              <tr><td>Blok Be</td><td>custody, platform, crypto for money and crypto, advice</td><td>€4.60M<sup><a href="#s10">10</a></sup></td><td>2</td><td>Ceased operating on 1 Jun 2026, not accepting new clients<sup><a href="#s9">9</a></sup></td></tr>
+              <tr><td>Cana Pay</td><td>crypto for money</td><td>€3.82M<sup><a href="#s11">11</a></sup></td><td>3</td><td>Profit €2.15M, so revenue is probably not gross turnover</td></tr>
+              <tr><td>FiatBit Technologies</td><td>crypto for money</td><td>€2.77M<sup><a href="#s12">12</a></sup></td><td>3</td><td>Profit €1.56M</td></tr>
+              <tr><td>M obrada</td><td>execution and transmission of orders</td><td>€1.45M<sup><a href="#s13">13</a></sup></td><td>11</td><td>Revenue growth 47%</td></tr>
+              <tr><td>Fintrax</td><td>custody, crypto for money and crypto, orders</td><td>€0.43M<sup><a href="#s14">14</a></sup></td><td>0</td><td>Loss €140,000</td></tr>
+              <tr><td>DUPLICO</td><td>crypto for money and crypto</td><td>€0.40M<sup><a href="#s16">16</a></sup></td><td>7</td><td>Hospitality and retail, crypto is only part of the business</td></tr>
+              <tr><td>BD Innovation Hub</td><td>custody, crypto for crypto, orders, placing</td><td>€5,413<sup><a href="#s17">17</a></sup></td><td>1</td><td>Revenue fell 99.5%</td></tr>
+              <tr><td>HODL Store, Marinix275, Adria Digital Exchange</td><td>various</td><td>€0<sup><a href="#s18">18</a></sup><sup><a href="#s19">19</a></sup><sup><a href="#s20">20</a></sup></td><td>0</td><td>No revenue, so no clients to take over</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Services as listed in Hanfa's register<sup><a href="#s1">1</a></sup>. For comparison, in 2025 Electrocoin had €1.18M in net revenue and 29 employees<sup><a href="#s21">21</a></sup>. Firms book revenue in different ways: some gross (the value of crypto sold), others only the commission. That is why their revenue is not directly comparable with Electrocoin's.</p>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">How to take over clients: a five-step plan</p>
+        <div class="cap">Our proposal, with examples from across Europe</div>
+        <ol class="tl">
+          <li class="k"><span class="yr">1.</span><span class="dot"></span><div><h3>Direct contact with management</h3><p>Approach the firms that have clients (Blok Be, FiatBit, Cana Pay, M obrada, Fintrax, DUPLICO) and offer Electrocoin as a licensed provider to which they can refer their clients. For the firms, this settles the orderly wind-down obligation that ESMA requires<sup><a href="#s7">7</a></sup>.</p></div></li>
+          <li class="k"><span class="yr">2.</span><span class="dot"></span><div><h3>Client referral agreement</h3><p>The firm sends its clients a notice recommending Electrocoin, and each client gives consent and opens an account themselves<sup><a href="#s6">6</a></sup>. The firm can receive a one-off fee for each client who switches. The amount of the fee is a matter for negotiation.</p></div></li>
+          <li class="k"><span class="yr">3.</span><span class="dot"></span><div><h3>An easy switch</h3><p>Registering with Electrocoin takes about 8 minutes, with a 30-second video check, and crypto can be deposited from another wallet<sup><a href="#s25">25</a></sup>. Clients who switch need a dedicated page with instructions and personal support in Croatian.</p></div></li>
+          <li class="m"><span class="yr">4.</span><span class="dot"></span><div><h3>"Switch to the first Croatian licensed platform" campaign</h3><p>Large exchanges are already doing this: OKX gives an 8% bonus on transferred assets, Coinbase 5%, SwissBorg 3% on transfers from unlicensed exchanges, and Kraken ran a one-million-euro prize draw<sup><a href="#s23">23</a></sup><sup><a href="#s24">24</a></sup>. Electrocoin probably cannot afford such percentages on a margin of 1–2%<sup><a href="#s22">22</a></sup>. A few months with no margin or a smaller fixed bonus is more realistic.</p></div></li>
+          <li class="m"><span class="yr">5.</span><span class="dot"></span><div><h3>Retention</h3><p>A client taken over is only worth something if they stay. Large clients, e.g. those who traded OTC with Blok Be<sup><a href="#s9">9</a></sup>, need a personal contact, and everyone else regular perks.</p></div></li>
+        </ol>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Estimate: additional monthly turnover and revenue</p>
+        <div class="cap">All figures in this section are estimates, not data</div>
+        <p style="margin-top:10px"><b>How revenue is calculated.</b> Electrocoin earns a margin of 1–2% per transaction<sup><a href="#s22">22</a></sup>. The margin is charged both when a client buys crypto for euros and when they sell it back for euros. Example: a client buys bitcoin for €1,000 and later sells it for €1,000. Turnover is €2,000, and Electrocoin earns €20–40, i.e. 1–2% of turnover.</p>
+        <p><b>Starting point.</b> The number of clients these firms have is not public, so we use their revenue from Fina as a measure of their annual turnover. This is a lower bound, because firms that book only commission have actual turnover many times higher than their revenue. We count the eight firms that have revenue: Moneysail, Blok Be, Cana Pay, FiatBit, M obrada, Fintrax, DUPLICO and BD Innovation Hub. In total €21.3M a year, around €1.78M a month<sup><a href="#s10">10</a></sup><sup><a href="#s11">11</a></sup><sup><a href="#s12">12</a></sup><sup><a href="#s13">13</a></sup><sup><a href="#s14">14</a></sup><sup><a href="#s15">15</a></sup><sup><a href="#s16">16</a></sup><sup><a href="#s17">17</a></sup>.</p>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th>Share of clients taken over</th><th>Turnover / month</th><th>Turnover / year</th><th>Revenue / month</th><th>Revenue / year</th></tr></thead>
+            <tbody>
+              <tr><td>10%</td><td>~€178,000</td><td>~€2.13M</td><td>~€1,800–3,600</td><td>~€21,000–43,000</td></tr>
+              <tr><td>20%</td><td>~€355,000</td><td>~€4.26M</td><td>~€3,600–7,100</td><td>~€43,000–85,000</td></tr>
+              <tr><td>50%</td><td>~€888,000</td><td>~€10.66M</td><td>~€8,900–17,800</td><td>~€107,000–213,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Revenue = turnover × 1% (lower value) to turnover × 2% (upper value). All amounts are estimates.</p>
+        <p class="why" style="margin-top:12px"><b>What this means for Electrocoin:</b> net revenue in 2025 was €1.18M, around €98,000 a month<sup><a href="#s21">21</a></sup>, and we estimate turnover at around €4.9M a month<sup><a href="#s26">26</a></sup>. Taking over 50% of clients would bring around 18% more turnover and 9–18% more revenue. The domestic unlicensed firms are small relative to Electrocoin, so this proposal is worthwhile as a quick and cheap add-on, but not as a main source of growth.</p>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Risks and open questions</p>
+        <ul class="ul">
+          <li><span>The number of clients and the assets of these firms are not public. The estimate can only be refined after talks with management.</span></li>
+          <li><span>Part of the firms' revenue, e.g. at DUPLICO and Cana Pay, may not come from crypto.</span></li>
+          <li><span>Clients may also go to large exchanges offering 3–8% bonuses<sup><a href="#s23">23</a></sup>.</span></li>
+          <li><span>Moneysail is subject to Hanfa supervisory measures from 2024<sup><a href="#s27">27</a></sup>, so any cooperation with it needs separate checks.</span></li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="card" id="izvori">
+      <p class="ttl">Sources</p>
+      <div class="cap">Figures in the text are marked with the source number. Compiled 10 October 2026.</div>
+      <ol class="src">
+        <li id="s1"><a href="https://www.hanfa.hr/registers/virtual-currencies/legal-entities-providing-virtual-asset-services/" target="_blank" rel="noopener">HANFA: register of virtual asset service providers (VASP)</a></li>
+        <li id="s2"><a href="https://www.hanfa.hr/registers/crypto-asset-market/register-of-entities-authorized-to-provide-crypto-asset-services/" target="_blank" rel="noopener">HANFA: register of crypto-asset service providers (CASP)</a></li>
+        <li id="s3"><a href="https://www.hanfa.hr/news/provision-of-crypto-asset-services-from-1-july-2026-crypto-licence-and-registration-in-hanfa-registers-mandatory-for-providers-consumers-urged-to-exercise-caution/" target="_blank" rel="noopener">HANFA: crypto services from 1 Jul 2026 only with a licence (3 Jul 2026)</a></li>
+        <li id="s4"><a href="https://financije.hr/kripto-platforme-bez-licence-vise-ne-smiju-raditi-u-hrvatskoj-hanfa-poziva-gradane-na-oprez/" target="_blank" rel="noopener">Financije.hr: Unlicensed crypto platforms may no longer operate (3 Jul 2026)</a></li>
+        <li id="s5"><a href="https://www.springlex.eu/en/packages/mica/mica-regulation/article-59/" target="_blank" rel="noopener">MiCA Regulation, Art. 59: authorisation of crypto-asset service providers</a></li>
+        <li id="s6"><a href="https://gdpr-info.eu/art-6-gdpr/" target="_blank" rel="noopener">GDPR, Art. 6: lawfulness of processing of personal data</a></li>
+        <li id="s7"><a href="https://www.esma.europa.eu/sites/default/files/2026-04/ESMA75-113276571-1679_Statement_on_the_end_of_transitional_periods_under_MiCA.pdf" target="_blank" rel="noopener">ESMA: statement on the end of the MiCA transitional period (17 Apr 2026)</a></li>
+        <li id="s8"><a href="https://lidermedia.hr/biznis-i-politika/hanfa-zabranila-fima-plusu-kriptousluge-i-nalozila-povrat-imovine/" target="_blank" rel="noopener">Lider: Hanfa bans Fima Plus from providing crypto services (29 Jul 2026)</a></li>
+        <li id="s9"><a href="https://www.blokbe.hr" target="_blank" rel="noopener">Blok Be: notice of services ending from 1 Jun 2026</a></li>
+        <li id="s10"><a href="https://infobiz.fina.hr/tvrtka/blok-be-d-o-o/OIB-98712426804" target="_blank" rel="noopener">FINA Info.BIZ: Blok Be d.o.o. (2025)</a></li>
+        <li id="s11"><a href="https://infobiz.fina.hr/public/OIB-62022833985/cana-pay-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: Cana Pay d.o.o. (2025)</a></li>
+        <li id="s12"><a href="https://infobiz.fina.hr/public/OIB-88861516970/fiatbit-technologies-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: FiatBit Technologies d.o.o. (2025)</a></li>
+        <li id="s13"><a href="https://infobiz.fina.hr/public/OIB-73699054684/m-obrada-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: M obrada d.o.o. (2025)</a></li>
+        <li id="s14"><a href="https://infobiz.fina.hr/public/OIB-23542071338/fintrax-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: Fintrax d.o.o. (2025)</a></li>
+        <li id="s15"><a href="https://infobiz.fina.hr/public/OIB-53104623333/moneysail-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: Moneysail d.o.o. (2025)</a></li>
+        <li id="s16"><a href="https://infobiz.fina.hr/public/OIB-74841367374/duplico-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: DUPLICO d.o.o. (2025)</a></li>
+        <li id="s17"><a href="https://infobiz.fina.hr/public/OIB-27097985467/bd-innovation-hub-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: BD Innovation Hub d.o.o. (2025)</a></li>
+        <li id="s18"><a href="https://infobiz.fina.hr/public/OIB-45744263199/hodl-store-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: HODL Store d.o.o. (2025)</a></li>
+        <li id="s19"><a href="https://infobiz.fina.hr/public/OIB-33995734969/marinix275-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: Marinix275 d.o.o. (2025)</a></li>
+        <li id="s20"><a href="https://infobiz.fina.hr/public/OIB-16372761404/adria-digital-exchange-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: Adria Digital Exchange d.o.o. (2025)</a></li>
+        <li id="s21"><a href="https://infobiz.fina.hr/public/OIB-45841695639/electrocoin-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: Electrocoin d.o.o. (2025)</a></li>
+        <li id="s22"><a href="https://lidermedia.hr/aktualno/nikola-skoric-startup-electrocoin-hrvatima-je-omogucio-placanje-kriptovalutama-120656/" target="_blank" rel="noopener">Lider: margins fell from 15% to 1–2% (23 Jun 2019)</a></li>
+        <li id="s23"><a href="https://cryptoslate.com/european-crypto-users-are-being-paid-to-move-before-mica-closes-the-door/" target="_blank" rel="noopener">CryptoSlate: exchanges pay users to switch before the MiCA deadline (27 Jun 2026)</a></li>
+        <li id="s24"><a href="https://financefeeds.com/coinbase-targets-binance-users-with-5-transfer-bonus-in-europe/" target="_blank" rel="noopener">FinanceFeeds: Coinbase offers a 5% transfer bonus (27 Jun 2026)</a></li>
+        <li id="s25"><a href="https://projekthrvatska.com/electrocoin-iskustvo-hrvatska-kripto-platforma/" target="_blank" rel="noopener">Projekt Hrvatska: Electrocoin experience 2026 (review at the company's invitation)</a></li>
+        <li id="s26"><a href="https://electrocoin-case-study.mojaradnadomena.com/en.html#onama" target="_blank" rel="noopener">Electrocoin case study: 2025 turnover estimate (~€59M, net revenue / 2%)</a></li>
+        <li id="s27"><a href="https://proba.hanfa.hr/media/zesj43oo/08-rješenje-moneysail_za-objavu.pdf" target="_blank" rel="noopener">HANFA: supervisory decision on Moneysail d.o.o. (16 Oct 2024)</a></li>
+      </ol>
+    </section>
+  </main>
+</div>
+<script>
+(() => {
+  // Click on a source number: scroll to the source and highlight it
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a[href^='#s'],a[href='#izvori']");
+    if (!a) return;
+    const t = document.getElementById(a.getAttribute("href").slice(1));
+    if (!t) return;
+    e.preventDefault();
+    t.scrollIntoView({ behavior: "smooth", block: "center" });
+    document.querySelectorAll(".src li.hl").forEach(x => x.classList.remove("hl"));
+    if (t.tagName === "LI") t.classList.add("hl");
+  });
+  // Decorative blocks as on the main page
+  const B = "e e e e y e e e e l y y e e l g g l e l g g g o l g g g g g".split(" ");
+  document.getElementById("art").innerHTML = B.map(c => `<i class="${c === "g" ? "" : c}"></i>`).join("");
+})();
+</script>
+</body>
+</html>
