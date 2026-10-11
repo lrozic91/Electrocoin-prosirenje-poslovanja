@@ -340,7 +340,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
             <tbody>
               <tr><td>Što Electrocoin preuzima</td><td>Uređaje i ugovore za lokacije. Sve odluke i sav prihod su njegovi.</td><td>Samo rad bankomata: licencu, provjeru korisnika (KYC) i transakcije. Uređaji ostaju u vlasništvu Virtual Planeta.</td></tr>
               <tr><td>Jednokratni trošak</td><td>Cijena otkupa. Rabljeni bankomati prodaju se po oko $244 komad<sup><a href="#s15">15</a></sup>. Po toj cijeni 17 bankomata stoji oko $4.100. Uređaji ostaju na istim lokacijama, pa je potreban samo prijenos vlasništva.</td><td>Gotovo nikakav, osim povezivanja uređaja s Electrocoinovim sustavom.</td></tr>
-              <tr><td>Mjesečni troškovi</td><td>Svi troškovi rada: najam lokacije, prijevoz gotovine, održavanje, internet, osiguranje i provjera korisnika. Ukupno $400–900 po bankomatu<sup><a href="#s14">14</a></sup>. Ako se zadrži softver General Bytesa, dodatno $10 po uređaju i 0,25 % prometa<sup><a href="#s13">13</a></sup>.</td><td>Dio naknade ide vlasniku, koji u zamjenu snosi uređaje, lokacije i servis. Electrocoin snosi samo licencu i provjeru korisnika, koje već ima.</td></tr>
+              <tr><td>Mjesečni troškovi</td><td>Svi troškovi rada: najam lokacije, prijevoz gotovine, održavanje, internet, osiguranje. Ukupno ~$300–650 po bankomatu (procjena: $400–900<sup><a href="#s14">14</a></sup> umanjeno za provjeru korisnika, koju obavljaju postojeći djelatnici Electrocoina bez dodatnog troška). Ako se zadrži softver General Bytesa, dodatno $10 po uređaju i 0,25 % prometa<sup><a href="#s13">13</a></sup>.</td><td>Dio naknade ide vlasniku, koji u zamjenu snosi uređaje, lokacije i servis. Electrocoin snosi samo licencu i provjeru korisnika, koje već ima.</td></tr>
               <tr><td>Primjer iz prakse</td><td>Bitcoin Depot prodao je 2026. oko 2.500 uređaja po prosječnoj cijeni od $244 po komadu<sup><a href="#s15">15</a></sup>.</td><td>U Austriji oko 300 Kurantovih bankomata od 2026. vodi licencirana slovačka tvrtka, a Kurant ostaje partner za tehniku i servis<sup><a href="#s16">16</a></sup>.</td></tr>
               <tr><td>Rizik</td><td>Veće ulaganje i svi troškovi rada, ali i sva zarada.</td><td>Manje ulaganje i manja zarada. Ovisi o dogovoru s vlasnikom, a Electrocoin odgovara za sve transakcije pod svojom licencom.</td></tr>
             </tbody>
@@ -357,11 +357,10 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
             <tbody>
               <tr><td>Prijevoz i punjenje gotovine</td><td>$150–400</td><td>Najveća stavka. Ovisi o tome koliko se često prazni i puni bankomat.</td></tr>
               <tr><td>Najam lokacije</td><td>$100–500</td><td>Fiksni najam ili postotak od prometa, po dogovoru s trgovačkim centrom.</td></tr>
-              <tr><td>Provjera korisnika (KYC i sprječavanje pranja novca)</td><td>$100–250</td><td>Electrocoin taj sustav već ima, pa bi ovaj trošak bio niži.</td></tr>
               <tr><td>Održavanje</td><td>$30–100</td><td>Servis i popravci uređaja.</td></tr>
               <tr><td>Osiguranje</td><td>$20–75</td><td></td></tr>
               <tr><td>Internet i struja</td><td>$20–60</td><td></td></tr>
-              <tr><td><b>Ukupno</b></td><td><b>oko $400–900</b></td><td>Najveće stavke rijetko su sve na gornjoj granici istodobno.</td></tr>
+              <tr><td><b>Ukupno</b></td><td><b>~$300–650 (procjena)</b></td><td>Provjeru korisnika (KYC) obavljaju postojeći djelatnici Electrocoina, pa nema dodatnog troška. Najveće stavke rijetko su sve na gornjoj granici istodobno.</td></tr>
             </tbody>
           </table>
         </div>
@@ -374,13 +373,13 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
         <ul class="ul">
           <li><span><b>Promet:</b> podatak o prometu Bitomat bankomata u Hrvatskoj nije javan. Za orijentir: starije europske procjene kreću se oko $20.000–30.000 mjesečno po bankomatu<sup><a href="#s17">17</a></sup>. Zadano je €20.000 mjesečno po bankomatu, a vrijednost možete mijenjati klizačem.</span></li>
           <li><span><b>Naknada:</b> Bitomat naplaćuje prosječno 2–4 % na kupnju i prodaju<sup><a href="#s11">11</a></sup><sup><a href="#s12">12</a></sup>. Zadano je 4 %, što je prosjek iz studenog 2025.<sup><a href="#s11">11</a></sup></span></li>
-          <li><span><b>Troškovi (varijanta A):</b> $400–900 mjesečno po bankomatu<sup><a href="#s14">14</a></sup>. Zadano je €600.</span></li>
+          <li><span><b>Troškovi (varijanta A):</b> ~$300–650 mjesečno po bankomatu (procjena, bez provjere korisnika)<sup><a href="#s14">14</a></sup>. Zadano je €450.</span></li>
           <li><span><b>Udio u najmu (varijanta B):</b> koliki dio naknade ostaje Electrocoinu ovisi o pregovorima. Zadano je 50 %.</span></li>
         </ul>
         <div class="calc">
           <label class="sl"><span>Prosječni promet po bankomatu mjesečno</span><b id="vP">€20.000</b><input type="range" id="rP" min="0" max="60000" step="1000" value="20000"></label>
           <label class="sl"><span>Naknada na kupnju i prodaju</span><b id="vF">4 %</b><input type="range" id="rF" min="0" max="10" step="0.5" value="4"></label>
-          <label class="sl"><span>Trošak rada po bankomatu mjesečno (varijanta A)</span><b id="vC">€600</b><input type="range" id="rC" min="0" max="1500" step="50" value="600"></label>
+          <label class="sl"><span>Trošak rada po bankomatu mjesečno (varijanta A)</span><b id="vC">€450</b><input type="range" id="rC" min="0" max="1500" step="50" value="450"></label>
           <label class="sl"><span>Electrocoinov udio naknade (varijanta B)</span><b id="vS">50 %</b><input type="range" id="rS" min="0" max="100" step="5" value="50"></label>
           <div class="res">
             <div><small>Promet 17 bankomata / god.</small><b id="o1"></b></div>
@@ -407,7 +406,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
             $("oTxt").innerHTML = "<b>Što to znači za Electrocoin:</b> promet bankomata bio bi oko " + n(y / ECP * 100) + " % Electrocoinova godišnjeg prometa. Uz kupnju bi godišnji rezultat bio " + eur(a) + " (" + n(a / ECR * 100) + " % neto prihoda), a uz najam " + eur(b) + " (" + n(b / ECR * 100) + " % neto prihoda).";
           }
           ["rP","rF","rC","rS"].forEach(i => $(i).addEventListener("input", up));
-          $("rst").addEventListener("click", () => { $("rP").value = 20000; $("rF").value = 4; $("rC").value = 600; $("rS").value = 50; up(); });
+          $("rst").addEventListener("click", () => { $("rP").value = 20000; $("rF").value = 4; $("rC").value = 450; $("rS").value = 50; up(); });
           up();
         })();
         </script>
@@ -416,7 +415,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
       <section class="card s12">
         <p class="ttl">Na što paziti</p>
         <ul class="ul">
-          <li><span>Uz niske naknade od 2–4 % i troškove od $400–900 mjesečno po bankomatu, kupnja se isplati tek ako bankomati imaju dovoljno prometa. Najam je sigurniji jer Electrocoin ne snosi troškove uređaja i lokacija.</span></li>
+          <li><span>Uz niske naknade od 2–4 % i troškove od ~$300–650 mjesečno po bankomatu, kupnja se isplati tek ako bankomati imaju dovoljno prometa. Najam je sigurniji jer Electrocoin ne snosi troškove uređaja i lokacija.</span></li>
           <li><span>Prije bilo kakvog dogovora treba vidjeti stvarni promet bankomata iz prošlih godina. Hrvatska tvrtka ga ne prikazuje<sup><a href="#s6">6</a></sup>, pa ga treba tražiti od vlasnika.</span></li>
           <li><span>Mreža prodaje i vlastite bankomate<sup><a href="#s11">11</a></sup>, pa treba provjeriti koji softver koriste i može li se povezati s Electrocoinovim sustavom.</span></li>
           <li><span>Bankomati rade s gotovinom, pa Electrocoin pod svojom licencom preuzima i odgovornost za sprječavanje pranja novca na svakom uređaju.</span></li>
