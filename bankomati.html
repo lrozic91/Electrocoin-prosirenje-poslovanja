@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kripto bankomati · Electrocoin</title>
+<meta name="description" content="Electrocoin, savjeti za proširenje poslovanja: pet prijedloga rasta nakon MiCA licence, svaki s izvorima.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#8cc63f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: app shell iz dizajna — bočni izbornik + gornja traka + mreža kartica; dvije stranice (O nama, Djelatnosti) prebacuju se bez ponovnog učitavanja */
+:root{
+  --bg:#ececea; --shell:#f6f6f4; --card:#ffffff; --line:#e8e8e4; --soft:#f1f1ee;
+  --fg:#16170f; --muted:#6f7068; --faint:#b7b8ae;
+  --green:#8cc63f; --green-d:#4f8a12; --yellow:#f2e63a; --orange:#f6a94a;
+  --bar:#e9e9e5; --ink-btn:#16170f; --ink-btn-fg:#fff;
+  --shadow:0 1px 2px rgba(20,22,10,.04),0 8px 24px rgba(20,22,10,.04);
+  --f-ui:"Plus Jakarta Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d0e0b; --shell:#141511; --card:#1b1c17; --line:#2a2b24; --soft:#23241e;
+  --fg:#f1f2ea; --muted:#a2a397; --faint:#5c5d54;
+  --green:#9bd54c; --green-d:#a9dd62; --yellow:#efe34a; --orange:#f5ae55;
+  --bar:#2a2b25; --ink-btn:#f1f2ea; --ink-btn-fg:#16170f; --shadow:none; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d0e0b; --shell:#141511; --card:#1b1c17; --line:#2a2b24; --soft:#23241e;
+  --fg:#f1f2ea; --muted:#a2a397; --faint:#5c5d54;
+  --green:#9bd54c; --green-d:#a9dd62; --yellow:#efe34a; --orange:#f5ae55;
+  --bar:#2a2b25; --ink-btn:#f1f2ea; --ink-btn-fg:#16170f; --shadow:none; color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-ui);font-size:14px;line-height:1.5;padding-block:24px;padding-inline:16px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+a{color:inherit}
+.num{font-variant-numeric:tabular-nums}
+[hidden]{display:none!important}
+
+.app{max-width:1440px;margin:0 auto;background:var(--shell);border-radius:24px;display:grid;grid-template-columns:232px minmax(0,1fr);box-shadow:var(--shadow)}
+
+/* Bočni izbornik */
+.side{padding:24px 16px;display:flex;flex-direction:column;gap:22px;border-right:1px solid var(--line);position:sticky;top:0;align-self:start;min-height:calc(100vh - 48px)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.01em;padding:0 8px;text-decoration:none}
+.logo .mark{width:28px;height:28px;border-radius:8px;background:var(--green);display:grid;place-items:center;color:#16170f}
+.logo small{font-weight:500;color:var(--muted)}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;font-weight:500;text-decoration:none}
+.nav a:hover{background:var(--soft)}
+.nav a.on{background:var(--card);box-shadow:var(--shadow);position:relative}
+.nav a.on::before{content:"";position:absolute;left:-16px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--fg)}
+.nav svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav .sub{display:flex;flex-direction:column;margin:2px 0 6px 21px;padding-left:18px;border-left:1px solid var(--line)}
+.nav .sub a{padding:5px 10px;font-size:13px;color:var(--muted)}
+.hr{height:1px;background:var(--line);margin:0 8px}
+.pro{margin-top:auto;background:var(--card);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+.pro .bolt{width:32px;height:32px;border-radius:50%;background:var(--fg);color:var(--card);display:grid;place-items:center}
+.pro h4{margin:4px 0 0;font-size:15px}
+.pro p{margin:0;color:var(--muted);font-size:12.5px}
+.btn-ink{background:var(--ink-btn);color:var(--ink-btn-fg);border:0;border-radius:10px;padding:10px 14px;font-weight:600;text-decoration:none;text-align:center;display:inline-block}
+
+/* Glavni dio */
+.main{padding:20px 24px 28px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.crumb{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px}
+.crumb b{color:var(--fg);font-weight:600}
+.top .sp{flex:1}
+.tabs{display:none;gap:6px}
+.tabs a{background:var(--card);border-radius:10px;padding:8px 12px;font-weight:600;font-size:13px;text-decoration:none}
+.tabs a.on{background:var(--ink-btn);color:var(--ink-btn-fg)}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-weight:600;font-size:13px;text-decoration:none}
+
+.grid{display:grid;gap:16px;grid-template-columns:repeat(12,minmax(0,1fr));align-content:start}
+.card{background:var(--card);border-radius:var(--r);padding:20px 22px;min-width:0;box-shadow:var(--shadow)}
+.s12{grid-column:span 12}.s8{grid-column:span 8}.s7{grid-column:span 7}.s6{grid-column:span 6}.s5{grid-column:span 5}.s4{grid-column:span 4}.s3{grid-column:span 3}
+.hd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ttl{font-weight:600;font-size:16px;margin:0;text-wrap:balance}
+.cap{color:var(--muted);font-size:12.5px}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-size:clamp(28px,3.4vw,42px);line-height:1.08;letter-spacing:-.025em;margin:8px 0 12px;font-weight:700;text-wrap:balance;max-width:20ch}
+.lead{font-size:15.5px;color:var(--muted);max-width:62ch;margin:0}
+p{max-width:68ch}
+sup a{font-size:10px;color:var(--green-d);text-decoration:none;font-weight:700;margin-left:1px}
+sup a:hover{text-decoration:underline}
+sup+sup::before{content:",";font-size:10px;color:var(--muted)}
+
+.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;align-items:end}
+.hero .art{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;align-self:stretch;align-content:end;max-width:260px;justify-self:end;width:100%}
+.hero .art i{aspect-ratio:1;border-radius:5px;background:var(--green);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.22) 0 2px,transparent 2px 6px)}
+.hero .art i.y{background-color:var(--yellow)}.hero .art i.o{background-color:var(--orange)}.hero .art i.l{opacity:.35}.hero .art i.e{background:transparent}
+
+.kpi .big{font-size:30px;font-weight:600;letter-spacing:-.02em;margin:6px 0 2px;line-height:1.1}
+.kpi .up{color:var(--green-d);font-size:12px;font-weight:600}
+
+/* Grafovi */
+.chart{width:100%;height:auto;display:block}
+.chart text{font-size:11px;fill:var(--muted);font-family:var(--f-ui)}
+.chart text.v{fill:var(--fg);font-weight:600;font-size:12px}
+.chart .gl{stroke:var(--line);stroke-dasharray:3 4}
+.mix{display:grid;gap:12px;margin-top:12px}
+.mix .row b{display:block;font-size:12.5px;margin-bottom:5px}
+.mix .row b small{font-weight:500;color:var(--muted)}
+.stack{display:flex;height:30px;border-radius:8px;overflow:hidden;gap:2px}
+.mix .est .stack{outline:1.5px dashed var(--muted);outline-offset:2px}
+.stack i{display:flex;min-width:0;align-items:center;justify-content:center;font-style:normal;font-size:11.5px;font-weight:700;color:#16170f;white-space:nowrap;overflow:hidden}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:10px;height:10px;border-radius:3px;display:inline-block;flex:none}
+.note{font-size:12px;color:var(--muted);margin:10px 0 0}
+.sw.est{background:var(--bar);outline:1.5px dashed var(--muted);outline-offset:-1.5px}
+.chart .est{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4}
+table.revt td:first-child{white-space:normal;font-weight:600}
+table.revt td small{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px}
+table.revt td small.pos{color:var(--green-d)}
+table.revt td{vertical-align:top}
+.chart.lg text{font-size:14px}
+.chart.lg text.v{font-size:17px;font-weight:700}
+.chart.lg.many text{font-size:12.5px}
+.chart.lg.many text.v{font-size:14px;letter-spacing:-.02em}
+
+/* Vremenska crta */
+.tl{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:0}
+.tl li{display:grid;grid-template-columns:64px 18px minmax(0,1fr);gap:12px;padding-bottom:18px;position:relative}
+.tl .yr{font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+.tl .dot{width:12px;height:12px;border-radius:4px;background:var(--bar);margin-top:5px;position:relative;z-index:1}
+.tl li.k .dot{background:var(--green)}
+.tl li.m .dot{background:var(--yellow)}
+.tl li::after{content:"";position:absolute;left:calc(64px + 12px + 5px);top:20px;bottom:0;width:2px;background:var(--line)}
+.tl li:last-child::after{display:none}
+.tl h3{font-size:14px;margin:0 0 2px;font-weight:600}
+.tl p{margin:0;color:var(--muted);font-size:13px}
+
+/* Ljudi */
+.people{display:grid;gap:12px}
+.person{display:flex;gap:12px;align-items:flex-start}
+.av{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-weight:700;font-size:13px;color:#16170f;flex:none}
+.person b{display:block;font-size:14px}
+.person span{color:var(--muted);font-size:12.5px}
+
+/* Video */
+.videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:14px}
+.video{display:flex;flex-direction:column;gap:8px;text-decoration:none;border-radius:12px}
+.video .th{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:12px;overflow:hidden;background:var(--soft)}
+.video .th img{width:100%;height:100%;object-fit:cover;display:block}
+.video .th::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(22,23,15,.75) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7v10l8-5z' fill='%23fff'/%3E%3C/svg%3E") center/22px no-repeat}
+.video:hover .th::after{background-color:var(--green)}
+.video b{font-size:13.5px;font-weight:600;line-height:1.35}
+.video span{font-size:12px;color:var(--muted)}
+blockquote{margin:14px 0 0;padding:14px 16px;border-radius:12px;background:var(--soft);font-size:14px;max-width:none}
+blockquote cite{display:block;font-style:normal;color:var(--muted);font-size:12px;margin-top:6px}
+
+/* Tablica */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:9px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:600;color:var(--muted);font-size:12px}
+.neg{color:var(--orange)}.pos{color:var(--green-d)}
+
+dl.facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;margin:14px 0 0;font-size:13px}
+dl.facts dt{color:var(--muted)}
+dl.facts dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+
+/* Djelatnosti */
+.svc-ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none}
+.svc-ico svg{width:20px;height:20px;stroke:#16170f;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.svc-h{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+ol.mica{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+ol.mica li{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;border:1px solid var(--line);border-radius:10px;font-size:13px}
+ol.mica .k{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+ol.mica b{font-size:12px;font-weight:700}
+ol.mica li.y{background:color-mix(in srgb,var(--green) 16%,transparent);border-color:color-mix(in srgb,var(--green) 45%,transparent)}
+ol.mica li.y b{color:var(--green-d)}
+ol.mica li.n{color:var(--muted)}
+ol.mica li.n b{color:var(--faint);font-weight:600}
+.ul{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:7px;font-size:13.5px}
+.ul li{display:grid;grid-template-columns:14px minmax(0,1fr);gap:8px}
+.ul li::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--green);margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:12px;font-weight:600;font-family:var(--f-mono);background:var(--soft)}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.step{background:var(--soft);border-radius:12px;padding:12px}
+.step b{font-family:var(--f-mono);font-size:11px;color:var(--muted);display:block}
+.step span{font-size:13px;font-weight:500}
+.partners{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:14px}
+.partner{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.partner b{font-size:14px}
+.partner .yr{font-family:var(--f-mono);font-size:11px;color:var(--green-d)}
+.partner span{font-size:12.5px;color:var(--muted)}
+.meter{height:12px;border-radius:4px;background:var(--soft);overflow:hidden;margin-top:6px}
+.meter i{display:block;height:100%;background:var(--green);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.25) 0 2px,transparent 2px 6px)}
+.eea{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.eea span{font-family:var(--f-mono);font-size:11px;padding:3px 6px;border-radius:5px;background:var(--green);color:#16170f}
+
+/* Izvori */
+.src{columns:2 320px;column-gap:28px;margin:12px 0 0;padding-left:22px;font-size:12.5px;color:var(--muted)}
+.src li{break-inside:avoid;margin-bottom:6px}
+.src a{color:var(--fg);text-decoration-color:var(--faint)}
+.src li.hl{background:var(--soft);border-radius:4px}
+
+/* Rast */
+table.vasp td:nth-child(3){font-family:var(--f-mono);font-size:12px}
+.st{display:inline-block;font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;white-space:nowrap}
+.st.ok{background:var(--green);color:#16170f}.st.no{background:var(--bar);color:var(--muted)}
+table.vasp td:last-child{white-space:normal;min-width:220px;color:var(--muted)}
+.deals{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:14px}
+.deal{border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.deal h3{margin:0;font-size:15px}
+.deal p{margin:0;font-size:13px}
+.deal .why{background:var(--soft);border-radius:10px;padding:8px 10px}
+.deal-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.fit{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;white-space:nowrap;flex:none}
+.deal.hi .fit{background:var(--green);color:#16170f}.deal.mid .fit{background:var(--yellow);color:#16170f}.deal.lo .fit{background:var(--orange);color:#16170f}
+table.matrix td,table.matrix th{text-align:left;white-space:normal;min-width:96px}
+table.matrix th small{color:var(--faint);font-weight:500}
+table.matrix td:first-child{min-width:180px;font-weight:500}
+table.matrix td.y{color:var(--green-d);font-weight:600}
+table.matrix td.n{color:var(--faint)}
+table.matrix td.q{color:var(--orange);font-weight:700}
+table.matrix td.p{color:var(--muted);font-style:italic}
+table.matrix td:nth-child(2){background:var(--soft)}
+.ideas{margin:14px 0 0;padding-left:20px;display:grid;gap:10px;font-size:13.5px}
+.ideas li::marker{font-weight:700;color:var(--green-d)}
+
+@media (max-width:1100px){
+  .s8,.s7,.s6,.s5,.s4{grid-column:span 12}
+  .s3{grid-column:span 6}
+}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{display:none}
+  .tabs{display:flex}
+  .main{padding:16px}
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .hero .art{display:none}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  body{padding-inline:8px;padding-block:8px}
+  .s3{grid-column:span 12}
+  .crumb{display:none}
+  .card{padding:16px}
+  .tl li{grid-template-columns:48px 14px minmax(0,1fr);gap:10px}
+  .tl li::after{left:calc(48px + 10px + 5px)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+.calc{margin-top:16px;border:1px solid var(--line);border-radius:14px;padding:16px}
+.sl{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;margin-bottom:14px;font-size:14px}
+.sl b{font-size:16px;color:var(--green-d);min-width:56px;text-align:right}
+.sl input{grid-column:1/-1;width:100%;accent-color:var(--green)}
+.res{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.res div{background:var(--soft);border-radius:10px;padding:10px 12px}
+.res small{display:block;font-size:12px;color:var(--muted)}
+.res b{font-size:17px}
+.rst{margin-top:10px;font:inherit;font-size:12px;border:1px solid var(--line);background:none;border-radius:99px;padding:4px 12px;cursor:pointer;color:var(--muted)}
+@media(max-width:700px){.res{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<style>
+/* Prijedlozi: kartica po prijedlogu s brojem, poljima i statusom razrade */
+.prop{display:flex;flex-direction:column;gap:10px}
+.prop-h{display:flex;gap:12px;align-items:flex-start}
+.prop-n{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;font-weight:700;font-size:17px;color:#16170f}
+.prop p{margin:0;font-size:13.5px}
+.prop .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:4px}
+.prop .ul{margin-top:2px}
+.prop .why{background:var(--soft);border-radius:10px;padding:10px 12px}
+.prop .warn{background:color-mix(in srgb,var(--orange) 16%,transparent);border:1px solid color-mix(in srgb,var(--orange) 45%,transparent);border-radius:10px;padding:10px 12px}
+.prop-f{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding-top:6px;border-top:1px solid var(--line)}
+.soon{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;background:var(--bar);color:var(--muted)}
+table.cmp td,table.cmp th{text-align:left;white-space:normal;min-width:120px;vertical-align:top}
+table.cmp td:first-child{min-width:170px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a class="logo" href="./"><span class="mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>Electrocoin<small>.eu</small></a>
+    <nav class="nav" aria-label="Stranice">
+      <a href="./"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Prijedlozi proširenja</a>
+      <a href="preuzimanje-klijenata"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21 20c0-2.6-1.6-4.8-4-5.6"/></svg>1. Preuzimanje klijenata</a>
+      <a href="paycek-trgovci"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>2. PayCek trgovci</a>
+      <a href="#vrh" class="on"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M9 17h6"/></svg>3. Kripto bankomati</a>
+    </nav>
+    <div class="hr"></div>
+    <nav class="nav" aria-label="Ostalo">
+      <a href="#izvori"><svg viewBox="0 0 24 24"><path d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/></svg>Izvori</a>
+      <a href="https://electrocoin-case-study.mojaradnadomena.com/"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Case study</a>
+    </nav>
+  </aside>
+
+  <main class="main" id="vrh">
+    <header class="top">
+      <div class="crumb">Electrocoin.eu <span>/</span> <a href="./" style="text-decoration:none">Prijedlozi</a> <span>/</span> <b>3. Kripto bankomati</b></div>
+      <nav class="tabs" aria-label="Stranice"><a href="./">Prijedlozi</a><a href="preuzimanje-klijenata">1. Klijenti</a><a href="paycek-trgovci">2. PayCek</a><a href="#vrh" class="on">3. Bankomati</a></nav>
+      <span class="sp"></span>
+    </header>
+
+    <div class="grid">
+      <section class="card s12">
+        <div class="hero">
+          <div>
+            <div class="eyebrow">Prijedlog 3 · detaljna razrada</div>
+            <h1>Preuzimanje kripto bankomata</h1>
+            <p class="lead">Bitomat navodi 17 bankomata u 13 hrvatskih gradova<sup><a href="#s1">1</a></sup>, ali oni trenutno ne rade jer operater nema MiCA licencu<sup><a href="#s2">2</a></sup><sup><a href="#s4">4</a></sup>. Od 1. srpnja 2026. kripto usluge u Hrvatskoj smiju pružati samo licencirane tvrtke<sup><a href="#s3">3</a></sup>. Electrocoin ima licencu za zamjenu kripta za novac<sup><a href="#s4">4</a></sup>, pa te bankomate može ponovno pokrenuti, bilo kao vlasnik ili samo kao operater.</p>
+          </div>
+          <div class="art" aria-hidden="true" id="art"></div>
+        </div>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Tko stoji iza Bitomata</p>
+        <div class="cap">S kim bi Electrocoin pregovarao</div>
+        <ul class="ul">
+          <li><span><b>Hrvatska tvrtka:</b> Virtual Planet d.o.o. iz Zagreba, osnovana 2020., s jednim osnivačem i direktorom iz Poljske<sup><a href="#s6">6</a></sup>. Navodi se kao operater Shitcoins.club bankomata u Hrvatskoj<sup><a href="#s7">7</a></sup>, a Hanfa joj je 2022. izdala rješenje o upisu djelatnosti mjenjačnice virtualnih valuta<sup><a href="#s8">8</a></sup>.</span></li>
+          <li><span><b>Vlasnik platforme Bitomat.com:</b> Virtual Planet EOOD iz Plovdiva u Bugarskoj<sup><a href="#s5">5</a></sup>. Do 2024. vodila ga je ista osoba kao hrvatsku tvrtku, a danas je vlasnik Wojciech Gramowski iz Poljske<sup><a href="#s9">9</a></sup>.</span></li>
+          <li><span><b>Licenca:</b> nijedna od tih tvrtki nije u Hanfinom registru licenciranih pružatelja<sup><a href="#s4">4</a></sup>. Ista mreža je zbog nedostatka MiCA odobrenja obustavila rad i u Italiji<sup><a href="#s10">10</a></sup>.</span></li>
+          <li><span><b>Prihod u Hrvatskoj:</b> Virtual Planet d.o.o. imao je 2025. samo €8.848 prihoda i nijednog zaposlenog<sup><a href="#s6">6</a></sup>. Promet bankomata vjerojatno se ne knjiži u hrvatskoj tvrtki, pa iz Fine ne možemo saznati koliko su bankomati radili.</span></li>
+        </ul>
+        <p class="why" style="margin-top:12px"><b>Pregovaračka pozicija:</b> bankomati stoje i ne zarađuju, a vlasnik ih bez licence ne smije pokrenuti. To ide u prilog Electrocoinu i kod kupnje i kod dogovora o najmu.</p>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Lokacije bankomata</p>
+        <div class="cap">17 bankomata prema karti na Bitomat.com<sup><a href="#s1">1</a></sup>. Uglavnom su u trgovačkim centrima.</div>
+        <ol class="src" style="margin-top:12px"><li><b>Bjelovar</b>, Matice hrvatske 8</li><li><b>Dubrovnik</b>, Kralja Tomislava 7</li><li><b>Karlovac</b>, MV Trend, Trg hrvatskih branitelja 4</li><li><b>Koprivnica</b>, Supernova, Gospodarska 1</li><li><b>Nova Gradiška</b>, Karla Dieneša 2</li><li><b>Osijek</b>, Portanova, Svilajska 31</li><li><b>Pula</b>, Max City, Stoja 14a</li><li><b>Rijeka</b>, Tower Center, J. Polića Kamova 81a</li><li><b>Šibenik</b>, A. Starčevića 3C</li><li><b>Slavonski Brod</b>, Petra Krešimira IV 6</li><li><b>Split</b>, Mall of Split, J. Jovića 93</li><li><b>Split</b>, Kralja Zvonimira 41</li><li><b>Varaždin</b>, Zagrebačka 7</li><li><b>Zadar</b>, City Galleria, Polačišće 4</li><li><b>Zagreb</b>, Ilica 202A</li><li><b>Zagreb</b>, Stjepana Širole 6</li><li><b>Zagreb</b>, Grand Casino Admiral, Rudeška 140</li></ol>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Dvije varijante preuzimanja</p>
+        <div class="cap">Kupnja bankomata ili rad bankomata pod Electrocoinovom licencom</div>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th></th><th>A. Potpuna kupnja</th><th>B. Najam, Electrocoin samo operater</th></tr></thead>
+            <tbody>
+              <tr><td>Što Electrocoin preuzima</td><td>Uređaje i ugovore za lokacije. Sve odluke i sav prihod su njegovi.</td><td>Samo rad bankomata: licencu, provjeru korisnika (KYC) i transakcije. Uređaji ostaju u vlasništvu Virtual Planeta.</td></tr>
+              <tr><td>Jednokratni trošak</td><td>Cijena otkupa. Novi dvosmjerni bankomat stoji $6.899–7.399<sup><a href="#s13">13</a></sup>, a bankomati iz stečaja Bitcoin Depota prodani su po oko $244 komad<sup><a href="#s16">16</a></sup>. Za 17 uređaja to je raspon od oko $4.000 do $126.000, plus prijenos i postavljanje $500–1.000 po uređaju<sup><a href="#s15">15</a></sup>.</td><td>Gotovo nikakav, osim povezivanja uređaja s Electrocoinovim sustavom.</td></tr>
+              <tr><td>Mjesečni troškovi</td><td>Svi troškovi rada: najam lokacije, prijevoz gotovine, održavanje, internet, osiguranje i provjera korisnika. Ukupno $400–900 po bankomatu<sup><a href="#s15">15</a></sup>. Ako se zadrži softver General Bytesa, dodatno $10 po uređaju i 0,25 % prometa<sup><a href="#s14">14</a></sup>.</td><td>Dio naknade ide vlasniku, koji u zamjenu snosi uređaje, lokacije i servis. Electrocoin snosi samo licencu i provjeru korisnika, koje već ima.</td></tr>
+              <tr><td>Primjer iz prakse</td><td>Bitcoin Depot, najveći operater na svijetu, prodao je 2026. u stečaju oko 2.500 bankomata za $620.750<sup><a href="#s16">16</a></sup>.</td><td>U Austriji oko 300 Kurantovih bankomata od 2026. vodi licencirana slovačka tvrtka, a Kurant ostaje partner za tehniku i servis<sup><a href="#s17">17</a></sup>.</td></tr>
+              <tr><td>Rizik</td><td>Veće ulaganje i svi troškovi rada, ali i sva zarada.</td><td>Manje ulaganje i manja zarada. Ovisi o dogovoru s vlasnikom, a Electrocoin odgovara za sve transakcije pod svojom licencom.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Procjena: promet i prihod 17 bankomata</p>
+        <div class="cap">Sve brojke u ovom dijelu su procjena, ne podatak</div>
+        <ul class="ul">
+          <li><span><b>Promet:</b> podatak o prometu Bitomat bankomata u Hrvatskoj nije javan. Za orijentir: starije europske procjene kreću se oko $20.000–30.000 mjesečno po bankomatu<sup><a href="#s18">18</a></sup>. Zadano je €20.000 mjesečno po bankomatu, a vrijednost možete mijenjati klizačem.</span></li>
+          <li><span><b>Naknada:</b> Bitomat naplaćuje prosječno 2–4 % na kupnju i prodaju<sup><a href="#s11">11</a></sup><sup><a href="#s12">12</a></sup>. Zadano je 4 %, što je prosjek iz studenog 2025.<sup><a href="#s11">11</a></sup></span></li>
+          <li><span><b>Troškovi (varijanta A):</b> $400–900 mjesečno po bankomatu<sup><a href="#s15">15</a></sup>. Zadano je €600.</span></li>
+          <li><span><b>Udio u najmu (varijanta B):</b> koliki dio naknade ostaje Electrocoinu ovisi o pregovorima. Zadano je 50 %.</span></li>
+        </ul>
+        <div class="calc">
+          <label class="sl"><span>Prosječni promet po bankomatu mjesečno</span><b id="vP">€20.000</b><input type="range" id="rP" min="0" max="60000" step="1000" value="20000"></label>
+          <label class="sl"><span>Naknada na kupnju i prodaju</span><b id="vF">4 %</b><input type="range" id="rF" min="0" max="10" step="0.5" value="4"></label>
+          <label class="sl"><span>Trošak rada po bankomatu mjesečno (varijanta A)</span><b id="vC">€600</b><input type="range" id="rC" min="0" max="1500" step="50" value="600"></label>
+          <label class="sl"><span>Electrocoinov udio naknade (varijanta B)</span><b id="vS">50 %</b><input type="range" id="rS" min="0" max="100" step="5" value="50"></label>
+          <div class="res">
+            <div><small>Promet 17 bankomata / god.</small><b id="o1"></b></div>
+            <div><small>Naknade (prihod) / god.</small><b id="o2"></b></div>
+            <div><small>A. Kupnja: prihod − troškovi / god.</small><b id="o3"></b></div>
+            <div><small>B. Najam: Electrocoinov prihod / god.</small><b id="o4"></b></div>
+          </div>
+          <p class="why" id="oTxt" style="margin-top:12px"></p>
+          <button type="button" class="rst" id="rst">Vrati zadane vrijednosti</button>
+        </div>
+        <p class="note" style="margin-top:10px">Promet = 17 × promet po bankomatu × 12. Prihod = promet × naknada. Varijanta A = prihod − 17 × trošak × 12, bez jednokratnog otkupa. Varijanta B = prihod × Electrocoinov udio. Usporedba s Electrocoinom: neto prihod 2025. bio je €1,18 mil.<sup><a href="#s19">19</a></sup>, a promet procjenjujemo na oko €59 mil. godišnje<sup><a href="#s20">20</a></sup>.</p>
+        <script>
+        (() => {
+          const N = 17, ECP = 59e6, ECR = 1.18e6;
+          const $ = id => document.getElementById(id);
+          const n = (x, d = 0) => x.toLocaleString("hr-HR", { minimumFractionDigits: d, maximumFractionDigits: d });
+          const eur = x => (x < 0 ? "−" : "") + (Math.abs(x) >= 1e6 ? "€" + n(Math.abs(x) / 1e6, 2) + " mil." : "€" + n(Math.round(Math.abs(x) / 100) * 100));
+          function up() {
+            const p = +$("rP").value, f = +$("rF").value / 100, c = +$("rC").value, sh = +$("rS").value / 100;
+            $("vP").textContent = eur(p); $("vF").textContent = n(f * 100, f * 100 % 1 ? 1 : 0) + " %"; $("vC").textContent = eur(c); $("vS").textContent = n(sh * 100) + " %";
+            const y = N * p * 12, r = y * f, a = r - N * c * 12, b = r * sh;
+            $("o1").textContent = "~" + eur(y); $("o2").textContent = "~" + eur(r); $("o3").textContent = "~" + eur(a); $("o4").textContent = "~" + eur(b);
+            $("o3").style.color = a < 0 ? "#c0392b" : "";
+            $("oTxt").innerHTML = "<b>Što to znači za Electrocoin:</b> promet bankomata bio bi oko " + n(y / ECP * 100) + " % Electrocoinova godišnjeg prometa. Uz kupnju bi godišnji rezultat bio " + eur(a) + " (" + n(a / ECR * 100) + " % neto prihoda), a uz najam " + eur(b) + " (" + n(b / ECR * 100) + " % neto prihoda).";
+          }
+          ["rP","rF","rC","rS"].forEach(i => $(i).addEventListener("input", up));
+          $("rst").addEventListener("click", () => { $("rP").value = 20000; $("rF").value = 4; $("rC").value = 600; $("rS").value = 50; up(); });
+          up();
+        })();
+        </script>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Na što paziti</p>
+        <ul class="ul">
+          <li><span>Uz niske naknade od 2–4 % i troškove od $400–900 mjesečno po bankomatu, kupnja se isplati tek ako bankomati imaju dovoljno prometa. Najam je sigurniji jer Electrocoin ne snosi troškove uređaja i lokacija.</span></li>
+          <li><span>Prije bilo kakvog dogovora treba vidjeti stvarni promet bankomata iz prošlih godina. Hrvatska tvrtka ga ne prikazuje<sup><a href="#s6">6</a></sup>, pa ga treba tražiti od vlasnika.</span></li>
+          <li><span>Mreža prodaje i vlastite bankomate<sup><a href="#s11">11</a></sup>, pa treba provjeriti koji softver koriste i može li se povezati s Electrocoinovim sustavom.</span></li>
+          <li><span>Bankomati rade s gotovinom, pa Electrocoin pod svojom licencom preuzima i odgovornost za sprječavanje pranja novca na svakom uređaju.</span></li>
+        </ul>
+      </section>
+
+    </div>
+
+    <section class="card" id="izvori">
+      <p class="ttl">Izvori</p>
+      <div class="cap">Brojke u tekstu označene su brojem izvora. Prikupljeno 11. listopada 2026.</div>
+      <ol class="src">
+        <li id="s1"><a href="https://www.bitomat.com/en/mapa/bitcoin-atms-croatia" target="_blank" rel="noopener">Bitomat.com: karta bankomata u Hrvatskoj (provjereno 11. 10. 2026.)</a></li>
+        <li id="s2"><a href="https://www.bitomat.com/hr" target="_blank" rel="noopener">Bitomat.com (HR): „Bitcoin bankomati privremeno nisu dostupni”, postupak odobrenja prema MiCA-i</a></li>
+        <li id="s3"><a href="https://www.hanfa.hr/news/provision-of-crypto-asset-services-from-1-july-2026-crypto-licence-and-registration-in-hanfa-registers-mandatory-for-providers-consumers-urged-to-exercise-caution/" target="_blank" rel="noopener">HANFA: od 1. 7. 2026. kripto usluge samo uz licencu</a></li>
+        <li id="s4"><a href="https://www.hanfa.hr/registri/trziste-kriptoimovine/registar-drustava-ovlastenih-pruzati-usluge-povezane-s-kriptoimovinom/" target="_blank" rel="noopener">HANFA: registar pružatelja usluga kriptoimovine (CASP)</a></li>
+        <li id="s5"><a href="https://www.bitomat.com/hr/terms-and-conditions" target="_blank" rel="noopener">Bitomat.com: uvjeti korištenja, vlasnik platforme Virtual Planet EOOD, Plovdiv (21. 3. 2025.)</a></li>
+        <li id="s6"><a href="https://infobiz.fina.hr/public/OIB-49322397471/virtual-planet-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: Virtual Planet d.o.o. (2025.)</a></li>
+        <li id="s7"><a href="https://bitcointalk.org/index.php?topic=5354996.0" target="_blank" rel="noopener">Bitcointalk: Virtual Planet d.o.o. kao operater Shitcoins.club bankomata u Hrvatskoj (2021.)</a></li>
+        <li id="s8"><a href="https://www.hanfa.hr/sjednice-upravnog-vijeca/2022/9-sjednica-upravnog-vijeca-hanfe/" target="_blank" rel="noopener">HANFA: 9. sjednica Upravnog vijeća, rješenje za Virtual Planet d.o.o. (10. 3. 2022.)</a></li>
+        <li id="s9"><a href="https://papagal.bg/eik/206282793/387c" target="_blank" rel="noopener">Papagal.bg: Virtual Planet EOOD, vlasnik i upravitelj</a></li>
+        <li id="s10"><a href="https://shitcoins.club/" target="_blank" rel="noopener">Shitcoins.club: usluge u Italiji obustavljene zbog nedostatka MiCA odobrenja</a></li>
+        <li id="s11"><a href="https://itc.ua/articles/bitomat-rasshyryaet-set-bytkojn-bankomatov-kak-eto-menyaet-pravyla-ygry-na-rynke-kryptovalyut/" target="_blank" rel="noopener">ITC.ua: Bitomat, prosječna naknada oko 4 %, više od 300 bankomata (studeni 2025.)</a></li>
+        <li id="s12"><a href="https://pl.beincrypto.com/anonimowe-bitomaty-shitcoins-club-prowizje-kyc/" target="_blank" rel="noopener">BeInCrypto: Shitcoins.club naknade prosječno 2–4 % (kolovoz 2023.)</a></li>
+        <li id="s13"><a href="https://www.generalbytes.com/en/products/bitcoin-atms" target="_blank" rel="noopener">General Bytes: cijene bankomata (BATMThree $6.899, BATMFour $7.399)</a></li>
+        <li id="s14"><a href="https://www.generalbytes.com/en/faq" target="_blank" rel="noopener">General Bytes FAQ: licenca $10 po uređaju mjesečno + 0,25 % prometa</a></li>
+        <li id="s15"><a href="https://cointimeatm.com/bitcoin-atms-revenue-and-costs/" target="_blank" rel="noopener">CoinTime: troškovi rada bankomata, $400–900 mjesečno po uređaju (srpanj 2025.)</a></li>
+        <li id="s16"><a href="https://www.coindesk.com/business/2026/09/10/a-quarter-of-bankrupt-bitcoin-depot-s-atms-snapped-up-for-less-than-usd1-million" target="_blank" rel="noopener">CoinDesk: bankomati Bitcoin Depota prodani za manje od $1 mil. (10. 9. 2026.)</a></li>
+        <li id="s17"><a href="https://at.kurant.net/de/wichtige-information-2/" target="_blank" rel="noopener">Kurant: austrijske bankomate vodi licencirani FINTECH SK (Bitcoinmat.org), Kurant ostaje partner za servis (2026.)</a></li>
+        <li id="s18"><a href="https://coinatmradar.com/blog/bitcoin-atm-profitability-part-2-real-examples/" target="_blank" rel="noopener">Coin ATM Radar: primjeri prometa bankomata u Europi</a></li>
+        <li id="s19"><a href="https://infobiz.fina.hr/public/OIB-45841695639/electrocoin-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: Electrocoin d.o.o. (2025.)</a></li>
+        <li id="s20"><a href="https://electrocoin-case-study.mojaradnadomena.com/#onama" target="_blank" rel="noopener">Electrocoin case study: procjena prometa 2025. (~€59 mil., neto prihod / 2 %)</a></li>
+      </ol>
+    </section>
+  </main>
+</div>
+<script>
+(() => {
+  // Klik na broj izvora: skrolaj do izvora i istakni ga
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a[href^='#s'],a[href='#izvori']");
+    if (!a) return;
+    const t = document.getElementById(a.getAttribute("href").slice(1));
+    if (!t) return;
+    e.preventDefault();
+    t.scrollIntoView({ behavior: "smooth", block: "center" });
+    document.querySelectorAll(".src li.hl").forEach(x => x.classList.remove("hl"));
+    if (t.tagName === "LI") t.classList.add("hl");
+  });
+  // Dekorativni blokovi kao na glavnoj stranici
+  const B = "e e e e y e e e e l y y e e l g g l e l g g g o l g g g g g".split(" ");
+  document.getElementById("art").innerHTML = B.map(c => `<i class="${c === "g" ? "" : c}"></i>`).join("");
+})();
+</script>
+</body>
+</html>
