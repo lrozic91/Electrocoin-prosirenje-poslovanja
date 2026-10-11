@@ -250,6 +250,16 @@ table.matrix td:nth-child(2){background:var(--soft)}
   .tl li::after{left:calc(48px + 10px + 5px)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+.calc{margin-top:16px;border:1px solid var(--line);border-radius:14px;padding:16px}
+.sl{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;margin-bottom:14px;font-size:14px}
+.sl b{font-size:16px;color:var(--green-d);min-width:56px;text-align:right}
+.sl input{grid-column:1/-1;width:100%;accent-color:var(--green)}
+.res{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.res div{background:var(--soft);border-radius:10px;padding:10px 12px}
+.res small{display:block;font-size:12px;color:var(--muted)}
+.res b{font-size:17px}
+.rst{margin-top:10px;font:inherit;font-size:12px;border:1px solid var(--line);background:none;border-radius:99px;padding:4px 12px;cursor:pointer;color:var(--muted)}
+@media(max-width:700px){.res{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 <style>
 /* Prijedlozi: kartica po prijedlogu s brojem, poljima i statusom razrade */
@@ -332,24 +342,47 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
         <div class="cap">Sve brojke u ovom dijelu su procjena, ne podatak</div>
         <ul class="ul">
           <li><span><b>Polazište:</b> ukupni promet 153 kandidata u 2025. iznosi €495,97 mil., od toga €264,23 mil. u Varaždinskoj i €231,75 mil. u Međimurskoj županiji.</span></li>
-          <li><span><b>Pretpostavke:</b> PayCek uvede 10 %, 20 % ili 50 % tvrtki, a kod njih se 20 % prometa plaća preko PayCeka. Kroz PayCek tako ide 2 %, 4 % odnosno 10 % ukupnog prometa svih kandidata. Taj iznos je PayCek promet za Electrocoin.</span></li>
+          <li><span><b>Pretpostavke:</b> PayCek uvede dio tvrtki, a kod njih se dio prometa plaća preko PayCeka. Oba udjela možete birati klizačima. Zadano je 20 % tvrtki i 5 % prometa.</span></li>
           <li><span><b>Prihod:</b> PayCekova naknada od 2–2,5 % na taj promet<sup><a href="#s1">1</a></sup>. Trgovac dobiva puni iznos, pa je naknada Electrocoinov prihod.</span></li>
         </ul>
-        <div class="tw" style="margin-top:14px">
-          <table class="cmp">
-            <thead><tr><th>Udio tvrtki na PayCeku</th><th>Promet / mj.</th><th>Promet / god.</th><th>Prihod / mj.</th><th>Prihod / god.</th></tr></thead>
-            <tbody><tr><td><b>10 %</b></td><td>~€827.000</td><td>~€9,92 mil.</td><td>~€16.500–20.700</td><td>~€198.000–248.000</td></tr><tr><td><b>20 %</b></td><td>~€1.653.000</td><td>~€19,84 mil.</td><td>~€33.100–41.300</td><td>~€397.000–496.000</td></tr><tr><td><b>50 %</b></td><td>~€4.133.000</td><td>~€49,60 mil.</td><td>~€82.700–103.300</td><td>~€992.000–1.240.000</td></tr></tbody>
-          </table>
+        <div class="calc">
+          <label class="sl"><span>Udio tvrtki koje uvedu PayCek</span><b id="vA">20 %</b><input type="range" id="rA" min="0" max="100" step="1" value="20"></label>
+          <label class="sl"><span>Udio njihova prometa plaćen PayCekom</span><b id="vB">5 %</b><input type="range" id="rB" min="0" max="100" step="1" value="5"></label>
+          <div class="res">
+            <div><small>Promet / mj.</small><b id="o1"></b></div>
+            <div><small>Promet / god.</small><b id="o2"></b></div>
+            <div><small>Prihod / mj.</small><b id="o3"></b></div>
+            <div><small>Prihod / god.</small><b id="o4"></b></div>
+          </div>
+          <p class="why" id="oTxt" style="margin-top:12px"></p>
+          <button type="button" class="rst" id="rst">Vrati zadane vrijednosti (20 % i 5 %)</button>
         </div>
-        <p class="note" style="margin-top:10px">Promet = promet kandidata × udio tvrtki × 20 %. Prihod = promet × 2 % (donja vrijednost) do promet × 2,5 % (gornja vrijednost). Udio tvrtki primijenjen je na ukupni promet, kao da pristupaju tvrtke prosječne veličine. Stvarni rezultat ovisi o tome koje tvrtke pristupe: samo AC Jesenović ima €45 mil. prometa.</p>
-        <p class="why" style="margin-top:12px"><b>Primjer za 10 %:</b> €495,97 mil. × 10 % = €49,60 mil. godišnjeg prometa tvrtki koje uvedu PayCek. Od toga 20 % plaća se kriptom, a to je €9,92 mil. godišnje ili oko €827.000 mjesečno PayCek prometa, odnosno 2 % ukupnog prometa kandidata. Electrocoinov prihod je 2–2,5 % toga, odnosno €198.000–248.000 godišnje.</p>
-        <p class="why" style="margin-top:12px"><b>Što to znači za Electrocoin:</b> neto prihod 2025. bio je €1,18 mil., oko €98.000 mjesečno<sup><a href="#s25">25</a></sup>, a promet procjenjujemo na oko €4,9 mil. mjesečno<sup><a href="#s26">26</a></sup>. Uz 50 % tvrtki to je oko 84 % više prometa i 84–105 % više prihoda.</p>
+        <p class="note" style="margin-top:10px">Promet = promet kandidata (€495,97 mil.) × udio tvrtki × udio plaćanja PayCekom. Prihod = promet × 2 % (donja vrijednost) do promet × 2,5 % (gornja vrijednost). Usporedba s Electrocoinom: neto prihod 2025. bio je €1,18 mil., oko €98.000 mjesečno<sup><a href="#s25">25</a></sup>, a promet procjenjujemo na oko €4,9 mil. mjesečno<sup><a href="#s26">26</a></sup>. Udio tvrtki primijenjen je na ukupni promet, kao da pristupaju tvrtke prosječne veličine.</p>
+        <script>
+        (() => {
+          const T = 495972760, ECP = 4.9e6, ECR = 98000;
+          const $ = id => document.getElementById(id);
+          const n = (x, d = 0) => x.toLocaleString("hr-HR", { minimumFractionDigits: d, maximumFractionDigits: d });
+          const eur = x => x >= 1e6 ? "€" + n(x / 1e6, 2) + " mil." : "€" + n(Math.round(x / 100) * 100);
+          const rng = (a, b) => a >= 1e6 ? eur(a) + "–" + n(b / 1e6, 2) + " mil." : eur(a) + "–" + n(Math.round(b / 100) * 100);
+          function up() {
+            const a = +$("rA").value / 100, b = +$("rB").value / 100, y = T * a * b, m = y / 12;
+            $("vA").textContent = n(a * 100) + " %"; $("vB").textContent = n(b * 100) + " %";
+            $("o1").textContent = "~" + eur(m); $("o2").textContent = "~" + eur(y);
+            $("o3").textContent = "~" + rng(m * .02, m * .025); $("o4").textContent = "~" + rng(y * .02, y * .025);
+            $("oTxt").innerHTML = "<b>Što to znači za Electrocoin:</b> kroz PayCek ide " + n(a * b * 100, 2) + " % ukupnog prometa kandidata. To je oko " + n(m / ECP * 100) + " % više prometa i " + n(m * .02 / ECR * 100) + "–" + n(m * .025 / ECR * 100) + " % više prihoda nego danas.";
+          }
+          $("rA").addEventListener("input", up); $("rB").addEventListener("input", up);
+          $("rst").addEventListener("click", () => { $("rA").value = 20; $("rB").value = 5; up(); });
+          up();
+        })();
+        </script>
       </section>
 
       <section class="card s12">
         <p class="ttl">Na što paziti</p>
         <ul class="ul">
-          <li><span>Udio od 20 % prometa preko PayCeka je pretpostavka, a ne izmjereni podatak. Ovisi o tome koliko kupaca tih tvrtki ima kripto i želi njime plaćati.</span></li>
+          <li><span>Udio prometa plaćen PayCekom je pretpostavka, a ne izmjereni podatak. Ovisi o tome koliko kupaca tih tvrtki ima kripto i želi njime plaćati.</span></li>
           <li><span>Auto saloni čine oko 22 % prometa kandidata, a Ljekarna Salus, Auto-Ivec i Jakopić svaki oko €20 mil. Rezultat jako ovisi o tome pristupe li najveće tvrtke.</span></li>
           <li><span>Calzedonia Croatia dio je međunarodne grupe, pa odluku vjerojatno ne donosi lokalna uprava.</span></li>
           <li><span>Popis se oslanja na javne podatke. Uključene su tvrtke i obrti koje smo pronašli i kojima je promet javno objavljen. Obrti bez javnih podataka i tvrtke ispod €200.000 prometa nisu uključeni, pa je stvarni broj kandidata veći.</span></li>
