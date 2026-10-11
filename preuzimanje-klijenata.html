@@ -250,6 +250,7 @@ table.matrix td:nth-child(2){background:var(--soft)}
   .tl li::after{left:calc(48px + 10px + 5px)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+.lang{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px;flex:none}.lang a{padding:5px 10px;border-radius:7px;font-weight:600;font-size:13px;text-decoration:none;color:var(--muted)}.lang a.on{background:var(--ink-btn);color:var(--ink-btn-fg)}
 </style>
 <style>
 /* Prijedlozi: kartica po prijedlogu s brojem, poljima i statusom razrade */
@@ -291,7 +292,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
       <div class="crumb">Electrocoin.eu <span>/</span> <a href="./" style="text-decoration:none">Prijedlozi</a> <span>/</span> <b>1. Preuzimanje klijenata</b></div>
       <nav class="tabs" aria-label="Stranice"><a href="./">Prijedlozi</a><a href="#vrh" class="on">1. Klijenti</a><a href="paycek-trgovci">2. PayCek</a><a href="bankomati">3. Bankomati</a><a href="banke">4. Banke</a><a href="aplikacija">5. Aplikacija</a></nav>
       <span class="sp"></span>
-      <a class="pill" id="lang" href="en/preuzimanje-klijenata" hreflang="en" lang="en" title="English version">EN</a>
+      <span class="lang" id="lang"><a href="#vrh" hreflang="hr" lang="hr" class="on" aria-current="page">HR</a><a href="en/preuzimanje-klijenata" hreflang="en" lang="en">EN</a></span>
     </header>
 
     <div class="grid">
