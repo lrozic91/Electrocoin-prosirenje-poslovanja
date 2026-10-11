@@ -235,7 +235,7 @@ table.matrix td:nth-child(2){background:var(--soft)}
 @media (max-width:900px){
   .app{grid-template-columns:minmax(0,1fr)}
   .side{display:none}
-  .tabs{display:flex}
+  .tabs{display:flex;overflow-x:auto;max-width:100%;scrollbar-width:none}.tabs a{white-space:nowrap;flex:none}
   .main{padding:16px}
   .hero{grid-template-columns:minmax(0,1fr)}
   .hero .art{display:none}
@@ -277,6 +277,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
       <a href="preuzimanje-klijenata"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21 20c0-2.6-1.6-4.8-4-5.6"/></svg>1. Preuzimanje klijenata</a>
       <a href="paycek-trgovci"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>2. PayCek trgovci</a>
       <a href="bankomati"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M9 17h6"/></svg>3. Kripto bankomati</a>
+      <a href="banke"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/></svg>4. Modul za banke</a>
     </nav>
     <div class="hr"></div>
     <nav class="nav" aria-label="Ostalo">
@@ -294,7 +295,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
   <main class="main">
     <header class="top">
       <div class="crumb">Electrocoin.eu <span>/</span> Savjeti <span>/</span> <b>Prijedlozi proširenja</b></div>
-      <nav class="tabs" aria-label="Stranice"><a href="https://electrocoin-case-study.mojaradnadomena.com/">Case study</a><a href="#prijedlozi" class="on">Prijedlozi</a><a href="preuzimanje-klijenata">1. Klijenti</a><a href="paycek-trgovci">2. PayCek</a><a href="bankomati">3. Bankomati</a></nav>
+      <nav class="tabs" aria-label="Stranice"><a href="https://electrocoin-case-study.mojaradnadomena.com/">Case study</a><a href="#prijedlozi" class="on">Prijedlozi</a><a href="preuzimanje-klijenata">1. Klijenti</a><a href="paycek-trgovci">2. PayCek</a><a href="bankomati">3. Bankomati</a><a href="banke">4. Banke</a></nav>
       <span class="sp"></span>
     </header>
 
@@ -361,7 +362,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
           <li><span>Konkurencija je već tu: Aircash nudi kripto preko Bitpande od 2025.<sup><a href="#s23">23</a></sup>, a grupa Raiffeisen u rujnu 2026. uvodi Bitpandu na 11 tržišta, za 18 mil. klijenata<sup><a href="#s24">24</a></sup><sup><a href="#s25">25</a></sup>. U Njemačkoj Boerse Stuttgart Digital to radi za DekaBank i štedionice<sup><a href="#s26">26</a></sup>.</span></li>
         </ul>
         <p class="why"><b>Prijedlog:</b> ciljati domaće banke koje nemaju stranog matičnog partnera za kripto. Prednost Electrocoina je lokalni regulator, jezik i licenca koja vrijedi u 30 država EGP-a<sup><a href="#s1">1</a></sup><sup><a href="#s27">27</a></sup>. Prozor se zatvara jer Bitpanda ulazi u banke u regiji.</p>
-        <div class="prop-f"><span class="cap">Razrada: ciljne banke, model suradnje, potrebne usluge iz licence</span><span class="soon">Detaljno uskoro</span></div>
+        <div class="prop-f"><span class="cap">Razrada: licenca, primjeri, rokovi, troškovi i prihodi</span><a class="more" href="banke">Detaljna razrada →</a></div>
       </section>
 
       <!-- 4 -->

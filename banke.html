@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Modul za banke · Electrocoin</title>
+<meta name="description" content="Electrocoin, savjeti za proširenje poslovanja: pet prijedloga rasta nakon MiCA licence, svaki s izvorima.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#8cc63f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: app shell iz dizajna — bočni izbornik + gornja traka + mreža kartica; dvije stranice (O nama, Djelatnosti) prebacuju se bez ponovnog učitavanja */
+:root{
+  --bg:#ececea; --shell:#f6f6f4; --card:#ffffff; --line:#e8e8e4; --soft:#f1f1ee;
+  --fg:#16170f; --muted:#6f7068; --faint:#b7b8ae;
+  --green:#8cc63f; --green-d:#4f8a12; --yellow:#f2e63a; --orange:#f6a94a;
+  --bar:#e9e9e5; --ink-btn:#16170f; --ink-btn-fg:#fff;
+  --shadow:0 1px 2px rgba(20,22,10,.04),0 8px 24px rgba(20,22,10,.04);
+  --f-ui:"Plus Jakarta Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d0e0b; --shell:#141511; --card:#1b1c17; --line:#2a2b24; --soft:#23241e;
+  --fg:#f1f2ea; --muted:#a2a397; --faint:#5c5d54;
+  --green:#9bd54c; --green-d:#a9dd62; --yellow:#efe34a; --orange:#f5ae55;
+  --bar:#2a2b25; --ink-btn:#f1f2ea; --ink-btn-fg:#16170f; --shadow:none; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d0e0b; --shell:#141511; --card:#1b1c17; --line:#2a2b24; --soft:#23241e;
+  --fg:#f1f2ea; --muted:#a2a397; --faint:#5c5d54;
+  --green:#9bd54c; --green-d:#a9dd62; --yellow:#efe34a; --orange:#f5ae55;
+  --bar:#2a2b25; --ink-btn:#f1f2ea; --ink-btn-fg:#16170f; --shadow:none; color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-ui);font-size:14px;line-height:1.5;padding-block:24px;padding-inline:16px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+a{color:inherit}
+.num{font-variant-numeric:tabular-nums}
+[hidden]{display:none!important}
+
+.app{max-width:1440px;margin:0 auto;background:var(--shell);border-radius:24px;display:grid;grid-template-columns:232px minmax(0,1fr);box-shadow:var(--shadow)}
+
+/* Bočni izbornik */
+.side{padding:24px 16px;display:flex;flex-direction:column;gap:22px;border-right:1px solid var(--line);position:sticky;top:0;align-self:start;min-height:calc(100vh - 48px)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.01em;padding:0 8px;text-decoration:none}
+.logo .mark{width:28px;height:28px;border-radius:8px;background:var(--green);display:grid;place-items:center;color:#16170f}
+.logo small{font-weight:500;color:var(--muted)}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;font-weight:500;text-decoration:none}
+.nav a:hover{background:var(--soft)}
+.nav a.on{background:var(--card);box-shadow:var(--shadow);position:relative}
+.nav a.on::before{content:"";position:absolute;left:-16px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--fg)}
+.nav svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav .sub{display:flex;flex-direction:column;margin:2px 0 6px 21px;padding-left:18px;border-left:1px solid var(--line)}
+.nav .sub a{padding:5px 10px;font-size:13px;color:var(--muted)}
+.hr{height:1px;background:var(--line);margin:0 8px}
+.pro{margin-top:auto;background:var(--card);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+.pro .bolt{width:32px;height:32px;border-radius:50%;background:var(--fg);color:var(--card);display:grid;place-items:center}
+.pro h4{margin:4px 0 0;font-size:15px}
+.pro p{margin:0;color:var(--muted);font-size:12.5px}
+.btn-ink{background:var(--ink-btn);color:var(--ink-btn-fg);border:0;border-radius:10px;padding:10px 14px;font-weight:600;text-decoration:none;text-align:center;display:inline-block}
+
+/* Glavni dio */
+.main{padding:20px 24px 28px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.crumb{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px}
+.crumb b{color:var(--fg);font-weight:600}
+.top .sp{flex:1}
+.tabs{display:none;gap:6px}
+.tabs a{background:var(--card);border-radius:10px;padding:8px 12px;font-weight:600;font-size:13px;text-decoration:none}
+.tabs a.on{background:var(--ink-btn);color:var(--ink-btn-fg)}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-weight:600;font-size:13px;text-decoration:none}
+
+.grid{display:grid;gap:16px;grid-template-columns:repeat(12,minmax(0,1fr));align-content:start}
+.card{background:var(--card);border-radius:var(--r);padding:20px 22px;min-width:0;box-shadow:var(--shadow)}
+.s12{grid-column:span 12}.s8{grid-column:span 8}.s7{grid-column:span 7}.s6{grid-column:span 6}.s5{grid-column:span 5}.s4{grid-column:span 4}.s3{grid-column:span 3}
+.hd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ttl{font-weight:600;font-size:16px;margin:0;text-wrap:balance}
+.cap{color:var(--muted);font-size:12.5px}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-size:clamp(28px,3.4vw,42px);line-height:1.08;letter-spacing:-.025em;margin:8px 0 12px;font-weight:700;text-wrap:balance;max-width:20ch}
+.lead{font-size:15.5px;color:var(--muted);max-width:62ch;margin:0}
+p{max-width:68ch}
+sup a{font-size:10px;color:var(--green-d);text-decoration:none;font-weight:700;margin-left:1px}
+sup a:hover{text-decoration:underline}
+sup+sup::before{content:",";font-size:10px;color:var(--muted)}
+
+.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;align-items:end}
+.hero .art{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;align-self:stretch;align-content:end;max-width:260px;justify-self:end;width:100%}
+.hero .art i{aspect-ratio:1;border-radius:5px;background:var(--green);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.22) 0 2px,transparent 2px 6px)}
+.hero .art i.y{background-color:var(--yellow)}.hero .art i.o{background-color:var(--orange)}.hero .art i.l{opacity:.35}.hero .art i.e{background:transparent}
+
+.kpi .big{font-size:30px;font-weight:600;letter-spacing:-.02em;margin:6px 0 2px;line-height:1.1}
+.kpi .up{color:var(--green-d);font-size:12px;font-weight:600}
+
+/* Grafovi */
+.chart{width:100%;height:auto;display:block}
+.chart text{font-size:11px;fill:var(--muted);font-family:var(--f-ui)}
+.chart text.v{fill:var(--fg);font-weight:600;font-size:12px}
+.chart .gl{stroke:var(--line);stroke-dasharray:3 4}
+.mix{display:grid;gap:12px;margin-top:12px}
+.mix .row b{display:block;font-size:12.5px;margin-bottom:5px}
+.mix .row b small{font-weight:500;color:var(--muted)}
+.stack{display:flex;height:30px;border-radius:8px;overflow:hidden;gap:2px}
+.mix .est .stack{outline:1.5px dashed var(--muted);outline-offset:2px}
+.stack i{display:flex;min-width:0;align-items:center;justify-content:center;font-style:normal;font-size:11.5px;font-weight:700;color:#16170f;white-space:nowrap;overflow:hidden}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:10px;height:10px;border-radius:3px;display:inline-block;flex:none}
+.note{font-size:12px;color:var(--muted);margin:10px 0 0}
+.sw.est{background:var(--bar);outline:1.5px dashed var(--muted);outline-offset:-1.5px}
+.chart .est{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4}
+table.revt td:first-child{white-space:normal;font-weight:600}
+table.revt td small{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px}
+table.revt td small.pos{color:var(--green-d)}
+table.revt td{vertical-align:top}
+.chart.lg text{font-size:14px}
+.chart.lg text.v{font-size:17px;font-weight:700}
+.chart.lg.many text{font-size:12.5px}
+.chart.lg.many text.v{font-size:14px;letter-spacing:-.02em}
+
+/* Vremenska crta */
+.tl{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:0}
+.tl li{display:grid;grid-template-columns:64px 18px minmax(0,1fr);gap:12px;padding-bottom:18px;position:relative}
+.tl .yr{font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+.tl .dot{width:12px;height:12px;border-radius:4px;background:var(--bar);margin-top:5px;position:relative;z-index:1}
+.tl li.k .dot{background:var(--green)}
+.tl li.m .dot{background:var(--yellow)}
+.tl li::after{content:"";position:absolute;left:calc(64px + 12px + 5px);top:20px;bottom:0;width:2px;background:var(--line)}
+.tl li:last-child::after{display:none}
+.tl h3{font-size:14px;margin:0 0 2px;font-weight:600}
+.tl p{margin:0;color:var(--muted);font-size:13px}
+
+/* Ljudi */
+.people{display:grid;gap:12px}
+.person{display:flex;gap:12px;align-items:flex-start}
+.av{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-weight:700;font-size:13px;color:#16170f;flex:none}
+.person b{display:block;font-size:14px}
+.person span{color:var(--muted);font-size:12.5px}
+
+/* Video */
+.videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:14px}
+.video{display:flex;flex-direction:column;gap:8px;text-decoration:none;border-radius:12px}
+.video .th{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:12px;overflow:hidden;background:var(--soft)}
+.video .th img{width:100%;height:100%;object-fit:cover;display:block}
+.video .th::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(22,23,15,.75) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7v10l8-5z' fill='%23fff'/%3E%3C/svg%3E") center/22px no-repeat}
+.video:hover .th::after{background-color:var(--green)}
+.video b{font-size:13.5px;font-weight:600;line-height:1.35}
+.video span{font-size:12px;color:var(--muted)}
+blockquote{margin:14px 0 0;padding:14px 16px;border-radius:12px;background:var(--soft);font-size:14px;max-width:none}
+blockquote cite{display:block;font-style:normal;color:var(--muted);font-size:12px;margin-top:6px}
+
+/* Tablica */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:9px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:600;color:var(--muted);font-size:12px}
+.neg{color:var(--orange)}.pos{color:var(--green-d)}
+
+dl.facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;margin:14px 0 0;font-size:13px}
+dl.facts dt{color:var(--muted)}
+dl.facts dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+
+/* Djelatnosti */
+.svc-ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none}
+.svc-ico svg{width:20px;height:20px;stroke:#16170f;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.svc-h{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+ol.mica{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+ol.mica li{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;border:1px solid var(--line);border-radius:10px;font-size:13px}
+ol.mica .k{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+ol.mica b{font-size:12px;font-weight:700}
+ol.mica li.y{background:color-mix(in srgb,var(--green) 16%,transparent);border-color:color-mix(in srgb,var(--green) 45%,transparent)}
+ol.mica li.y b{color:var(--green-d)}
+ol.mica li.n{color:var(--muted)}
+ol.mica li.n b{color:var(--faint);font-weight:600}
+.ul{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:7px;font-size:13.5px}
+.ul li{display:grid;grid-template-columns:14px minmax(0,1fr);gap:8px}
+.ul li::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--green);margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:12px;font-weight:600;font-family:var(--f-mono);background:var(--soft)}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.step{background:var(--soft);border-radius:12px;padding:12px}
+.step b{font-family:var(--f-mono);font-size:11px;color:var(--muted);display:block}
+.step span{font-size:13px;font-weight:500}
+.partners{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:14px}
+.partner{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.partner b{font-size:14px}
+.partner .yr{font-family:var(--f-mono);font-size:11px;color:var(--green-d)}
+.partner span{font-size:12.5px;color:var(--muted)}
+.meter{height:12px;border-radius:4px;background:var(--soft);overflow:hidden;margin-top:6px}
+.meter i{display:block;height:100%;background:var(--green);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.25) 0 2px,transparent 2px 6px)}
+.eea{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.eea span{font-family:var(--f-mono);font-size:11px;padding:3px 6px;border-radius:5px;background:var(--green);color:#16170f}
+
+/* Izvori */
+.src{columns:2 320px;column-gap:28px;margin:12px 0 0;padding-left:22px;font-size:12.5px;color:var(--muted)}
+.src li{break-inside:avoid;margin-bottom:6px}
+.src a{color:var(--fg);text-decoration-color:var(--faint)}
+.src li.hl{background:var(--soft);border-radius:4px}
+
+/* Rast */
+table.vasp td:nth-child(3){font-family:var(--f-mono);font-size:12px}
+.st{display:inline-block;font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;white-space:nowrap}
+.st.ok{background:var(--green);color:#16170f}.st.no{background:var(--bar);color:var(--muted)}
+table.vasp td:last-child{white-space:normal;min-width:220px;color:var(--muted)}
+.deals{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:14px}
+.deal{border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.deal h3{margin:0;font-size:15px}
+.deal p{margin:0;font-size:13px}
+.deal .why{background:var(--soft);border-radius:10px;padding:8px 10px}
+.deal-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.fit{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;white-space:nowrap;flex:none}
+.deal.hi .fit{background:var(--green);color:#16170f}.deal.mid .fit{background:var(--yellow);color:#16170f}.deal.lo .fit{background:var(--orange);color:#16170f}
+table.matrix td,table.matrix th{text-align:left;white-space:normal;min-width:96px}
+table.matrix th small{color:var(--faint);font-weight:500}
+table.matrix td:first-child{min-width:180px;font-weight:500}
+table.matrix td.y{color:var(--green-d);font-weight:600}
+table.matrix td.n{color:var(--faint)}
+table.matrix td.q{color:var(--orange);font-weight:700}
+table.matrix td.p{color:var(--muted);font-style:italic}
+table.matrix td:nth-child(2){background:var(--soft)}
+.ideas{margin:14px 0 0;padding-left:20px;display:grid;gap:10px;font-size:13.5px}
+.ideas li::marker{font-weight:700;color:var(--green-d)}
+
+@media (max-width:1100px){
+  .s8,.s7,.s6,.s5,.s4{grid-column:span 12}
+  .s3{grid-column:span 6}
+}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{display:none}
+  .tabs{display:flex;overflow-x:auto;max-width:100%;scrollbar-width:none}.tabs a{white-space:nowrap;flex:none}
+  .main{padding:16px}
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .hero .art{display:none}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  body{padding-inline:8px;padding-block:8px}
+  .s3{grid-column:span 12}
+  .crumb{display:none}
+  .card{padding:16px}
+  .tl li{grid-template-columns:48px 14px minmax(0,1fr);gap:10px}
+  .tl li::after{left:calc(48px + 10px + 5px)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+.calc{margin-top:16px;border:1px solid var(--line);border-radius:14px;padding:16px}
+.sl{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;margin-bottom:14px;font-size:14px}
+.sl b{font-size:16px;color:var(--green-d);min-width:56px;text-align:right}
+.sl input{grid-column:1/-1;width:100%;accent-color:var(--green)}
+.res{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.res div{background:var(--soft);border-radius:10px;padding:10px 12px}
+.res small{display:block;font-size:12px;color:var(--muted)}
+.res b{font-size:17px}
+.rst{margin-top:10px;font:inherit;font-size:12px;border:1px solid var(--line);background:none;border-radius:99px;padding:4px 12px;cursor:pointer;color:var(--muted)}
+@media(max-width:700px){.res{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<style>
+/* Prijedlozi: kartica po prijedlogu s brojem, poljima i statusom razrade */
+.prop{display:flex;flex-direction:column;gap:10px}
+.prop-h{display:flex;gap:12px;align-items:flex-start}
+.prop-n{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;font-weight:700;font-size:17px;color:#16170f}
+.prop p{margin:0;font-size:13.5px}
+.prop .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:4px}
+.prop .ul{margin-top:2px}
+.prop .why{background:var(--soft);border-radius:10px;padding:10px 12px}
+.prop .warn{background:color-mix(in srgb,var(--orange) 16%,transparent);border:1px solid color-mix(in srgb,var(--orange) 45%,transparent);border-radius:10px;padding:10px 12px}
+.prop-f{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding-top:6px;border-top:1px solid var(--line)}
+.soon{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;background:var(--bar);color:var(--muted)}
+table.cmp td,table.cmp th{text-align:left;white-space:normal;min-width:120px;vertical-align:top}
+table.cmp td:first-child{min-width:170px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a class="logo" href="./"><span class="mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>Electrocoin<small>.eu</small></a>
+    <nav class="nav" aria-label="Stranice">
+      <a href="./"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Prijedlozi proširenja</a>
+      <a href="preuzimanje-klijenata"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21 20c0-2.6-1.6-4.8-4-5.6"/></svg>1. Preuzimanje klijenata</a>
+      <a href="paycek-trgovci"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>2. PayCek trgovci</a>
+      <a href="bankomati"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M9 17h6"/></svg>3. Kripto bankomati</a>
+      <a href="#vrh" class="on"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/></svg>4. Modul za banke</a>
+    </nav>
+    <div class="hr"></div>
+    <nav class="nav" aria-label="Ostalo">
+      <a href="#izvori"><svg viewBox="0 0 24 24"><path d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/></svg>Izvori</a>
+      <a href="https://electrocoin-case-study.mojaradnadomena.com/"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Case study</a>
+    </nav>
+  </aside>
+
+  <main class="main" id="vrh">
+    <header class="top">
+      <div class="crumb">Electrocoin.eu <span>/</span> <a href="./" style="text-decoration:none">Prijedlozi</a> <span>/</span> <b>4. Modul za banke</b></div>
+      <nav class="tabs" aria-label="Stranice"><a href="./">Prijedlozi</a><a href="preuzimanje-klijenata">1. Klijenti</a><a href="paycek-trgovci">2. PayCek</a><a href="bankomati">3. Bankomati</a><a href="#vrh" class="on">4. Banke</a></nav>
+      <span class="sp"></span>
+    </header>
+
+    <div class="grid">
+      <section class="card s12">
+        <div class="hero">
+          <div>
+            <div class="eyebrow">Prijedlog 4 · detaljna razrada</div>
+            <h1>Modul kripto poslovanja za banke</h1>
+            <p class="lead">Klijent banke kupuje, prodaje i drži kripto izravno u aplikaciji svoje banke, a Electrocoin u pozadini pruža uslugu. Electrocoin takav modul već nudi bankama<sup><a href="#s1">1</a></sup>, a nijedna hrvatska banka još ne nudi trgovanje kriptom<sup><a href="#s2">2</a></sup>.</p>
+            <p class="lead" style="margin-top:10px">Ciljamo dvije banke. <b>HPB</b>, jer je Hrvatska pošta njezin suvlasnik i jer HPB svoje usluge građanima prodaje kroz poštanske urede<sup><a href="#s3">3</a></sup><sup><a href="#s4">4</a></sup>, a Electrocoin s Poštom surađuje od 2019.<sup><a href="#s5">5</a></sup> <b>Zagrebačku banku</b>, jer je najveća banka u Hrvatskoj<sup><a href="#s6">6</a></sup>.</p>
+          </div>
+          <div class="art" aria-hidden="true" id="art"></div>
+        </div>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">1. Pokriva li MiCA licenca Electrocoina ovaj posao</p>
+        <div class="cap">Hanfa je 9. 4. 2026. Electrocoinu odobrila tri od deset usluga iz MiCA-e<sup><a href="#s7">7</a></sup><sup><a href="#s8">8</a></sup></div>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th>Usluga iz MiCA-e<sup><a href="#s9">9</a></sup></th><th>Što znači u modulu</th><th>Electrocoin ima?</th></tr></thead>
+            <tbody>
+              <tr><td>(a) Skrbništvo nad kriptoimovinom</td><td>Klijent banke drži kripto u aplikaciji.</td><td><b>Da</b><sup><a href="#s7">7</a></sup></td></tr>
+              <tr><td>(c) Zamjena kripta za novac</td><td>Kupnja i prodaja kripta za eure. Electrocoin je druga strana u kupnji i prodaji.</td><td><b>Da</b><sup><a href="#s7">7</a></sup></td></tr>
+              <tr><td>(d) Zamjena kripta za drugi kripto</td><td>Zamjena, npr. bitcoina za ether.</td><td><b>Da</b><sup><a href="#s7">7</a></sup></td></tr>
+              <tr><td>(j) Usluge prijenosa kriptoimovine</td><td>Slanje kripta na vanjski novčanik ili primanje s njega.</td><td><b>Ne.</b> Potrebno samo ako modul omogućuje slanje i primanje.</td></tr>
+              <tr><td>(e) Izvršavanje naloga za klijente</td><td>Electrocoin kao posrednik prosljeđuje naloge na druge burze.</td><td><b>Ne.</b> Potrebno samo ako Electrocoin ne bi bio druga strana u trgovini<sup><a href="#s10">10</a></sup>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="ul" style="margin-top:12px">
+          <li><span><b>Zaključak:</b> licenca već pokriva osnovni modul: kupnju, prodaju, zamjenu i čuvanje kripta, ako je Electrocoin druga strana u svakoj trgovini.</span></li>
+          <li><span><b>Za puni modul</b> sa slanjem i primanjem kripta treba od Hanfe tražiti proširenje licence na uslugu (j) prijenosa kriptoimovine.</span></li>
+          <li><span><b>Vrijedi i izvan Hrvatske:</b> licenca je prijavljena za 30 država EGP-a<sup><a href="#s11">11</a></sup>, a npr. Francuska je to i potvrdila<sup><a href="#s12">12</a></sup>.</span></li>
+          <li><span><b>Uloga banke:</b> MiCA ne dopušta da banka bude samo Electrocoinov zastupnik koji prima naloge<sup><a href="#s13">13</a></sup>. Zato banka ili samo daje pristup u svojoj aplikaciji (model A), ili sama pruža uslugu nakon obavijesti Hanfi (model B)<sup><a href="#s14">14</a></sup><sup><a href="#s15">15</a></sup>.</span></li>
+        </ul>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Dva modela suradnje s bankom</p>
+        <div class="cap">Oba se već koriste u Europi</div>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th></th><th>A. Electrocoin pruža uslugu, banka daje pristup</th><th>B. Banka pruža uslugu, Electrocoin je tehnološki partner</th></tr></thead>
+            <tbody>
+              <tr><td>Kako radi</td><td>Klijent u aplikaciji banke postaje Electrocoinov klijent. Electrocoin kupuje, prodaje i čuva kripto, a banci plaća naknadu za pristup.</td><td>Banka je pružatelj usluge prema klijentu. Electrocoin daje tehnologiju, cijene i čuvanje kripta za banku<sup><a href="#s16">16</a></sup>.</td></tr>
+              <tr><td>Što treba banka</td><td>Nema prijave Hanfi. Treba ugovor i provjeru Electrocoina kao dobavljača<sup><a href="#s17">17</a></sup>.</td><td>Obavijest Hanfi najmanje 40 radnih dana prije početka, s pravilima, sustavima i postupcima<sup><a href="#s14">14</a></sup><sup><a href="#s15">15</a></sup>. Uz to provjera dobavljača<sup><a href="#s17">17</a></sup>.</td></tr>
+              <tr><td>Što treba Electrocoin</td><td>Postojeća licenca dovoljna je za kupnju, prodaju i čuvanje<sup><a href="#s7">7</a></sup>.</td><td>Postojeća licenca dovoljna je za cijene i čuvanje<sup><a href="#s7">7</a></sup>. Odgovornost prema klijentu ostaje banci<sup><a href="#s16">16</a></sup>.</td></tr>
+              <tr><td>Primjer iz prakse</td><td>Raiffeisen banke u Austriji s Bitpandom: banka daje pristup, a Bitpanda joj plaća naknadu<sup><a href="#s18">18</a></sup>.</td><td>Njemačke zadružne banke (DZ Bank) i Sparkassen: banka ima odobrenje, a partner čuva kripto i daje cijene<sup><a href="#s19">19</a></sup><sup><a href="#s20">20</a></sup>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="why" style="margin-top:12px"><b>Prijedlog:</b> model A za pilot projekt s HPB-om, jer je najbrži i banka ne treba prijavu Hanfi. Banke ne žele držati kripto u vlastitoj bilanci, jer bi za njega morale imati puno više kapitala<sup><a href="#s21">21</a></sup>. U oba modela kripto ostaje kod Electrocoina, pa banka taj problem nema.</p>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Primjeri iz prakse</p>
+        <div class="cap">Banke koje su uvele kripto u svoju aplikaciju preko partnera ili same</div>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th>Banka i država</th><th>Partner</th><th>Od najave do pokretanja</th><th>Naknada klijentu</th><th>Rezultat</th></tr></thead>
+            <tbody>
+              <tr><td>PostFinance, Švicarska (poštanska banka)</td><td>Sygnum</td><td>Pokrenuto 21. 2. 2024.<sup><a href="#s22">22</a></sup></td><td>0,95 %<sup><a href="#s23">23</a></sup></td><td>Više od 36.000 kripto računa i 565.000 transakcija za dvije godine<sup><a href="#s24">24</a></sup>, oko 1,4 % od 2,5 mil. klijenata<sup><a href="#s25">25</a></sup></td></tr>
+              <tr><td>Raiffeisen NÖ-Wien, Austrija</td><td>Bitpanda</td><td>Manje od 10 mjeseci, do siječnja 2024.<sup><a href="#s26">26</a></sup></td><td>Kao kod Bitpande</td><td>Nije objavljeno. Banka dobiva naknadu od Bitpande<sup><a href="#s18">18</a></sup></td></tr>
+              <tr><td>Raiffeisen grupa, 11 zemalja srednje i istočne Europe, uključujući Hrvatsku</td><td>Bitpanda</td><td>Dogovor 23. 9. 2026., prve zemlje u prvoj polovici 2027.<sup><a href="#s27">27</a></sup></td><td>Nije objavljeno</td><td>Do 18 mil. klijenata u dosegu<sup><a href="#s28">28</a></sup></td></tr>
+              <tr><td>Zadružne banke (meinKrypto), Njemačka</td><td>Boerse Stuttgart Digital</td><td>Oko 15 mjeseci, od rujna 2024. do početka 2026.<sup><a href="#s29">29</a></sup><sup><a href="#s19">19</a></sup></td><td>Po cjeniku svake banke</td><td>Stotine korisnika po banci u prvim tjednima<sup><a href="#s30">30</a></sup></td></tr>
+              <tr><td>Sparkassen, Njemačka</td><td>DekaBank i Boerse Stuttgart Digital</td><td>Oko 15 mjeseci, od lipnja 2025. do listopada 2026.<sup><a href="#s20">20</a></sup></td><td>€0,99 po nalogu + razlika u cijeni<sup><a href="#s20">20</a></sup></td><td>Tek se pokreće</td></tr>
+              <tr><td>KBC (Bolero), Belgija</td><td>Vlastito rješenje</td><td>Oko 7,5 mjeseci, od srpnja 2025. do veljače 2026.<sup><a href="#s31">31</a></sup><sup><a href="#s32">32</a></sup></td><td>Nije objavljeno</td><td>Nije objavljeno</td></tr>
+              <tr><td>BBVA, Španjolska</td><td>Vlastito rješenje</td><td>Za sve građane od srpnja 2025.<sup><a href="#s33">33</a></sup></td><td>Nije objavljeno</td><td>Nije objavljeno</td></tr>
+              <tr><td>Openbank (Santander), Njemačka i Španjolska</td><td>Nije objavljeno</td><td>Pokrenuto 16. 9. 2025.<sup><a href="#s34">34</a></sup></td><td>1,49 %<sup><a href="#s34">34</a></sup></td><td>Nije objavljeno</td></tr>
+              <tr><td>N26, Austrija i EU</td><td>Bitpanda</td><td>Pokrenuto 20. 10. 2022.<sup><a href="#s35">35</a></sup></td><td>1,5 % bitcoin, 2,5 % ostalo<sup><a href="#s35">35</a></sup></td><td>Nije objavljeno</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="ul" style="margin-top:12px">
+          <li><span><b>U Hrvatskoj:</b> nijedna banka ne nudi trgovanje kriptom<sup><a href="#s2">2</a></sup>. Najbliže su Electrocoin i Hrvatska pošta, s kriptom u 55 poštanskih ureda od 2019.<sup><a href="#s5">5</a></sup>, te Zagrebačka banka, koja je 2026. ponudila certifikat vezan uz bitcoin<sup><a href="#s36">36</a></sup>.</span></li>
+          <li><span><b>Konkurencija dolazi:</b> Raiffeisen grupa s Bitpandom planira kripto u 11 zemalja, a među njima je i Hrvatska<sup><a href="#s28">28</a></sup>. Tko prvi uđe u hrvatske banke, ima prednost.</span></li>
+          <li><span><b>Podjela prihoda</b> između banke i partnera nije javna ni u jednom primjeru<sup><a href="#s18">18</a></sup><sup><a href="#s28">28</a></sup>.</span></li>
+        </ul>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Ciljne banke</p>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th></th><th>HPB</th><th>Zagrebačka banka</th></tr></thead>
+            <tbody>
+              <tr><td>Klijenti</td><td>~545.000, od toga ~160.000 koristi mHPB<sup><a href="#s4">4</a></sup></td><td>~1,1 mil. građana i 80.000 tvrtki<sup><a href="#s37">37</a></sup></td></tr>
+              <tr><td>Tržišni udio (imovina)</td><td>9,4 %, peta banka<sup><a href="#s4">4</a></sup></td><td>25,8 %, najveća banka<sup><a href="#s6">6</a></sup></td></tr>
+              <tr><td>Dobit 2025.</td><td>€58,8 mil. (Grupa)<sup><a href="#s38">38</a></sup></td><td>€510 mil.<sup><a href="#s39">39</a></sup></td></tr>
+              <tr><td>Vlasnik</td><td>Država 53,66 %, Hrvatska pošta 11,93 %<sup><a href="#s3">3</a></sup></td><td>UniCredit grupa<sup><a href="#s37">37</a></sup></td></tr>
+              <tr><td>Veza s Electrocoinom</td><td>HPB-ove usluge prodaju se u 1.016 poštanskih ureda<sup><a href="#s4">4</a></sup>, a Electrocoin već radi s Poštom<sup><a href="#s5">5</a></sup>.</td><td>Nema.</td></tr>
+              <tr><td>Stav o kriptu</td><td>Nema javnih planova za kripto. HPB 2026. preuzima Croatia banku<sup><a href="#s40">40</a></sup>.</td><td>UniCredit ne dopušta izravno ulaganje u kripto<sup><a href="#s41">41</a></sup>, ali od rujna 2026. traži tehnološkog partnera za kripto<sup><a href="#s42">42</a></sup>.</td></tr>
+              <tr><td>Tko odlučuje</td><td>Uprava HPB-a.</td><td>Vjerojatno UniCredit grupa u Milanu, ne Zagreb (procjena).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="why" style="margin-top:12px"><b>Zašto ima smisla:</b> 16 % Hrvata ima ili je imalo kripto, gotovo tri puta više od prosjeka EU od 6 %<sup><a href="#s43">43</a></sup>. Banke time zadržavaju klijente koji danas kripto kupuju negdje drugdje.</p>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">2. Vremenski okvir</p>
+        <div class="cap">Za jednu banku 4–10 mjeseci, za bankarsku grupu 15 i više mjeseci</div>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th>Faza</th><th>HPB, model A (procjena)</th><th>Na čemu se temelji</th></tr></thead>
+            <tbody>
+              <tr><td>Dogovor i provjera Electrocoina kao dobavljača</td><td>~2–3 mjeseca</td><td>Banka mora provjeriti dobavljača prije ugovora<sup><a href="#s17">17</a></sup>.</td></tr>
+              <tr><td>Povezivanje s aplikacijom banke i testiranje</td><td>~3–6 mjeseci</td><td>Gotova rješenja za banke uvode se za 2–6 mjeseci<sup><a href="#s44">44</a></sup>, a Bitpanda navodi manje od 6 mjeseci<sup><a href="#s45">45</a></sup>.</td></tr>
+              <tr><td>Pilot projekt i pokretanje za sve klijente</td><td>~1–2 mjeseca</td><td>Sparkassen su prvo testirali sa zaposlenicima, pa pokrenuli u valovima<sup><a href="#s20">20</a></sup>.</td></tr>
+              <tr><td><b>Ukupno</b></td><td><b>~6–10 mjeseci</b></td><td>RLB NÖ-Wien i Bitpanda: manje od 10 mjeseci<sup><a href="#s26">26</a></sup>. KBC: ~7,5 mjeseci<sup><a href="#s31">31</a></sup><sup><a href="#s32">32</a></sup>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="ul" style="margin-top:12px">
+          <li><span><b>Model B</b> dodaje obavijest Hanfi najmanje 40 radnih dana, oko dva mjeseca, prije početka<sup><a href="#s14">14</a></sup>.</span></li>
+          <li><span><b>Zagrebačka banka:</b> ako odlučuje UniCredit grupa, realno je 15 i više mjeseci, kao kod njemačkih bankarskih grupa<sup><a href="#s29">29</a></sup><sup><a href="#s19">19</a></sup><sup><a href="#s20">20</a></sup> (procjena).</span></li>
+          <li><span><b>Proširenje licence</b> na slanje i primanje kripta može teći usporedno i ne mora zaustaviti pokretanje osnovnog modula.</span></li>
+        </ul>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">3. Troškovi izgradnje, uvođenja i održavanja</p>
+        <div class="cap">Za Electrocoin. Sve brojke u ovom dijelu su procjena</div>
+        <ul class="ul">
+          <li><span><b>Polazište:</b> Electrocoin već ima kupnju, prodaju i čuvanje kripta, pa ne gradi od nule. Banci koja sve gradi sama to stoji $0,5–2 mil. i 12–24 mjeseca<sup><a href="#s44">44</a></sup>.</span></li>
+          <li><span><b>Trošak po zaposleniku:</b> Electrocoin je 2025. imao €1,18 mil. prihoda, €161.107 gubitka i 29 zaposlenih<sup><a href="#s46">46</a></sup>. Ukupni troškovi su dakle ~€1,34 mil., ili ~€46.000 po zaposleniku godišnje.</span></li>
+        </ul>
+        <div class="tw" style="margin-top:14px">
+          <table class="cmp">
+            <thead><tr><th>Stavka</th><th>Procjena</th><th>Izračun</th></tr></thead>
+            <tbody>
+              <tr><td>Izgradnja modula za banke (SDK i API)</td><td>~€90–210 tis. jednokratno</td><td>4–6 ljudi kroz 6–9 mjeseci × ~€46.000 godišnje</td></tr>
+              <tr><td>Uvođenje u pojedinu banku</td><td>~€25–50 tis. po banci</td><td>2–3 čovjeka kroz 3–4 mjeseca</td></tr>
+              <tr><td>Održavanje, podrška i usklađenost</td><td>~€90–140 tis. godišnje</td><td>2–3 čovjeka stalno</td></tr>
+              <tr><td>Proširenje licence na prijenos kripta</td><td>Nije javno</td><td>Pravni savjet i zahtjev Hanfi</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Procjena prometa i prihoda</p>
+        <div class="cap">Sve brojke u ovom dijelu su procjena, ne podatak</div>
+        <ul class="ul">
+          <li><span><b>Udio klijenata koji koriste modul:</b> kod PostFinancea, poštanske banke, kripto koristi ~1,4 % klijenata nakon dvije godine<sup><a href="#s24">24</a></sup><sup><a href="#s25">25</a></sup>. Zadano je 1,4 %.</span></li>
+          <li><span><b>Promet po korisniku:</b> javnih podataka za banke nema. Bitpanda je 2025. imala €371 mil. prihoda na 7,4 mil. korisnika<sup><a href="#s47">47</a></sup>, tj. ~€50 po korisniku. Uz naknadu ~1,5 % to je ~€3.300 prometa godišnje. Zadano je €3.000.</span></li>
+          <li><span><b>Naknada klijentu:</b> banke naplaćuju 0,95–2,5 %<sup><a href="#s23">23</a></sup><sup><a href="#s34">34</a></sup><sup><a href="#s35">35</a></sup>. Zadano je 1,5 %.</span></li>
+          <li><span><b>Electrocoinov udio naknade:</b> podjela između banke i partnera nije javna<sup><a href="#s18">18</a></sup>. Zadano je 50 %.</span></li>
+        </ul>
+        <div class="calc">
+          <label class="sl"><span>Udio klijenata koji koriste modul</span><b id="vU">1,4 %</b><input type="range" id="rU" min="0" max="10" step="0.1" value="1.4"></label>
+          <label class="sl"><span>Promet po korisniku godišnje</span><b id="vV">€3.000</b><input type="range" id="rV" min="0" max="20000" step="250" value="3000"></label>
+          <label class="sl"><span>Naknada klijentu</span><b id="vF">1,5 %</b><input type="range" id="rF" min="0" max="3" step="0.05" value="1.5"></label>
+          <label class="sl"><span>Electrocoinov udio naknade</span><b id="vS">50 %</b><input type="range" id="rS" min="0" max="100" step="5" value="50"></label>
+          <label class="sl"><span>Održavanje modula godišnje</span><b id="vM">€115.000</b><input type="range" id="rM" min="0" max="300000" step="5000" value="115000"></label>
+          <div class="tw" style="margin-top:14px">
+            <table class="cmp">
+              <thead><tr><th></th><th>HPB</th><th>Zagrebačka banka</th><th>Ukupno</th></tr></thead>
+              <tbody>
+                <tr><td>Korisnici modula</td><td id="u1"></td><td id="u2"></td><td id="u3"></td></tr>
+                <tr><td>Promet mjesečno</td><td id="pm1"></td><td id="pm2"></td><td id="pm3"></td></tr>
+                <tr><td>Promet godišnje</td><td id="pg1"></td><td id="pg2"></td><td id="pg3"></td></tr>
+                <tr><td>Electrocoinov prihod mjesečno</td><td id="rm1"></td><td id="rm2"></td><td id="rm3"></td></tr>
+                <tr><td>Electrocoinov prihod godišnje</td><td id="rg1"></td><td id="rg2"></td><td id="rg3"></td></tr>
+                <tr><td><b>Prihod − održavanje godišnje</b></td><td colspan="2"></td><td id="net"></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="why" id="oTxt" style="margin-top:12px"></p>
+          <button type="button" class="rst" id="rst">Vrati zadane vrijednosti</button>
+        </div>
+        <p class="note" style="margin-top:10px">Korisnici = klijenti banke × udio. Promet = korisnici × promet po korisniku. Electrocoinov prihod = promet × naknada × Electrocoinov udio, dakle neto prihod nakon dijela koji ide banci. Klijenti: HPB ~545.000<sup><a href="#s4">4</a></sup>, Zagrebačka banka ~1,1 mil. građana<sup><a href="#s37">37</a></sup>. Usporedba s Electrocoinom: neto prihod 2025. bio je €1,18 mil.<sup><a href="#s46">46</a></sup>, a promet procjenjujemo na oko €59 mil. godišnje<sup><a href="#s48">48</a></sup>.</p>
+        <script>
+        (() => {
+          const C = [545000, 1100000], ECP = 59e6, ECR = 1.18e6;
+          const $ = id => document.getElementById(id);
+          const n = (x, d = 0) => x.toLocaleString("hr-HR", { minimumFractionDigits: d, maximumFractionDigits: d });
+          const eur = x => (x < 0 ? "−" : "") + (Math.abs(x) >= 1e6 ? "€" + n(Math.abs(x) / 1e6, 2) + " mil." : "€" + n(Math.round(Math.abs(x) / 100) * 100));
+          const pc = x => n(x, x % 1 ? (Math.round(x * 100) % 10 ? 2 : 1) : 0) + " %";
+          function up() {
+            const u = +$("rU").value / 100, v = +$("rV").value, f = +$("rF").value / 100, sh = +$("rS").value / 100, m = +$("rM").value;
+            $("vU").textContent = pc(u * 100); $("vV").textContent = eur(v); $("vF").textContent = pc(f * 100); $("vS").textContent = n(sh * 100) + " %"; $("vM").textContent = eur(m);
+            const us = C.map(c => c * u), pg = us.map(x => x * v), rg = pg.map(p => p * f * sh);
+            us.push(us[0] + us[1]); pg.push(pg[0] + pg[1]); rg.push(rg[0] + rg[1]);
+            [1, 2, 3].forEach(i => {
+              $("u" + i).textContent = "~" + n(Math.round(us[i - 1] / 10) * 10);
+              $("pm" + i).textContent = "~" + eur(pg[i - 1] / 12); $("pg" + i).textContent = "~" + eur(pg[i - 1]);
+              $("rm" + i).textContent = "~" + eur(rg[i - 1] / 12); $("rg" + i).textContent = "~" + eur(rg[i - 1]);
+            });
+            const net = rg[2] - m;
+            $("net").textContent = "~" + eur(net); $("net").style.color = net < 0 ? "#c0392b" : "";
+            $("oTxt").innerHTML = "<b>Što to znači za Electrocoin:</b> promet kroz obje banke bio bi oko " + n(pg[2] / ECP * 100) + " % Electrocoinova godišnjeg prometa, a prihod oko " + n(rg[2] / ECR * 100) + " % njegova neto prihoda iz 2025. Nakon održavanja ostaje " + eur(net) + " godišnje, bez jednokratne izgradnje.";
+          }
+          ["rU","rV","rF","rS","rM"].forEach(i => $(i).addEventListener("input", up));
+          $("rst").addEventListener("click", () => { $("rU").value = 1.4; $("rV").value = 3000; $("rF").value = 1.5; $("rS").value = 50; $("rM").value = 115000; up(); });
+          up();
+        })();
+        </script>
+      </section>
+
+      <section class="card s12">
+        <p class="ttl">Na što paziti</p>
+        <ul class="ul">
+          <li><span>Banka će prije ugovora detaljno provjeriti Electrocoin kao dobavljača: sigurnost, kontinuitet poslovanja i izlaznu strategiju<sup><a href="#s17">17</a></sup>. Za to treba pripremiti dokumentaciju unaprijed.</span></li>
+          <li><span>Granicu između toga da banka samo daje pristup i toga da prima naloge treba pisano potvrditi s Hanfom<sup><a href="#s13">13</a></sup>.</span></li>
+          <li><span>Zagrebačka banka ponudila je bitcoin certifikat samo u poslovnicama, uz razgovor o primjerenosti<sup><a href="#s36">36</a></sup>. To znači da je oprezna, ali da je kripto zanima.</span></li>
+          <li><span>Electrocoin je 2025. poslovao s gubitkom<sup><a href="#s46">46</a></sup>, pa će banke pažljivo gledati njegovu financijsku stabilnost.</span></li>
+        </ul>
+      </section>
+
+    </div>
+
+    <section class="card" id="izvori">
+      <p class="ttl">Izvori</p>
+      <div class="cap">Brojke u tekstu označene su brojem izvora. Prikupljeno 11. listopada 2026.</div>
+      <ol class="src">
+        <li id="s1"><a href="https://fintech.hu/from-nuclear-engineer-to-crypto-pioneer-how-nikola-skoric-is-revolutionizing-european-finance/" target="_blank" rel="noopener">Fintech.hu: Electrocoinov modul za banke (31. 3. 2025.)</a></li>
+        <li id="s2"><a href="https://en.lider.media/2024/02/12/german-dz-bank-could-encourage-croatian-banks-to-venture-into-cryptocurrencies/" target="_blank" rel="noopener">Lider: HUB – hrvatske banke ne nude trgovanje kriptom (12. 2. 2024.)</a></li>
+        <li id="s3"><a href="https://www.hpb.hr/en/general-information-119/118" target="_blank" rel="noopener">HPB: vlasnička struktura (Hrvatska pošta 11,93 %)</a></li>
+        <li id="s4"><a href="https://www.hanfa.hr/SRPI/HR/2025/2025_03_28-1115917_pdf.pdf" target="_blank" rel="noopener">HPB: godišnje izvješće 2024. (klijenti, mHPB, poštanski uredi, tržišni udio)</a></li>
+        <li id="s5"><a href="https://www.tportal.hr/biznis/clanak/hrvatska-posta-se-odvazila-napraviti-ono-sto-jos-nije-napravila-niti-jedna-banka-primaju-i-kriptovalute-20191211" target="_blank" rel="noopener">Tportal: Hrvatska pošta i Electrocoin, kripto u 55 poštanskih ureda (11. 12. 2019.)</a></li>
+        <li id="s6"><a href="https://www.zaba.hr/home/o-nama" target="_blank" rel="noopener">Zagrebačka banka: o nama, tržišni udio 25,8 % imovine (31. 3. 2026.)</a></li>
+        <li id="s7"><a href="https://www.hanfa.hr/media/4ewnkzhp/04-electrocoin-casp.pdf" target="_blank" rel="noopener">HANFA: rješenje o odobrenju za Electrocoin d.o.o., MiCA (9. 4. 2026.)</a></li>
+        <li id="s8"><a href="https://hanfa.hr/news/hanfa-board-meeting-electrocoin-doo-becomes-the-first-company-to-obtain-hanfa-s-authorisation-to-operate-in-accordance-with-mica/" target="_blank" rel="noopener">HANFA: Electrocoin prvo društvo s odobrenjem prema MiCA-i (9. 4. 2026.)</a></li>
+        <li id="s9"><a href="https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32023R1114" target="_blank" rel="noopener">Uredba (EU) 2023/1114 (MiCA), čl. 3. – popis usluga</a></li>
+        <li id="s10"><a href="https://www.dudkowiak.com/blog/crypto-services-demystified-esma-explains-exchange-transmission-execution/" target="_blank" rel="noopener">Dudkowiak: ESMA o razlici između zamjene, prijenosa i izvršavanja naloga</a></li>
+        <li id="s11"><a href="https://paymentproviders.io/registry/mica/747800R015JVW1T4WZ71" target="_blank" rel="noopener">Kopija ESMA registra: Electrocoin, 3 od 10 usluga, prijavljen za 30 država EGP-a (17. 9. 2026.)</a></li>
+        <li id="s12"><a href="https://www.amf-france.org/en/warnings/white-lists/casp/electrocoin-ltd-services" target="_blank" rel="noopener">AMF (Francuska): Electrocoin na popisu ovlaštenih pružatelja od 9. 5. 2026.</a></li>
+        <li id="s13"><a href="https://www.esma.europa.eu/publications-data/questions-answers/2143" target="_blank" rel="noopener">ESMA Q&A 2143: MiCA ne poznaje zastupnike; zastupnik mora i sam biti pružatelj usluga</a></li>
+        <li id="s14"><a href="https://www.esma.europa.eu/publications-and-data/interactive-single-rulebook/mica/article-60-provision-crypto-asset-services" target="_blank" rel="noopener">MiCA čl. 60: kreditne institucije – obavijest najmanje 40 radnih dana prije početka</a></li>
+        <li id="s15"><a href="https://www.tportal.hr/biznis/clanak/za-kriptousluge-obvezna-licenca-i-upis-u-hanfine-registre-gradane-se-poziva-na-oprez-20260703" target="_blank" rel="noopener">Tportal: banke smiju pružati kripto usluge nakon obavijesti Hanfi (3. 7. 2026.)</a></li>
+        <li id="s16"><a href="https://www.springlex.eu/en/packages/mica/mica-regulation/article-73/" target="_blank" rel="noopener">MiCA čl. 73: eksternalizacija, pružatelj ostaje u potpunosti odgovoran</a></li>
+        <li id="s17"><a href="https://presencis.com/regulations/dora/article-28" target="_blank" rel="noopener">DORA čl. 28: upravljanje rizikom IKT dobavljača</a></li>
+        <li id="s18"><a href="https://www.raiffeisen.at/tirol/rlb/de/privatkunden/anlegen/bitpanda.html" target="_blank" rel="noopener">RLB Tirol: banka daje pristup, Bitpanda joj plaća naknadu</a></li>
+        <li id="s19"><a href="https://www.it-finanzmagazin.de/atruvia-dz-bank-volksbanken-meinkrypto-241867/" target="_blank" rel="noopener">IT-Finanzmagazin: DZ Bank meinKrypto, odobrenje krajem 2025. (24. 3. 2026.)</a></li>
+        <li id="s20"><a href="https://cryptoticker.io/en/sparkasse-crypto-trading-launch/" target="_blank" rel="noopener">Cryptoticker: Sparkassen, pokretanje od listopada 2026., €0,99 po nalogu</a></li>
+        <li id="s21"><a href="https://www.cliffordchance.com/insights/resources/blogs/talking-tech/en/articles/2024/05/new-rules-on-cryptoasset-exposures-of-eu-banks.html" target="_blank" rel="noopener">Clifford Chance: CRR3, ponder rizika 1.250 % i ograničenje 1 % osnovnog kapitala za kripto banke</a></li>
+        <li id="s22"><a href="https://www.postfinance.ch/de/ueber-uns/medien/newsroom/postfinance-lanciert-kryptoangebot.html" target="_blank" rel="noopener">PostFinance: pokretanje kripto ponude (20. 2. 2024.)</a></li>
+        <li id="s23"><a href="https://www.blick.ch/wirtschaft/beratung-gibt-es-keine-postfinance-mischt-jetzt-im-kryptohandel-mit-id19450649.html" target="_blank" rel="noopener">Blick: PostFinance 0,95 % po transakciji (19. 2. 2024.)</a></li>
+        <li id="s24"><a href="https://www.postfinance.ch/de/ueber-uns/medien/newsroom/postfinance-erweitert-kryptoangebot-sechs-kryptowaehrungen.html" target="_blank" rel="noopener">PostFinance: više od 36.000 kripto računa i 565.000 transakcija (17. 2. 2026.)</a></li>
+        <li id="s25"><a href="https://www.sygnum.com/news/postfinance-launches-crypto-partnering-with-sygnum/" target="_blank" rel="noopener">Sygnum: PostFinance i 2,5 mil. klijenata</a></li>
+        <li id="s26"><a href="https://www.boerse-express.com/news/articles/rlb-noe-wien-ermoeglicht-veranlagung-in-kryptowaehrungen-und-digitale-assets-bei-bitpanda-599363" target="_blank" rel="noopener">Börse Express: RLB NÖ-Wien i Bitpanda, integracija za manje od 10 mjeseci (25. 1. 2024.)</a></li>
+        <li id="s27"><a href="https://cointelegraph.com/news/raiffeisen-crypto-11-european-markets-bitpanda" target="_blank" rel="noopener">Cointelegraph: Raiffeisen, prva tržišta u prvoj polovici 2027. (23. 9. 2026.)</a></li>
+        <li id="s28"><a href="https://crypto.news/raiffeisens-crypto-deal-could-reach-18-million-customers-how-many-can-actually-trade/" target="_blank" rel="noopener">Crypto.news: Raiffeisen i Bitpanda u 11 zemalja, uključujući Hrvatsku (24. 9. 2026.)</a></li>
+        <li id="s29"><a href="https://www.crowdfundinsider.com/2024/09/230402-boerse-stuttgart-digital-provides-digital-assets-infrastructure-to-dz-bank-enabling-regulated-crypto-services/" target="_blank" rel="noopener">Crowdfund Insider: Boerse Stuttgart Digital i DZ Bank (rujan 2024.)</a></li>
+        <li id="s30"><a href="https://de.finance.yahoo.com/nachrichten/erste-genobanken-holen-hunderte-kunden-053000694.html" target="_blank" rel="noopener">Bloomberg/Yahoo: prve zadružne banke dobile stotine kripto korisnika (24. 6. 2026.)</a></li>
+        <li id="s31"><a href="https://thedefiant.io/news/tradfi-and-fintech/belgiums-kbc-bank-300-billion-assets-to-launch-bitcoin-ether-trading-on-bolero-086b574a" target="_blank" rel="noopener">The Defiant: KBC najavio kripto (2. 7. 2025.)</a></li>
+        <li id="s32"><a href="https://newsroom.kbc.com/as-of-mid-february-kbc-will-be-the-first-belgian-bank-to-offer-the-possibility-to-buy-and-sell-crypto-through-bolero" target="_blank" rel="noopener">KBC: kripto kroz Bolero od veljače 2026.</a></li>
+        <li id="s33"><a href="https://www.bbva.com/en/innovation/bbva-launches-its-bitcoin-and-ether-trading-and-custody-service-for-all-retail-customers-in-spain/" target="_blank" rel="noopener">BBVA: kripto za sve građane u Španjolskoj (4. 7. 2025.)</a></li>
+        <li id="s34"><a href="https://www.santander.com/en/press-room/press-releases/2025/09/openbank-launches-cryptocurrency-trading-service" target="_blank" rel="noopener">Santander: Openbank uvodi kripto, 1,49 % po kupnji ili prodaji (16. 9. 2025.)</a></li>
+        <li id="s35"><a href="https://www.cnbc.com/2022/10/20/europes-9-billion-digital-bank-n26-launches-crypto-trading-service-amid-bear-market.html" target="_blank" rel="noopener">CNBC: N26 i Bitpanda, 1,5 % za bitcoin i 2,5 % za ostale (20. 10. 2022.)</a></li>
+        <li id="s36"><a href="https://www.tportal.hr/biznis/clanak/zagrebacka-banka-gradanima-nudi-priliku-za-zaradu-uz-prinos-do-cak-50-posto-20260615" target="_blank" rel="noopener">Tportal: Zaba nudi certifikat vezan uz bitcoin (15. 6. 2026.)</a></li>
+        <li id="s37"><a href="https://en.wikipedia.org/wiki/Zagreba%C4%8Dka_banka" target="_blank" rel="noopener">Wikipedia: Zagrebačka banka, 1,1 mil. građana i 80.000 tvrtki</a></li>
+        <li id="s38"><a href="https://www.hpb.hr/UserDocsImages/Financijska-izvjesca/26/Revidirani%20financijski%20izvje%C5%A1taji%20HPB%20Grupe%20-%2031.12.2025.pdf" target="_blank" rel="noopener">HPB Grupa: revidirani financijski izvještaji 2025.</a></li>
+        <li id="s39"><a href="https://lidermedia.hr/financije/zaba-u-2025-ostvarila-849-milijuna-eura-prihoda-i-13-3-posto-vecu-dobit/" target="_blank" rel="noopener">Lider: Zaba u 2025. – dobit €510 mil. (18. 2. 2026.)</a></li>
+        <li id="s40"><a href="https://www.tportal.hr/biznis/clanak/hpb-preuzima-croatia-banku-20260304" target="_blank" rel="noopener">Tportal: HPB preuzima Croatia banku (4. 3. 2026.)</a></li>
+        <li id="s41"><a href="https://www.unicreditbulbank.bg/en/about-us/governance/about-unicredit/unicredits-view-on-investing-in-cryptocurrencies/" target="_blank" rel="noopener">UniCredit: službeni stav o ulaganju u kripto</a></li>
+        <li id="s42"><a href="https://cointelegraph.com/news/unicredit-infrastructure-partners-crypto-trading-custody" target="_blank" rel="noopener">Cointelegraph/Bloomberg: UniCredit traži tehnološkog partnera za kripto (11. 9. 2026.)</a></li>
+        <li id="s43"><a href="https://edufiacademics.edufinet.com/wp-content/uploads/2023/11/Monitoring_the_level_of_financial_literacy.pdf" target="_blank" rel="noopener">Flash Eurobarometar 525: 16 % Hrvata ima ili je imalo kripto, prosjek EU 6 % (2023.)</a></li>
+        <li id="s44"><a href="https://www.liminalcustody.com/blog/digital-asset-custody-for-banks-in-house-vs-outsourced-vs-white-label/" target="_blank" rel="noopener">Liminal: gotovo rješenje za banke 2–6 mjeseci, vlastiti razvoj 12–24 mjeseca (21. 7. 2026.)</a></li>
+        <li id="s45"><a href="https://bitpanda.com/en/tech/n26-success-story" target="_blank" rel="noopener">Bitpanda Technology: pokretanje kod partnera za manje od 6 mjeseci</a></li>
+        <li id="s46"><a href="https://infobiz.fina.hr/public/OIB-45841695639/electrocoin-d-o-o" target="_blank" rel="noopener">FINA Info.BIZ: Electrocoin d.o.o. – prihod €1,18 mil., gubitak €161.107, 29 zaposlenih (2025.)</a></li>
+        <li id="s47"><a href="https://www.bitbase.com/news/raiffeisens-crypto-deal-could-reach-18-million-customers-how-many-can-actually-trade" target="_blank" rel="noopener">Bitbase: Bitpanda 2025. – €371 mil. prihoda i 7,4 mil. korisnika</a></li>
+        <li id="s48"><a href="https://electrocoin-case-study.mojaradnadomena.com/#onama" target="_blank" rel="noopener">Electrocoin case study: procjena prometa 2025. (~€59 mil.)</a></li>
+      </ol>
+    </section>
+  </main>
+</div>
+<script>
+(() => {
+  // Klik na broj izvora: skrolaj do izvora i istakni ga
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a[href^='#s'],a[href='#izvori']");
+    if (!a) return;
+    const t = document.getElementById(a.getAttribute("href").slice(1));
+    if (!t) return;
+    e.preventDefault();
+    t.scrollIntoView({ behavior: "smooth", block: "center" });
+    document.querySelectorAll(".src li.hl").forEach(x => x.classList.remove("hl"));
+    if (t.tagName === "LI") t.classList.add("hl");
+  });
+  // Dekorativni blokovi kao na glavnoj stranici
+  const B = "e e e e y e e e e l y y e e l g g l e l g g g o l g g g g g".split(" ");
+  document.getElementById("art").innerHTML = B.map(c => `<i class="${c === "g" ? "" : c}"></i>`).join("");
+})();
+</script>
+</body>
+</html>
