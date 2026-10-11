@@ -445,13 +445,13 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
         <p class="ttl">Procjena prometa i prihoda</p>
         <div class="cap">Sve brojke u ovom dijelu su procjena, ne podatak</div>
         <ul class="ul">
-          <li><span><b>Udio klijenata koji koriste modul:</b> kod PostFinancea, poštanske banke, kripto koristi ~1,4 % klijenata nakon dvije godine<sup><a href="#s24">24</a></sup><sup><a href="#s25">25</a></sup>. Zadano je 1,4 %.</span></li>
+          <li><span><b>Udio klijenata koji koriste modul:</b> kod PostFinancea, poštanske banke, kripto koristi ~1,4 % klijenata nakon dvije godine<sup><a href="#s24">24</a></sup><sup><a href="#s25">25</a></sup>. Zadano je 2 %, jer 16 % Hrvata ima ili je imalo kripto, gotovo tri puta više od prosjeka EU<sup><a href="#s43">43</a></sup>.</span></li>
           <li><span><b>Promet po korisniku:</b> javnih podataka za banke nema. Bitpanda je 2025. imala €371 mil. prihoda na 7,4 mil. korisnika<sup><a href="#s47">47</a></sup>, tj. ~€50 po korisniku. Uz naknadu ~1,5 % to je ~€3.300 prometa godišnje. Zadano je €3.000.</span></li>
           <li><span><b>Naknada klijentu:</b> banke naplaćuju 0,95–2,5 %<sup><a href="#s23">23</a></sup><sup><a href="#s34">34</a></sup><sup><a href="#s35">35</a></sup>. Zadano je 1,5 %.</span></li>
           <li><span><b>Electrocoinov udio naknade:</b> podjela između banke i partnera nije javna<sup><a href="#s18">18</a></sup>. Zadano je 50 %.</span></li>
         </ul>
         <div class="calc">
-          <label class="sl"><span>Udio klijenata koji koriste modul</span><b id="vU">1,4 %</b><input type="range" id="rU" min="0" max="10" step="0.1" value="1.4"></label>
+          <label class="sl"><span>Udio klijenata koji koriste modul</span><b id="vU">2 %</b><input type="range" id="rU" min="0" max="10" step="0.1" value="2"></label>
           <label class="sl"><span>Promet po korisniku godišnje</span><b id="vV">€3.000</b><input type="range" id="rV" min="0" max="20000" step="250" value="3000"></label>
           <label class="sl"><span>Naknada klijentu</span><b id="vF">1,5 %</b><input type="range" id="rF" min="0" max="3" step="0.05" value="1.5"></label>
           <label class="sl"><span>Electrocoinov udio naknade</span><b id="vS">50 %</b><input type="range" id="rS" min="0" max="100" step="5" value="50"></label>
@@ -495,7 +495,7 @@ table.cmp td:first-child{min-width:170px;font-weight:600}
             $("oTxt").innerHTML = "<b>Što to znači za Electrocoin:</b> promet kroz obje banke bio bi oko " + n(pg[2] / ECP * 100) + " % Electrocoinova godišnjeg prometa, a prihod oko " + n(rg[2] / ECR * 100) + " % njegova neto prihoda iz 2025. Nakon održavanja ostaje " + eur(net) + " godišnje, bez jednokratne izgradnje.";
           }
           ["rU","rV","rF","rS","rM"].forEach(i => $(i).addEventListener("input", up));
-          $("rst").addEventListener("click", () => { $("rU").value = 1.4; $("rV").value = 3000; $("rF").value = 1.5; $("rS").value = 50; $("rM").value = 115000; up(); });
+          $("rst").addEventListener("click", () => { $("rU").value = 2; $("rV").value = 3000; $("rF").value = 1.5; $("rS").value = 50; $("rM").value = 115000; up(); });
           up();
         })();
         </script>
