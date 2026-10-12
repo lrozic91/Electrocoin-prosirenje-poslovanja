@@ -1,0 +1,265 @@
+<title>Electrocoin za kripto ekipu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: namjerno jedan, tamni svijet. Žuta pozornica 16:9 s naljepnicama i udarnim riječima, ispod scenarij za Reels i tekstovi. */
+:root{
+  --ink:#121309; --ink-2:#1d1f12; --line:#34372a;
+  --paper:#f4f1e4; --dim:#a9ab97;
+  --yolk:#f2e63a; --lime:#8cc63f; --pink:#ff4fa3; --tang:#f6a94a; --sky:#6fd3ff;
+  --f-d:"Bricolage Grotesque",ui-sans-serif,system-ui,"Segoe UI",sans-serif;
+  --f-m:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ink);color:var(--paper);font-family:var(--f-d);font-size:15.5px;line-height:1.55;padding-block:28px 48px;padding-inline:16px}
+.wrap{max-width:980px;margin:0 auto;display:grid;gap:30px}
+.eyebrow{font-family:var(--f-m);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--lime)}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.02;margin:6px 0 0;font-weight:800;letter-spacing:-.03em;text-wrap:balance}
+h1 em{font-style:normal;color:var(--yolk)}
+h2{font-size:22px;margin:0;font-weight:800;letter-spacing:-.02em}
+p{margin:0}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:14px}
+.lede{color:var(--dim);max-width:40ch}
+
+/* ---------- stage ---------- */
+.player{display:grid;gap:10px}
+.stage{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:22px;overflow:hidden;background:var(--yolk);color:var(--ink);container-type:inline-size;border:3px solid var(--ink-2)}
+.scene{position:absolute;inset:0;padding:6cqw 7cqw;display:flex;flex-direction:column;justify-content:center;gap:1.6cqw;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.scene.on{opacity:1;visibility:visible}
+.mono{font-family:var(--f-m);font-weight:700;font-size:1.8cqw;letter-spacing:.06em;text-transform:uppercase}
+.huge{font-weight:800;font-size:8.6cqw;line-height:.92;letter-spacing:-.045em;text-wrap:balance}
+.big{font-weight:800;font-size:5.4cqw;line-height:1;letter-spacing:-.035em;text-wrap:balance;max-width:20ch}
+.sub{font-size:2.4cqw;font-weight:500;max-width:40ch}
+.sticker{position:absolute;font-family:var(--f-m);font-weight:700;text-transform:uppercase;border:.35cqw solid var(--ink);border-radius:1.2cqw;padding:.8cqw 1.4cqw;font-size:1.7cqw;box-shadow:.6cqw .6cqw 0 var(--ink);letter-spacing:.04em}
+
+/* s1: error screen */
+.s1{background:var(--ink);color:var(--paper)}
+.s1 .err{color:var(--pink)}
+.s1 .huge{color:var(--paper)}
+.s1 .huge s{text-decoration-thickness:.9cqw;text-decoration-color:var(--pink)}
+.s1 .term{font-family:var(--f-m);font-size:1.8cqw;color:var(--dim)}
+.s1 .term b{color:var(--pink)}
+.cursor{display:inline-block;width:1.1cqw;height:2.2cqw;background:var(--lime);vertical-align:-.3cqw;margin-left:.4cqw}
+
+/* s2: 12 of 17 */
+.s2{background:var(--pink)}
+.coins{display:flex;flex-wrap:wrap;gap:1.2cqw;max-width:86cqw}
+.coins b{width:3.8cqw;height:3.8cqw;border-radius:50%;border:.35cqw solid var(--ink);background:var(--yolk);display:block}
+.coins b.stay{background:var(--lime)}
+.s2 .huge span{color:var(--yolk);-webkit-text-stroke:.25cqw var(--ink)}
+
+/* s3: we stayed */
+.s3 .huge{font-size:11cqw}
+.badge{position:absolute;right:6cqw;top:8cqw;transform:rotate(-8deg);width:23cqw;height:23cqw;border-radius:50%;background:var(--lime);border:.4cqw solid var(--ink);display:grid;place-items:center;text-align:center;box-shadow:.8cqw .8cqw 0 var(--ink)}
+.badge div{font-weight:800;font-size:2.3cqw;line-height:1.05;letter-spacing:-.02em;padding:2cqw}
+.badge div small{display:block;font-family:var(--f-m);font-size:1.4cqw;font-weight:700;letter-spacing:.06em;margin-top:.8cqw}
+
+/* s4: slam words */
+.s4{background:var(--ink);color:var(--paper);align-items:flex-start;gap:0}
+.slam{font-weight:800;font-size:12cqw;line-height:.9;letter-spacing:-.05em}
+.slam:nth-child(1){color:var(--yolk)}.slam:nth-child(2){color:var(--pink)}.slam:nth-child(3){color:var(--lime)}
+.s4 .sticker{right:6cqw;bottom:7cqw;background:var(--sky);color:var(--ink);transform:rotate(6deg);border-color:var(--paper);box-shadow:.6cqw .6cqw 0 var(--paper)}
+
+/* s5: pay with crypto */
+.s5{background:var(--lime)}
+.tok{display:flex;gap:1.2cqw;flex-wrap:wrap}
+.tok span{font-family:var(--f-m);font-weight:700;font-size:2.1cqw;background:var(--ink);color:var(--yolk);border-radius:99px;padding:.7cqw 1.8cqw}
+.marq{position:absolute;left:0;right:0;bottom:4cqw;overflow:hidden;border-block:.35cqw solid var(--ink);background:var(--yolk);padding:1cqw 0}
+.marq div{display:flex;gap:4cqw;white-space:nowrap;width:max-content;font-weight:800;font-size:3cqw;letter-spacing:-.02em}
+.marq i{font-style:normal;color:var(--pink)}
+
+/* s6: cta */
+.s6{background:var(--yolk)}
+.s6 .huge{font-size:9.6cqw}
+.cta{display:flex;gap:1.6cqw;flex-wrap:wrap;align-items:center}
+.cta b{font-family:var(--f-m);font-size:2.6cqw;background:var(--ink);color:var(--yolk);padding:1.2cqw 2.2cqw;border-radius:99px}
+.s6 .sticker{right:7cqw;top:7cqw;background:var(--pink);transform:rotate(-8deg)}
+.s6 .sticker.two{top:auto;bottom:8cqw;right:12cqw;background:var(--sky);transform:rotate(5deg)}
+
+/* motion: base styles are the visible end state */
+@keyframes slamIn{0%{opacity:0;transform:scale(2.4) rotate(-6deg)}60%{opacity:1;transform:scale(.94) rotate(1deg)}100%{transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(4cqw)}}
+@keyframes drop{to{transform:translateY(60cqw) rotate(200deg);opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes wob{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(-3deg) scale(1.06)}}
+@keyframes blink{50%{opacity:0}}
+@keyframes glitch{0%,100%{transform:none}20%{transform:translate(-.6cqw,.3cqw)}40%{transform:translate(.6cqw,-.3cqw)}60%{transform:translate(-.3cqw,0)}}
+@keyframes roll{to{transform:translateX(-50%)}}
+@keyframes stick{from{opacity:0;transform:scale(0) rotate(-40deg)}}
+.on .a{animation:up .55s cubic-bezier(.2,.9,.3,1.2) both}
+.on .d1{animation-delay:.1s}.on .d2{animation-delay:.4s}.on .d3{animation-delay:.75s}.on .d4{animation-delay:1.1s}.on .d5{animation-delay:1.5s}
+.on .err{animation:glitch .3s 4 .3s}
+.on .cursor{animation:blink .9s steps(1) infinite}
+.on .coins b:not(.stay){animation:drop 1s cubic-bezier(.5,0,.9,.4) both;animation-delay:calc(var(--i) * 90ms + 1.3s)}
+.on .badge{animation:stick .6s .6s cubic-bezier(.3,1.6,.5,1) both}
+.on .badge{animation:stick .6s .6s cubic-bezier(.3,1.6,.5,1) both,wob 2.6s 1.3s ease-in-out infinite}
+.on .slam{animation:slamIn .45s cubic-bezier(.2,.9,.3,1) both}
+.on .slam:nth-child(2){animation-delay:.7s}.on .slam:nth-child(3){animation-delay:1.4s}
+.on .s4 .sticker{animation:stick .5s 2.2s both}
+.on .marq div{animation:roll 9s linear infinite}
+.on .s6 .sticker{animation:stick .5s 1.1s cubic-bezier(.3,1.6,.5,1) both,wob 2.4s 1.6s ease-in-out infinite}
+.on .s6 .sticker.two{animation:stick .5s 1.5s cubic-bezier(.3,1.6,.5,1) both}
+.paused .stage *, .paused .stage *::after{animation-play-state:paused!important}
+
+/* controls */
+.ctrl{display:flex;align-items:center;gap:10px}
+.ctrl button{font:800 13px var(--f-d);background:var(--yolk);color:var(--ink);border:0;border-radius:999px;padding:8px 15px;cursor:pointer;flex:0 0 auto}
+.ctrl button.ghost{background:transparent;color:var(--paper);border:1px solid var(--line)}
+.ctrl button:focus-visible,.segs button:focus-visible,.copy:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+.segs{flex:1;display:flex;gap:4px;min-width:0}
+.segs button{flex:1;height:22px;border:0;background:transparent;padding:0;cursor:pointer;position:relative}
+.segs button::before{content:"";position:absolute;left:0;right:0;top:9px;height:4px;border-radius:2px;background:var(--line)}
+.segs button::after{content:"";position:absolute;left:0;top:9px;height:4px;border-radius:2px;background:var(--yolk);width:calc(var(--p,0) * 100%)}
+.scene-name{font-family:var(--f-m);font-size:12px;color:var(--dim);min-height:1.5em}
+
+section{display:grid;gap:14px}
+.reel{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.shot{background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:6px;align-content:start;min-width:0}
+.shot .t{font-family:var(--f-m);font-size:11.5px;color:var(--lime);font-variant-numeric:tabular-nums}
+.shot b{font-size:16px;line-height:1.2}
+.shot p{color:var(--dim);font-size:14px}
+.ads{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ad{background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:10px;align-content:start;min-width:0}
+.ad.wide{grid-column:1/-1}
+.ad header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.ad .ch{font-family:var(--f-m);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--pink)}
+.ad pre{margin:0;white-space:pre-wrap;font:15px/1.6 var(--f-d)}
+.copy{font:800 12px var(--f-d);border:1px solid var(--line);background:transparent;color:var(--paper);border-radius:999px;padding:6px 12px;cursor:pointer}
+.note{font-size:13.5px;color:var(--dim);max-width:75ch}
+.note a{color:inherit}
+@media (max-width:700px){.reel{grid-template-columns:1fr 1fr}.ads{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.stage *, .stage *::after{animation:none!important}.scene{transition:none}.coins b:not(.stay){opacity:.25}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <div class="eyebrow">Marketing · varijanta B · kripto ekipa</div>
+      <h1>Tvoja mjenjačnica je ispala. <em>Mi smo ostali.</em></h1>
+    </div>
+    <p class="lede">Spot od 30 sekundi za Instagram, TikTok i YouTube Shorts. Ispod su scenarij po kadrovima i tekstovi za objave.</p>
+  </div>
+
+  <div class="player" id="pB">
+    <div class="stage" role="region" aria-label="Animirani promo Electrocoina za kripto korisnike, 6 kadrova">
+      <div class="scene s1 on" data-d="4600" data-name="1 · Error">
+        <div class="mono err a d1">Error 404 · licenca nije pronađena</div>
+        <div class="huge a d2">Tvoja kripto mjenjačnica <s>radi</s> ne radi.</div>
+        <div class="term a d4">&gt; status: <b>offline</b> od 1. 7. 2026.<span class="cursor"></span></div>
+      </div>
+
+      <div class="scene s2" data-d="5000" data-name="2 · 12 od 17">
+        <div class="mono a d1">Pravila MiCA · 1. srpnja 2026.</div>
+        <div class="huge a d1"><span>12 od 17</span><br>je ispalo iz igre.</div>
+        <div class="coins" aria-hidden="true">
+          <b class="stay"></b><b class="stay"></b><b class="stay"></b><b class="stay"></b><b class="stay"></b>
+          <b style="--i:0"></b><b style="--i:3"></b><b style="--i:1"></b><b style="--i:5"></b><b style="--i:2"></b><b style="--i:7"></b><b style="--i:4"></b><b style="--i:9"></b><b style="--i:6"></b><b style="--i:11"></b><b style="--i:8"></b><b style="--i:10"></b>
+        </div>
+      </div>
+
+      <div class="scene s3" data-d="4600" data-name="3 · Mi smo ostali">
+        <div class="huge a d1">Mi smo<br>ostali.</div>
+        <div class="sub a d3">Electrocoin. Prvi u Hrvatskoj s MiCA licencom.</div>
+        <div class="badge" aria-hidden="true"><div>Licenca Nº 1 u HR<small>9. 4. 2026.</small></div></div>
+      </div>
+
+      <div class="scene s4" data-d="4400" data-name="4 · Kupi, prodaj, čuvaj">
+        <div class="slam">KUPI.</div>
+        <div class="slam">PRODAJ.</div>
+        <div class="slam">ČUVAJ.</div>
+        <div class="sticker">pod nadzorom Hanfe</div>
+      </div>
+
+      <div class="scene s5" data-d="5600" data-name="5 · Plati kriptom">
+        <div class="big a d1">Plati kriptom. Oni dobiju eure.</div>
+        <div class="tok a d3"><span>BTC</span><span>ETH</span><span>USDT</span><span>USDC</span><span>EURC</span></div>
+        <div class="marq" aria-hidden="true"><div>
+          <span>Tifon <i>✦</i></span><span>Hrvatska pošta <i>✦</i></span><span>Konzum web <i>✦</i></span><span>LAQO <i>✦</i></span><span>400+ trgovaca <i>✦</i></span>
+          <span>Tifon <i>✦</i></span><span>Hrvatska pošta <i>✦</i></span><span>Konzum web <i>✦</i></span><span>LAQO <i>✦</i></span><span>400+ trgovaca <i>✦</i></span>
+        </div></div>
+      </div>
+
+      <div class="scene s6" data-d="5000" data-name="6 · Prijeđi">
+        <div class="huge a d1">Prijeđi.<br>Bez drame.</div>
+        <div class="cta a d3"><b>electrocoin.eu</b></div>
+        <div class="sticker">Made in HR</div>
+        <div class="sticker two">MiCA ✓</div>
+      </div>
+    </div>
+
+    <div class="ctrl">
+      <button type="button" id="pB-play" aria-pressed="false">Pauza</button>
+      <div class="segs" id="pB-segs" aria-label="Kadrovi"></div>
+      <button type="button" class="ghost" id="pB-replay">Ispočetka</button>
+    </div>
+    <div class="scene-name" id="pB-name" aria-live="polite"></div>
+  </div>
+
+  <section>
+    <h2>Scenarij za Reels / TikTok (9:16)</h2>
+    <div class="reel">
+      <div class="shot"><span class="t">0–4 s</span><b>„Error 404”</b><p>Mobitel, aplikacija stare mjenjačnice se ne otvara. Natpis: „licenca nije pronađena”.</p></div>
+      <div class="shot"><span class="t">4–9 s</span><b>12 od 17 je ispalo</b><p>Novčići padaju s ekrana, ostaje ih pet. Tekst: „Pravila MiCA, 1. 7. 2026.”</p></div>
+      <div class="shot"><span class="t">9–14 s</span><b>Mi smo ostali</b><p>Naljepnica „Licenca Nº 1 u HR” lupi na ekran.</p></div>
+      <div class="shot"><span class="t">14–18 s</span><b>Kupi. Prodaj. Čuvaj.</b><p>Tri riječi u ritmu glazbe, svaka u drugoj boji.</p></div>
+      <div class="shot"><span class="t">18–24 s</span><b>Plati kriptom</b><p>Brzi rezovi: Tifon, plaćanje kriptom na blagajni. Trgovac dobiva eure.</p></div>
+      <div class="shot"><span class="t">24–30 s</span><b>Prijeđi. Bez drame.</b><p>electrocoin.eu i naljepnica „Made in HR”.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Tekstovi za objave</h2>
+    <div class="ads">
+      <article class="ad wide">
+        <header><span class="ch">Instagram / TikTok opis</span><button class="copy" type="button">Kopiraj</button></header>
+<pre>Mjenjačnica ti se ne otvara od 1. srpnja? Nisi jedini. 12 od 17 kripto tvrtki u Hrvatskoj nije dobilo MiCA licencu 🫠
+
+Electrocoin je dobio prvu. Kupi, prodaj i čuvaj kripto kod nekoga koga nadzire Hanfa, a kriptom plati i na Tifonu ili u Konzumovoj web trgovini.
+
+Prijeđi bez drame 👉 electrocoin.eu
+
+#kripto #bitcoin #MiCA #hrvatska</pre>
+      </article>
+      <article class="ad">
+        <header><span class="ch">Story · 3 kartice</span><button class="copy" type="button">Kopiraj</button></header>
+<pre>1. Tvoja mjenjačnica: offline.
+2. Electrocoin: prva MiCA licenca u HR.
+3. Prijeđi → electrocoin.eu</pre>
+      </article>
+      <article class="ad">
+        <header><span class="ch">Push / banner</span><button class="copy" type="button">Kopiraj</button></header>
+<pre>Ostao si bez mjenjačnice? Mi imamo licencu. Prijeđi na Electrocoin.</pre>
+      </article>
+    </div>
+  </section>
+
+  <p class="note">Za korisnike tvrtki koje su ostale bez licence (prijedlog 1) i za mlađu publiku buduće aplikacije (prijedlog 5). Spot ne obećava ništa što Electrocoin danas nema, npr. slanje kripta na vanjske novčanike, jer za to još treba proširenje licence. Koje kriptovalute Electrocoin nudi za kupnju, treba provjeriti prije objave; BTC i ETH su u spotu kao primjer, a USDT, USDC i EURC PayCek prima. Izvori su na <a href="https://electrocoin-prosirenje-poslovanja.mojaradnadomena.com" target="_blank" rel="noopener">stranici s prijedlozima</a>.</p>
+</div>
+
+<script>
+function makePlayer(id){
+  const root=document.getElementById(id), scenes=[...root.querySelectorAll('.scene')];
+  const segBox=document.getElementById(id+'-segs'), play=document.getElementById(id+'-play'), name=document.getElementById(id+'-name');
+  const segs=scenes.map((s,k)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Kadar '+(k+1));b.onclick=()=>{show(k);if(!playing)toggle();};segBox.appendChild(b);return b;});
+  let i=0, t0=performance.now(), elapsed=0, playing=true;
+  function show(n){scenes.forEach((s,k)=>s.classList.toggle('on',k===n));i=n;elapsed=0;t0=performance.now();name.textContent=scenes[n].dataset.name;}
+  function toggle(){playing=!playing;root.classList.toggle('paused',!playing);play.textContent=playing?'Pauza':'Pokreni';play.setAttribute('aria-pressed',String(!playing));if(playing)t0=performance.now()-elapsed;}
+  play.onclick=toggle;
+  document.getElementById(id+'-replay').onclick=()=>{show(0);if(!playing)toggle();};
+  function tick(now){
+    if(playing){elapsed=now-t0;const d=+scenes[i].dataset.d;if(elapsed>=d){show((i+1)%scenes.length);}}
+    const d=+scenes[i].dataset.d;
+    segs.forEach((b,k)=>b.style.setProperty('--p',k<i?1:k===i?Math.min(elapsed/d,1):0));
+    requestAnimationFrame(tick);
+  }
+  show(0);requestAnimationFrame(tick);
+}
+makePlayer('pB');
+document.querySelectorAll('.copy').forEach(btn=>btn.addEventListener('click',()=>{
+  const pre=btn.closest('.ad').querySelector('pre');
+  const done=()=>{btn.textContent='Kopirano';setTimeout(()=>btn.textContent='Kopiraj',1600);};
+  const fallback=()=>{const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Označeno, kopiraj s Ctrl+C';};
+  try{navigator.clipboard.writeText(pre.textContent).then(done,fallback);}catch(e){fallback();}
+}));
+</script>
