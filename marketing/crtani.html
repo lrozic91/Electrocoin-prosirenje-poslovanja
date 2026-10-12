@@ -1,0 +1,398 @@
+<title>Coinko i Ana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: crtani film 16:9 u 6 scena (SVG likovi + HTML oblačići), ispod upravljanje i popis likova. Namjerno jedan, tamni svijet kao kino. */
+:root{
+  --ink:#121309; --ink-2:#1d1f12; --line:#34372a; --paper:#f4f1e4; --dim:#a9ab97;
+  --yolk:#f2e63a; --lime:#8cc63f; --lime-d:#4f8a12; --pink:#ff4fa3; --sky:#6fd3ff; --tang:#f6a94a;
+  --f-d:"Bricolage Grotesque",ui-sans-serif,system-ui,"Segoe UI",sans-serif;
+  --f-m:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ink);color:var(--paper);font-family:var(--f-d);font-size:15.5px;line-height:1.55;padding-block:28px 48px;padding-inline:16px}
+.wrap{max-width:1000px;margin:0 auto;display:grid;gap:26px}
+.eyebrow{font-family:var(--f-m);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--lime)}
+h1{font-size:clamp(28px,5vw,42px);line-height:1.04;margin:6px 0 0;font-weight:800;letter-spacing:-.03em;text-wrap:balance}
+h2{font-size:22px;margin:0;font-weight:800;letter-spacing:-.02em}
+p{margin:0}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:14px}
+.lede{color:var(--dim);max-width:44ch}
+
+.player{display:grid;gap:10px}
+.stage{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:20px;overflow:hidden;background:#1b1f3a;container-type:inline-size;color:var(--ink)}
+.scene{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.scene.on{opacity:1;visibility:visible}
+.scene svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+svg text{font-family:var(--f-d);font-weight:800}
+svg .mono{font-family:var(--f-m);font-weight:700}
+
+/* speech bubbles */
+.bub{position:absolute;background:#fff;color:var(--ink);font-weight:800;font-size:2.4cqw;line-height:1.12;letter-spacing:-.015em;padding:1.2cqw 1.8cqw;border-radius:2cqw;border:.35cqw solid var(--ink);max-width:34cqw;box-shadow:.5cqw .5cqw 0 rgba(0,0,0,.35);text-wrap:balance}
+.bub::after{content:"";position:absolute;bottom:-1.6cqw;left:var(--tail,3cqw);width:2.4cqw;height:2.4cqw;background:#fff;border-right:.35cqw solid var(--ink);border-bottom:.35cqw solid var(--ink);transform:rotate(45deg) skew(10deg,10deg)}
+.bub.r::after{left:auto;right:var(--tail,3cqw)}
+.bub.g{background:var(--lime)}.bub.g::after{background:var(--lime)}
+.bub.y{background:var(--yolk)}.bub.y::after{background:var(--yolk)}
+.cap{position:absolute;left:50%;bottom:3.2cqw;transform:translateX(-50%);font-family:var(--f-m);font-weight:700;font-size:1.7cqw;background:var(--ink);color:var(--yolk);padding:.8cqw 1.8cqw;border-radius:99px;white-space:nowrap}
+
+/* ambient loops (always on) */
+.blink{animation:blink 4.2s infinite;transform-box:fill-box;transform-origin:center}
+.blink.late{animation-delay:1.7s}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.twinkle{animation:tw 2.6s ease-in-out infinite}
+.twinkle:nth-child(2n){animation-delay:1.1s}.twinkle:nth-child(3n){animation-delay:.5s}
+@keyframes tw{50%{opacity:.25}}
+.flick{animation:flick 3s steps(1) infinite}
+@keyframes flick{0%,40%,44%,48%,100%{opacity:1}42%,46%{opacity:.2}}
+.idle{animation:idle 1.6s ease-in-out infinite}
+@keyframes idle{50%{transform:translateY(-6px)}}
+
+/* scene entrances (base state = visible end state) */
+@keyframes pop{0%{opacity:0;transform:scale(.3)}70%{transform:scale(1.08)}100%{opacity:1;transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(30px)}}
+@keyframes walkIn{from{transform:translateX(-700px)}}
+@keyframes rollIn{from{transform:translateX(900px) rotate(720deg)}}
+@keyframes shutter{from{transform:translateY(-310px)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-40px)}}
+@keyframes hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-70px)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:rotate(-4deg)}75%{transform:rotate(4deg)}}
+@keyframes travel{0%{transform:translate(0,0);opacity:0}10%{opacity:1}100%{transform:translate(var(--tx),var(--ty))}}
+@keyframes rain{from{transform:translateY(-500px)}}
+@keyframes dance{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg) translateY(-18px)}}
+@keyframes glow{50%{opacity:.35}}
+@keyframes wave{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(22deg)}}
+.fb{transform-box:fill-box;transform-origin:center}
+.fb-b{transform-box:fill-box;transform-origin:50% 100%}
+
+.on .bub{animation:pop .45s cubic-bezier(.3,1.5,.5,1) both}
+.on .cap{animation:up .5s both}
+.on .t1{animation-delay:.3s!important}.on .t2{animation-delay:1.1s!important}.on .t3{animation-delay:2s!important}.on .t4{animation-delay:2.8s!important}.on .t5{animation-delay:3.6s!important}.on .t6{animation-delay:4.4s!important}
+
+.on .ana-walk{animation:walkIn 1.8s cubic-bezier(.3,.7,.4,1) both}
+.on .ana-walk .stepbob{animation:hop .3s ease-in-out 6}
+.on .shut{animation:shutter .9s .2s cubic-bezier(.6,0,.9,.5) both}
+.on .closed{animation:pop .5s 1.1s both}
+.on .shock{animation:shake .25s 2.6s 4}
+.on .coinko-in{animation:rollIn 1.4s cubic-bezier(.2,.7,.3,1) both}
+.on .coinko-bounce{animation:bounce .6s 1.4s ease-in-out 2}
+.on .halo{animation:glow 1.6s ease-in-out infinite}
+.on .phone-ui{animation:pop .5s .2s both}
+.on .btn1{animation:pop .4s .9s both}.on .btn2{animation:pop .4s 1.4s both}.on .btn3{animation:pop .4s 1.9s both}
+.on .chk{animation:pop .45s 2.6s both}
+.on .ana-hop{animation:hop .55s 2.7s ease-in-out 3}
+.on .crypto-coin{animation:travel 1.2s 3.3s cubic-bezier(.4,0,.4,1) both}
+.on .euro-coin{animation:pop .4s 4.4s both}
+.on .till-flash{animation:glow .4s 4.6s 3}
+.on .marko-dance{animation:dance .5s ease-in-out infinite}
+.on .rain{animation:rain 1.6s cubic-bezier(.4,0,.8,.6) both}
+@property --wv{syntax:'<angle>';inherits:true;initial-value:0deg}
+@keyframes wv{50%{--wv:-35deg}}
+.on .waver{animation:wv .6s ease-in-out infinite}
+.on .logo-in{animation:up .6s .4s both}
+.on .logo-in2{animation:up .6s .9s both}
+.on .logo-in3{animation:pop .5s 1.4s both}
+.on .line-up > g{animation:up .5s both}
+.on .line-up > g:nth-child(2){animation-delay:.15s}.on .line-up > g:nth-child(3){animation-delay:.3s}
+
+.paused .stage *{animation-play-state:paused!important}
+
+.ctrl{display:flex;align-items:center;gap:10px}
+.ctrl button{font:800 13px var(--f-d);background:var(--yolk);color:var(--ink);border:0;border-radius:999px;padding:8px 15px;cursor:pointer;flex:0 0 auto}
+.ctrl button.ghost{background:transparent;color:var(--paper);border:1px solid var(--line)}
+.ctrl button:focus-visible,.segs button:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+.segs{flex:1;display:flex;gap:4px;min-width:0}
+.segs button{flex:1;height:22px;border:0;background:transparent;padding:0;cursor:pointer;position:relative}
+.segs button::before{content:"";position:absolute;left:0;right:0;top:9px;height:4px;border-radius:2px;background:var(--line)}
+.segs button::after{content:"";position:absolute;left:0;top:9px;height:4px;border-radius:2px;background:var(--yolk);width:calc(var(--p,0) * 100%)}
+.scene-name{font-family:var(--f-m);font-size:12px;color:var(--dim);min-height:1.5em}
+
+.cast{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cast div{background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:6px;align-content:start;min-width:0}
+.cast b{font-size:18px}
+.cast span{font-family:var(--f-m);font-size:11.5px;color:var(--lime);text-transform:uppercase;letter-spacing:.06em}
+.cast p{color:var(--dim);font-size:14px}
+.note{font-size:13.5px;color:var(--dim);max-width:75ch}
+@media (max-width:700px){.cast{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.stage *{animation:none!important}.scene{transition:none}}
+
+/* recording mode: only the stage, full window */
+.rec body{padding:0;background:#000}
+.rec .wrap{max-width:none;display:block}
+.rec .top,.rec .ctrl,.rec .scene-name,.rec section,.rec .note{display:none}
+.rec .stage{border-radius:0;width:100vw;height:100vh;aspect-ratio:auto}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- ANA: kripto korisnica. Ishodište = između stopala -->
+    <symbol id="ana" overflow="visible">
+      <ellipse cx="0" cy="0" rx="80" ry="12" fill="rgba(0,0,0,.25)"/>
+      <rect x="-38" y="-125" width="30" height="122" rx="12" fill="#2b2d42"/>
+      <rect x="8" y="-125" width="30" height="122" rx="12" fill="#2b2d42"/>
+      <ellipse cx="-25" cy="-6" rx="28" ry="12" fill="#f4f1e4"/>
+      <ellipse cx="25" cy="-6" rx="28" ry="12" fill="#f4f1e4"/>
+      <line x1="-58" y1="-250" x2="-82" y2="-165" stroke="#ff4fa3" stroke-width="30" stroke-linecap="round"/>
+      <circle cx="-84" cy="-160" r="15" fill="#f2c7a5"/>
+      <rect x="-72" y="-285" width="144" height="175" rx="44" fill="#ff4fa3"/>
+      <rect x="-42" y="-185" width="84" height="38" rx="14" fill="#e23d8d"/>
+      <path d="M-30,-283 Q0,-250 30,-283" fill="none" stroke="#e23d8d" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="0" cy="-342" r="70" fill="#2a1d17"/>
+      <circle cx="0" cy="-412" r="30" fill="#2a1d17"/>
+      <circle cx="0" cy="-332" r="62" fill="#f2c7a5"/>
+      <path d="M-63,-342 Q-45,-402 0,-400 Q52,-402 64,-345 Q30,-375 -6,-362 Q-40,-352 -63,-342Z" fill="#2a1d17"/>
+      <g class="blink"><ellipse cx="-22" cy="-330" rx="7" ry="10" fill="#121309"/><ellipse cx="22" cy="-330" rx="7" ry="10" fill="#121309"/></g>
+      <circle cx="-38" cy="-306" r="10" fill="#ff8fb8" opacity=".6"/>
+      <circle cx="38" cy="-306" r="10" fill="#ff8fb8" opacity=".6"/>
+      <path d="M-15,-300 Q0,-286 15,-300" fill="none" stroke="#121309" stroke-width="5" stroke-linecap="round" style="opacity:var(--smile,1)"/>
+      <ellipse cx="0" cy="-294" rx="9" ry="12" fill="#121309" style="opacity:var(--oh,0)"/>
+      <line x1="58" y1="-252" x2="100" y2="-202" stroke="#ff4fa3" stroke-width="30" stroke-linecap="round"/>
+      <rect x="92" y="-252" width="38" height="62" rx="8" fill="#121309"/>
+      <rect x="97" y="-246" width="28" height="48" rx="4" style="fill:var(--screen,#6fd3ff)"/>
+      <circle cx="104" cy="-198" r="15" fill="#f2c7a5"/>
+    </symbol>
+
+    <!-- MARKO: vlasnik benzinske -->
+    <symbol id="marko" overflow="visible">
+      <ellipse cx="0" cy="0" rx="100" ry="13" fill="rgba(0,0,0,.25)"/>
+      <rect x="-50" y="-135" width="42" height="132" rx="12" fill="#2f5fa7"/>
+      <rect x="8" y="-135" width="42" height="132" rx="12" fill="#2f5fa7"/>
+      <ellipse cx="-30" cy="-6" rx="32" ry="12" fill="#3a2a20"/>
+      <ellipse cx="30" cy="-6" rx="32" ry="12" fill="#3a2a20"/>
+      <g class="fb" style="transform-origin:50% 8%;transform:rotate(var(--al,0deg))"><rect x="-112" y="-292" width="30" height="128" rx="15" fill="#f6a94a"/><circle cx="-97" cy="-160" r="17" fill="#e9b48f"/></g>
+      <g class="fb" style="transform-origin:50% 8%;transform:rotate(var(--ar,0deg))"><rect x="82" y="-292" width="30" height="128" rx="15" fill="#f6a94a"/><circle cx="97" cy="-160" r="17" fill="#e9b48f"/></g>
+      <rect x="-92" y="-305" width="184" height="190" rx="52" fill="#f6a94a"/>
+      <rect x="-62" y="-250" width="124" height="140" rx="18" fill="#2f5fa7"/>
+      <line x1="-50" y1="-300" x2="-50" y2="-250" stroke="#2f5fa7" stroke-width="14"/>
+      <line x1="50" y1="-300" x2="50" y2="-250" stroke="#2f5fa7" stroke-width="14"/>
+      <rect x="-26" y="-226" width="52" height="30" rx="6" fill="#f4f1e4"/>
+      <text x="0" y="-205" text-anchor="middle" font-size="16" fill="#2f5fa7" class="mono">MARKO</text>
+      <circle cx="0" cy="-365" r="68" fill="#e9b48f"/>
+      <path d="M-68,-375 Q0,-462 68,-375 Z" fill="#f2e63a"/>
+      <rect x="-8" y="-386" width="100" height="16" rx="8" fill="#d6ca22"/>
+      <g class="blink late"><ellipse cx="-24" cy="-365" rx="7" ry="10" fill="#121309"/><ellipse cx="24" cy="-365" rx="7" ry="10" fill="#121309"/></g>
+      <line x1="-36" y1="-386" x2="-12" y2="-382" stroke="#4a2e1e" stroke-width="6" stroke-linecap="round" class="fb" style="transform:rotate(var(--brow,0deg))"/>
+      <line x1="12" y1="-382" x2="36" y2="-386" stroke="#4a2e1e" stroke-width="6" stroke-linecap="round" class="fb" style="transform:rotate(calc(var(--brow,0deg) * -1))"/>
+      <path d="M-38,-337 Q-18,-322 0,-334 Q18,-322 38,-337 Q32,-314 0,-321 Q-32,-314 -38,-337Z" fill="#4a2e1e"/>
+      <path d="M-18,-310 Q0,-294 18,-310" fill="none" stroke="#121309" stroke-width="5" stroke-linecap="round" style="opacity:var(--smile,1)"/>
+      <line x1="-14" y1="-306" x2="14" y2="-306" stroke="#121309" stroke-width="5" stroke-linecap="round" style="opacity:var(--flat,0)"/>
+    </symbol>
+
+    <!-- COINKO: Electrocoinova maskota, novčić s licencom -->
+    <symbol id="coinko" overflow="visible">
+      <ellipse cx="0" cy="0" rx="70" ry="10" fill="rgba(0,0,0,.25)"/>
+      <line x1="-30" y1="-70" x2="-34" y2="-12" stroke="#121309" stroke-width="10" stroke-linecap="round"/>
+      <line x1="30" y1="-70" x2="34" y2="-12" stroke="#121309" stroke-width="10" stroke-linecap="round"/>
+      <ellipse cx="-40" cy="-8" rx="22" ry="10" fill="#ff4fa3"/>
+      <ellipse cx="40" cy="-8" rx="22" ry="10" fill="#ff4fa3"/>
+      <line x1="-88" y1="-150" x2="-128" y2="-112" stroke="#121309" stroke-width="10" stroke-linecap="round"/>
+      <circle cx="-130" cy="-110" r="13" fill="#fff" stroke="#121309" stroke-width="5"/>
+      <g class="fb" style="transform-origin:0% 100%;transform:rotate(var(--wv,0deg))"><line x1="88" y1="-150" x2="126" y2="-196" stroke="#121309" stroke-width="10" stroke-linecap="round"/><circle cx="128" cy="-198" r="13" fill="#fff" stroke="#121309" stroke-width="5"/></g>
+      <circle cx="0" cy="-160" r="96" fill="#8cc63f" stroke="#4f8a12" stroke-width="12"/>
+      <circle cx="0" cy="-160" r="72" fill="none" stroke="#b5e07a" stroke-width="5"/>
+      <g class="blink"><ellipse cx="-28" cy="-178" rx="18" ry="22" fill="#fff"/><ellipse cx="28" cy="-178" rx="18" ry="22" fill="#fff"/>
+      <circle cx="-24" cy="-174" r="9" fill="#121309"/><circle cx="32" cy="-174" r="9" fill="#121309"/></g>
+      <path d="M-34,-130 Q0,-98 34,-130" fill="#121309"/>
+      <path d="M-20,-118 Q0,-106 20,-118 Q0,-112 -20,-118Z" fill="#ff4fa3"/>
+      <circle cx="64" cy="-96" r="30" fill="#f2e63a" stroke="#121309" stroke-width="5"/>
+      <text x="64" y="-89" text-anchor="middle" font-size="20" fill="#121309">Nº1</text>
+      <path d="M48,-70 L42,-40 L56,-48 L64,-36 L66,-68Z" fill="#ff4fa3" stroke="#121309" stroke-width="4" stroke-linejoin="round"/>
+    </symbol>
+
+    <!-- noćna ulica, dijele je scene 1 i 2 -->
+    <g id="night">
+      <rect width="1600" height="900" fill="#1b1f3a"/>
+      <g fill="#f4f1e4"><circle class="twinkle" cx="120" cy="90" r="3"/><circle class="twinkle" cx="340" cy="160" r="2.5"/><circle class="twinkle" cx="560" cy="70" r="3"/><circle class="twinkle" cx="760" cy="140" r="2"/><circle class="twinkle" cx="1480" cy="100" r="3"/><circle class="twinkle" cx="250" cy="250" r="2"/><circle class="twinkle" cx="680" cy="230" r="2.5"/></g>
+      <circle cx="1450" cy="110" r="46" fill="#f4f1e4"/><circle cx="1470" cy="98" r="46" fill="#1b1f3a"/>
+      <rect x="0" y="700" width="1600" height="200" fill="#2a2c45"/>
+      <rect x="0" y="700" width="1600" height="10" fill="#3b3e5e"/>
+      <rect x="880" y="230" width="600" height="472" fill="#3a3d5c"/>
+      <rect x="880" y="230" width="600" height="30" fill="#2f3250"/>
+      <rect x="930" y="290" width="500" height="90" rx="10" fill="#24263d"/>
+      <text x="1180" y="348" text-anchor="middle" font-size="40" fill="#6f7290">KRIPTO MJENJAČNICA</text>
+      <rect x="960" y="410" width="440" height="292" fill="#151729"/>
+      <g class="flick"><rect x="210" y="300" width="14" height="402" fill="#3b3e5e"/><rect x="180" y="286" width="74" height="22" rx="8" fill="#3b3e5e"/><ellipse cx="217" cy="320" rx="70" ry="22" fill="#f2e63a" opacity=".22"/><circle cx="217" cy="312" r="14" fill="#f2e63a"/></g>
+    </g>
+    <clipPath id="door"><rect x="960" y="410" width="440" height="292"/></clipPath>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <div class="eyebrow">Marketing · varijanta C · crtani spot</div>
+      <h1>Coinko i Ana: kad ti mjenjačnica zatvori vrata</h1>
+    </div>
+    <p class="lede">Crtani film od 35 sekundi s tri lika. Vrti se sam, a svaku scenu možeš otvoriti klikom na traku ispod.</p>
+  </div>
+
+  <div class="player" id="pC">
+    <div class="stage" role="region" aria-label="Crtani spot Electrocoina u 6 scena">
+
+      <!-- 1: mjenjačnica zatvara -->
+      <div class="scene on" data-d="6200" data-name="1 · Mjenjačnica zatvara">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+          <use href="#night"/>
+          <g clip-path="url(#door)"><g class="shut">
+            <rect x="960" y="410" width="440" height="292" fill="#8a8ea8"/>
+            <g stroke="#6f7390" stroke-width="5"><line x1="960" y1="440" x2="1400" y2="440"/><line x1="960" y1="475" x2="1400" y2="475"/><line x1="960" y1="510" x2="1400" y2="510"/><line x1="960" y1="545" x2="1400" y2="545"/><line x1="960" y1="580" x2="1400" y2="580"/><line x1="960" y1="615" x2="1400" y2="615"/><line x1="960" y1="650" x2="1400" y2="650"/><line x1="960" y1="685" x2="1400" y2="685"/></g>
+          </g></g>
+          <g class="closed fb"><g transform="rotate(-6 1180 520)">
+            <rect x="1010" y="470" width="340" height="110" rx="12" fill="#ff4fa3" stroke="#121309" stroke-width="6"/>
+            <text x="1180" y="520" text-anchor="middle" font-size="42" fill="#121309">ZATVORENO</text>
+            <text x="1180" y="556" text-anchor="middle" font-size="22" fill="#121309" class="mono">nema MiCA licence</text>
+          </g></g>
+          <g transform="translate(560 790)"><g class="ana-walk"><g class="stepbob"><g class="shock fb-b"><use href="#ana" style="--smile:0;--oh:1;--screen:#ff4fa3"/></g></g></g></g>
+        </svg>
+        <div class="bub t4" style="left:20cqw;top:7cqw">Čekaj… a gdje mi je sad kripto?!</div>
+        <div class="cap t5">1. 7. 2026. · bez MiCA licence nema kripto usluga</div>
+      </div>
+
+      <!-- 2: Coinko stiže -->
+      <div class="scene" data-d="6200" data-name="2 · Coinko stiže">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+          <use href="#night"/>
+          <rect x="960" y="410" width="440" height="292" fill="#8a8ea8"/>
+          <g transform="rotate(-6 1180 520)"><rect x="1010" y="470" width="340" height="110" rx="12" fill="#ff4fa3" stroke="#121309" stroke-width="6"/><text x="1180" y="520" text-anchor="middle" font-size="42" fill="#121309">ZATVORENO</text><text x="1180" y="556" text-anchor="middle" font-size="22" fill="#121309" class="mono">nema MiCA licence</text></g>
+          <g transform="translate(470 790)"><use href="#ana" style="--smile:0;--oh:1;--screen:#ff4fa3"/></g>
+          <g transform="translate(850 790)">
+            <ellipse class="halo" cx="0" cy="-160" rx="190" ry="190" fill="#8cc63f" opacity=".18"/>
+            <g class="coinko-in"><g class="coinko-bounce"><use href="#coinko"/></g></g>
+          </g>
+        </svg>
+        <div class="bub g r t3" style="right:22cqw;top:6cqw;--tail:8cqw">Bez panike! Ja imam licencu. Prvu u Hrvatskoj.</div>
+        <div class="bub t5" style="left:13cqw;top:15cqw">Ozbiljno?</div>
+      </div>
+
+      <!-- 3: aplikacija -->
+      <div class="scene" data-d="5800" data-name="3 · Kupi, prodaj, čuvaj">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+          <rect width="1600" height="900" fill="#6fd3ff"/>
+          <circle cx="1400" cy="150" r="80" fill="#f2e63a"/>
+          <path d="M0,700 Q400,640 800,700 T1600,690 V900 H0Z" fill="#8cc63f"/>
+          <rect x="0" y="760" width="1600" height="140" fill="#4f8a12"/>
+          <g class="phone-ui fb">
+            <rect x="620" y="110" width="360" height="640" rx="44" fill="#121309"/>
+            <rect x="642" y="150" width="316" height="570" rx="26" fill="#f4f1e4"/>
+            <circle cx="684" cy="196" r="16" fill="#8cc63f"/>
+            <text x="710" y="205" font-size="28" fill="#121309">Electrocoin</text>
+            <g class="btn1 fb"><rect x="670" y="250" width="260" height="88" rx="22" fill="#f2e63a" stroke="#121309" stroke-width="5"/><text x="800" y="306" text-anchor="middle" font-size="38" fill="#121309">Kupi</text></g>
+            <g class="btn2 fb"><rect x="670" y="358" width="260" height="88" rx="22" fill="#ff4fa3" stroke="#121309" stroke-width="5"/><text x="800" y="414" text-anchor="middle" font-size="38" fill="#121309">Prodaj</text></g>
+            <g class="btn3 fb"><rect x="670" y="466" width="260" height="88" rx="22" fill="#8cc63f" stroke="#121309" stroke-width="5"/><text x="800" y="522" text-anchor="middle" font-size="38" fill="#121309">Čuvaj</text></g>
+            <g class="chk fb"><rect x="670" y="590" width="260" height="70" rx="35" fill="#121309"/><text x="800" y="634" text-anchor="middle" font-size="24" fill="#8cc63f" class="mono">✓ MiCA licenca</text></g>
+          </g>
+          <g transform="translate(360 800)"><g class="ana-hop"><use href="#ana" style="--screen:#8cc63f"/></g></g>
+          <g transform="translate(1210 800)"><g class="idle"><use href="#coinko"/></g></g>
+        </svg>
+        <div class="bub t5" style="left:6cqw;top:6cqw">Sve na jednom mjestu!</div>
+        <div class="cap t4">Kupi, prodaj i čuvaj kripto kod licencirane tvrtke</div>
+      </div>
+
+      <!-- 4: benzinska -->
+      <div class="scene" data-d="7400" data-name="4 · Marko i eure">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+          <rect width="1600" height="900" fill="#f4f1e4"/>
+          <rect x="0" y="0" width="1600" height="90" fill="#2f5fa7"/>
+          <text x="800" y="62" text-anchor="middle" font-size="44" fill="#f2e63a">BENZINSKA · KAVA · SNACK</text>
+          <rect x="1080" y="150" width="400" height="300" rx="16" fill="#6fd3ff" stroke="#121309" stroke-width="6"/>
+          <rect x="1180" y="250" width="70" height="200" rx="10" fill="#ff4fa3"/><rect x="1196" y="276" width="38" height="40" rx="6" fill="#121309"/>
+          <rect x="1310" y="250" width="70" height="200" rx="10" fill="#f2e63a"/><rect x="1326" y="276" width="38" height="40" rx="6" fill="#121309"/>
+          <rect x="0" y="790" width="1600" height="110" fill="#d9d4bd"/>
+          <g transform="translate(1040 700)"><use href="#marko" style="--smile:0;--flat:1;--brow:14deg"/></g>
+          <rect x="760" y="560" width="600" height="230" rx="10" fill="#a0522d"/>
+          <rect x="760" y="560" width="600" height="26" rx="10" fill="#7a3e22"/>
+          <g transform="translate(1180 560)">
+            <rect class="till-flash" x="-10" y="-140" width="170" height="150" rx="14" fill="#8cc63f" opacity="0"/>
+            <rect x="0" y="-120" width="150" height="120" rx="12" fill="#121309"/>
+            <rect x="14" y="-106" width="122" height="44" rx="6" fill="#8cc63f"/>
+            <text x="75" y="-76" text-anchor="middle" font-size="26" fill="#121309" class="mono">+€</text>
+          </g>
+          <g transform="translate(880 560) scale(.6)"><g class="idle"><use href="#coinko"/></g></g>
+          <g transform="translate(340 830)"><use href="#ana" style="--screen:#8cc63f"/></g>
+          <g transform="translate(470 590)">
+            <g class="crypto-coin" style="--tx:770px;--ty:-110px"><circle r="34" fill="#ff4fa3" stroke="#121309" stroke-width="5"/><text y="11" text-anchor="middle" font-size="30" fill="#121309">₿</text></g>
+          </g>
+          <g transform="translate(1255 470)"><g class="euro-coin fb"><circle r="40" fill="#f2e63a" stroke="#121309" stroke-width="5"/><text y="13" text-anchor="middle" font-size="38" fill="#121309">€</text></g></g>
+        </svg>
+        <div class="bub y r t1" style="right:20cqw;top:4cqw;--tail:6cqw">Kripto? Meni trebaju eure.</div>
+        <div class="bub g r t3" style="left:4cqw;top:5cqw;max-width:30cqw;--tail:4cqw">Ona plaća kriptom, ti dobiješ eure. Naknadu ne plaćaš ti.</div>
+        <div class="cap t6">PayCek: kupac plaća kriptom, trgovac dobiva eure na IBAN</div>
+      </div>
+
+      <!-- 5: Marko pleše -->
+      <div class="scene" data-d="4800" data-name="5 · Marko je za">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+          <rect width="1600" height="900" fill="#f2e63a"/>
+          <g fill="#121309" opacity=".07"><circle cx="200" cy="200" r="160"/><circle cx="1400" cy="700" r="220"/><circle cx="1350" cy="160" r="90"/></g>
+          <g class="rain"><g font-size="38" text-anchor="middle">
+            <g transform="translate(260 200)"><circle r="38" fill="#fff" stroke="#121309" stroke-width="5"/><text y="13" fill="#121309">€</text></g>
+            <g transform="translate(470 120)"><circle r="30" fill="#8cc63f" stroke="#121309" stroke-width="5"/><text y="12" font-size="30" fill="#121309">€</text></g>
+            <g transform="translate(1130 150)"><circle r="38" fill="#fff" stroke="#121309" stroke-width="5"/><text y="13" fill="#121309">€</text></g>
+            <g transform="translate(1340 260)"><circle r="30" fill="#ff4fa3" stroke="#121309" stroke-width="5"/><text y="12" font-size="30" fill="#121309">€</text></g>
+            <g transform="translate(380 420)"><circle r="26" fill="#fff" stroke="#121309" stroke-width="5"/><text y="10" font-size="26" fill="#121309">€</text></g>
+            <g transform="translate(1230 470)"><circle r="26" fill="#8cc63f" stroke="#121309" stroke-width="5"/><text y="10" font-size="26" fill="#121309">€</text></g>
+          </g></g>
+          <rect x="0" y="790" width="1600" height="110" fill="#121309" opacity=".12"/>
+          <g transform="translate(800 820)"><g class="marko-dance fb-b"><use href="#marko" style="--al:150deg;--ar:-150deg;--brow:-8deg"/></g></g>
+        </svg>
+        <div class="bub r t1" style="right:24cqw;top:5cqw;--tail:7cqw">E, to mi se sviđa!</div>
+        <div class="cap t2">€0 naknade za trgovca · bez rizika tečaja</div>
+      </div>
+
+      <!-- 6: odjava -->
+      <div class="scene" data-d="5600" data-name="6 · Electrocoin">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+          <rect width="1600" height="900" fill="#121309"/>
+          <g fill="#8cc63f" opacity=".08"><circle cx="800" cy="980" r="560"/></g>
+          <g class="line-up">
+            <g><g transform="translate(330 860) scale(.92)"><use href="#ana" style="--screen:#8cc63f"/></g></g>
+            <g><g transform="translate(800 860) scale(1.1)"><g class="idle"><use href="#coinko" class="waver"/></g></g></g>
+            <g><g transform="translate(1270 860) scale(.92)"><use href="#marko" style="--al:20deg;--ar:-150deg"/></g></g>
+          </g>
+          <g class="logo-in"><circle cx="560" cy="150" r="30" fill="#8cc63f"/><text x="608" y="178" font-size="86" fill="#f4f1e4" letter-spacing="-3">Electrocoin</text></g>
+          <text class="logo-in2" x="800" y="250" text-anchor="middle" font-size="40" fill="#f2e63a">Prva MiCA licenca u Hrvatskoj</text>
+          <g class="logo-in3 fb"><rect x="660" y="282" width="280" height="58" rx="29" fill="#ff4fa3"/><text x="800" y="321" text-anchor="middle" font-size="28" fill="#121309" class="mono">electrocoin.eu</text></g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="ctrl">
+      <button type="button" id="pC-play" aria-pressed="false">Pauza</button>
+      <div class="segs" id="pC-segs" aria-label="Scene"></div>
+      <button type="button" class="ghost" id="pC-replay">Ispočetka</button>
+    </div>
+    <div class="scene-name" id="pC-name" aria-live="polite"></div>
+  </div>
+
+  <section style="display:grid;gap:14px">
+    <h2>Likovi</h2>
+    <div class="cast">
+      <div><span>kripto korisnica</span><b>Ana</b><p>Mlada, uvijek s mobitelom. Njezina mjenjačnica zatvorila je 1. srpnja jer nije dobila MiCA licencu.</p></div>
+      <div><span>maskota</span><b>Coinko</b><p>Zeleni Electrocoinov novčić s bedžom „Nº1” za prvu MiCA licencu u Hrvatskoj. Smiren, uvijek ima rješenje.</p></div>
+      <div><span>trgovac</span><b>Marko</b><p>Vlasnik benzinske. Ne zanima ga kripto, zanimaju ga eure na računu i da ga ništa ne košta.</p></div>
+    </div>
+  </section>
+  <p class="note">Likovi i benzinska su izmišljeni, bez stvarnih logotipa. Činjenice u spotu su iz istraživanja u ovom projektu: MiCA pravila od 1. 7. 2026., Electrocoinova prva licenca u Hrvatskoj i uvjeti PayCeka sa paycek.io.</p>
+</div>
+
+<script>
+const REC=location.hash==='#rec'; if(REC)document.documentElement.classList.add('rec');
+function makePlayer(id){
+  const root=document.getElementById(id), scenes=[...root.querySelectorAll('.scene')];
+  const segBox=document.getElementById(id+'-segs'), play=document.getElementById(id+'-play'), name=document.getElementById(id+'-name');
+  const segs=scenes.map((s,k)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Scena '+(k+1));b.onclick=()=>{show(k);if(!playing)toggle();};segBox.appendChild(b);return b;});
+  let i=0, t0=performance.now(), elapsed=0, playing=true;
+  function show(n){scenes.forEach((s,k)=>s.classList.toggle('on',k===n));i=n;elapsed=0;t0=performance.now();name.textContent=scenes[n].dataset.name;}
+  function toggle(){playing=!playing;root.classList.toggle('paused',!playing);play.textContent=playing?'Pauza':'Pokreni';play.setAttribute('aria-pressed',String(!playing));if(playing)t0=performance.now()-elapsed;}
+  play.onclick=toggle;
+  document.getElementById(id+'-replay').onclick=()=>{show(0);if(!playing)toggle();};
+  function tick(now){
+    if(playing){elapsed=now-t0;const d=+scenes[i].dataset.d;if(elapsed>=d){if(REC&&i===scenes.length-1){playing=false;window.__done=true;}else show((i+1)%scenes.length);}}
+    const d=+scenes[i].dataset.d;
+    segs.forEach((b,k)=>b.style.setProperty('--p',k<i?1:k===i?Math.min(elapsed/d,1):0));
+    requestAnimationFrame(tick);
+  }
+  show(0);requestAnimationFrame(tick);
+}
+makePlayer('pC');
+</script>
